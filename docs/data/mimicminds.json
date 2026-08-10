@@ -1,0 +1,2307 @@
+{
+  "label": "mimicminds",
+  "period": {
+    "curStart": "2026-07-11",
+    "curEnd": "2026-08-07",
+    "prevStart": "2026-06-13",
+    "prevEnd": "2026-07-10"
+  },
+  "headline": {
+    "current": {
+      "clicks": 110,
+      "impressions": 28474,
+      "ctr": 0.003863173421366861,
+      "position": 29.80866755636721
+    },
+    "previous": {
+      "clicks": 86,
+      "impressions": 23187,
+      "ctr": 0.0037089748566006813,
+      "position": 26.51063095700177
+    }
+  },
+  "trend": [
+    {
+      "date": "2026-06-13",
+      "clicks": 9,
+      "impressions": 1167,
+      "ctr": 0.007712082262210797,
+      "position": 19.135389888603257
+    },
+    {
+      "date": "2026-06-14",
+      "clicks": 2,
+      "impressions": 1307,
+      "ctr": 0.001530221882172915,
+      "position": 17.769701606732976
+    },
+    {
+      "date": "2026-06-15",
+      "clicks": 7,
+      "impressions": 1389,
+      "ctr": 0.005039596832253419,
+      "position": 18.965442764578835
+    },
+    {
+      "date": "2026-06-16",
+      "clicks": 10,
+      "impressions": 1391,
+      "ctr": 0.007189072609633357,
+      "position": 19.79726815240834
+    },
+    {
+      "date": "2026-06-17",
+      "clicks": 5,
+      "impressions": 2176,
+      "ctr": 0.002297794117647059,
+      "position": 24.981617647058822
+    },
+    {
+      "date": "2026-06-18",
+      "clicks": 9,
+      "impressions": 1140,
+      "ctr": 0.007894736842105263,
+      "position": 22.36754385964912
+    },
+    {
+      "date": "2026-06-19",
+      "clicks": 5,
+      "impressions": 1247,
+      "ctr": 0.00400962309542903,
+      "position": 20.061748195669608
+    },
+    {
+      "date": "2026-06-20",
+      "clicks": 1,
+      "impressions": 1154,
+      "ctr": 0.0008665511265164644,
+      "position": 19.178509532062392
+    },
+    {
+      "date": "2026-06-21",
+      "clicks": 4,
+      "impressions": 950,
+      "ctr": 0.004210526315789474,
+      "position": 22.495789473684212
+    },
+    {
+      "date": "2026-06-22",
+      "clicks": 6,
+      "impressions": 1202,
+      "ctr": 0.004991680532445923,
+      "position": 19.896006655574045
+    },
+    {
+      "date": "2026-06-23",
+      "clicks": 10,
+      "impressions": 1288,
+      "ctr": 0.007763975155279503,
+      "position": 21.03726708074534
+    },
+    {
+      "date": "2026-06-24",
+      "clicks": 7,
+      "impressions": 1371,
+      "ctr": 0.005105762217359592,
+      "position": 22.51859956236324
+    },
+    {
+      "date": "2026-06-25",
+      "clicks": 10,
+      "impressions": 1190,
+      "ctr": 0.008403361344537815,
+      "position": 22.926050420168067
+    },
+    {
+      "date": "2026-06-26",
+      "clicks": 9,
+      "impressions": 1253,
+      "ctr": 0.007182761372705506,
+      "position": 20.974461292897047
+    },
+    {
+      "date": "2026-06-27",
+      "clicks": 3,
+      "impressions": 1212,
+      "ctr": 0.0024752475247524753,
+      "position": 19.75
+    },
+    {
+      "date": "2026-06-28",
+      "clicks": 9,
+      "impressions": 1308,
+      "ctr": 0.006880733944954129,
+      "position": 22.482415902140673
+    },
+    {
+      "date": "2026-06-29",
+      "clicks": 16,
+      "impressions": 1603,
+      "ctr": 0.009981285090455396,
+      "position": 20.80910792264504
+    },
+    {
+      "date": "2026-06-30",
+      "clicks": 8,
+      "impressions": 1469,
+      "ctr": 0.005445881552076242,
+      "position": 22.198093941456772
+    },
+    {
+      "date": "2026-07-01",
+      "clicks": 8,
+      "impressions": 1359,
+      "ctr": 0.005886681383370125,
+      "position": 21.874908020603385
+    },
+    {
+      "date": "2026-07-02",
+      "clicks": 12,
+      "impressions": 1461,
+      "ctr": 0.008213552361396304,
+      "position": 22.404517453798768
+    },
+    {
+      "date": "2026-07-03",
+      "clicks": 8,
+      "impressions": 1314,
+      "ctr": 0.0060882800608828,
+      "position": 23.88660578386606
+    },
+    {
+      "date": "2026-07-04",
+      "clicks": 6,
+      "impressions": 1209,
+      "ctr": 0.004962779156327543,
+      "position": 18.054590570719604
+    },
+    {
+      "date": "2026-07-05",
+      "clicks": 8,
+      "impressions": 1286,
+      "ctr": 0.006220839813374806,
+      "position": 20.132192846034215
+    },
+    {
+      "date": "2026-07-06",
+      "clicks": 14,
+      "impressions": 1768,
+      "ctr": 0.007918552036199095,
+      "position": 16.57296380090498
+    },
+    {
+      "date": "2026-07-07",
+      "clicks": 14,
+      "impressions": 1424,
+      "ctr": 0.009831460674157303,
+      "position": 16.6938202247191
+    },
+    {
+      "date": "2026-07-08",
+      "clicks": 10,
+      "impressions": 1575,
+      "ctr": 0.006349206349206349,
+      "position": 14.537777777777778
+    },
+    {
+      "date": "2026-07-09",
+      "clicks": 12,
+      "impressions": 1540,
+      "ctr": 0.007792207792207792,
+      "position": 15.644155844155843
+    },
+    {
+      "date": "2026-07-10",
+      "clicks": 10,
+      "impressions": 1517,
+      "ctr": 0.0065919578114700065,
+      "position": 16.19182597231378
+    },
+    {
+      "date": "2026-07-11",
+      "clicks": 6,
+      "impressions": 1446,
+      "ctr": 0.004149377593360996,
+      "position": 15.901106500691563
+    },
+    {
+      "date": "2026-07-12",
+      "clicks": 8,
+      "impressions": 1287,
+      "ctr": 0.006216006216006216,
+      "position": 15.932400932400933
+    },
+    {
+      "date": "2026-07-13",
+      "clicks": 9,
+      "impressions": 1407,
+      "ctr": 0.006396588486140725,
+      "position": 16.08670931058991
+    },
+    {
+      "date": "2026-07-14",
+      "clicks": 13,
+      "impressions": 1358,
+      "ctr": 0.009572901325478646,
+      "position": 16.787923416789397
+    },
+    {
+      "date": "2026-07-15",
+      "clicks": 8,
+      "impressions": 1279,
+      "ctr": 0.006254886630179828,
+      "position": 15.702892885066458
+    },
+    {
+      "date": "2026-07-16",
+      "clicks": 13,
+      "impressions": 1170,
+      "ctr": 0.011111111111111112,
+      "position": 16.376923076923077
+    },
+    {
+      "date": "2026-07-17",
+      "clicks": 11,
+      "impressions": 1085,
+      "ctr": 0.010138248847926268,
+      "position": 16.339170506912442
+    },
+    {
+      "date": "2026-07-18",
+      "clicks": 7,
+      "impressions": 1092,
+      "ctr": 0.00641025641025641,
+      "position": 12.525641025641026
+    },
+    {
+      "date": "2026-07-19",
+      "clicks": 5,
+      "impressions": 1160,
+      "ctr": 0.004310344827586207,
+      "position": 14.951724137931034
+    },
+    {
+      "date": "2026-07-20",
+      "clicks": 11,
+      "impressions": 1320,
+      "ctr": 0.008333333333333333,
+      "position": 14.74090909090909
+    },
+    {
+      "date": "2026-07-21",
+      "clicks": 16,
+      "impressions": 1395,
+      "ctr": 0.011469534050179211,
+      "position": 14.088888888888889
+    },
+    {
+      "date": "2026-07-22",
+      "clicks": 18,
+      "impressions": 1556,
+      "ctr": 0.011568123393316195,
+      "position": 15.274421593830334
+    },
+    {
+      "date": "2026-07-23",
+      "clicks": 14,
+      "impressions": 1391,
+      "ctr": 0.010064701653486701,
+      "position": 17.09489575844716
+    },
+    {
+      "date": "2026-07-24",
+      "clicks": 22,
+      "impressions": 1495,
+      "ctr": 0.01471571906354515,
+      "position": 18.65284280936455
+    },
+    {
+      "date": "2026-07-25",
+      "clicks": 9,
+      "impressions": 1391,
+      "ctr": 0.006470165348670022,
+      "position": 21.516894320632638
+    },
+    {
+      "date": "2026-07-26",
+      "clicks": 10,
+      "impressions": 1322,
+      "ctr": 0.007564296520423601,
+      "position": 19.657337367624812
+    },
+    {
+      "date": "2026-07-27",
+      "clicks": 19,
+      "impressions": 1785,
+      "ctr": 0.010644257703081233,
+      "position": 21.90812324929972
+    },
+    {
+      "date": "2026-07-28",
+      "clicks": 13,
+      "impressions": 1995,
+      "ctr": 0.006516290726817042,
+      "position": 25.176441102756893
+    },
+    {
+      "date": "2026-07-29",
+      "clicks": 17,
+      "impressions": 2476,
+      "ctr": 0.006865912762520194,
+      "position": 26.382067851373183
+    },
+    {
+      "date": "2026-07-30",
+      "clicks": 8,
+      "impressions": 2088,
+      "ctr": 0.0038314176245210726,
+      "position": 28.10632183908046
+    },
+    {
+      "date": "2026-07-31",
+      "clicks": 11,
+      "impressions": 1833,
+      "ctr": 0.006001091107474086,
+      "position": 28.77632296781233
+    },
+    {
+      "date": "2026-08-01",
+      "clicks": 11,
+      "impressions": 1786,
+      "ctr": 0.006159014557670772,
+      "position": 31.104703247480405
+    },
+    {
+      "date": "2026-08-02",
+      "clicks": 6,
+      "impressions": 1755,
+      "ctr": 0.003418803418803419,
+      "position": 27.66894586894587
+    },
+    {
+      "date": "2026-08-03",
+      "clicks": 18,
+      "impressions": 1687,
+      "ctr": 0.01066982809721399,
+      "position": 25.481327800829874
+    },
+    {
+      "date": "2026-08-04",
+      "clicks": 9,
+      "impressions": 1613,
+      "ctr": 0.005579665220086794,
+      "position": 25.649101053936764
+    },
+    {
+      "date": "2026-08-05",
+      "clicks": 17,
+      "impressions": 2412,
+      "ctr": 0.007048092868988391,
+      "position": 28.718905472636816
+    },
+    {
+      "date": "2026-08-06",
+      "clicks": 13,
+      "impressions": 2012,
+      "ctr": 0.0064612326043737576,
+      "position": 26.55864811133201
+    },
+    {
+      "date": "2026-08-07",
+      "clicks": 14,
+      "impressions": 1405,
+      "ctr": 0.0099644128113879,
+      "position": 25.676156583629894
+    }
+  ],
+  "decliners": [
+    {
+      "page": "https://www.mimicminds.com/",
+      "clicks_new": 32,
+      "clicks_old": 45,
+      "delta_clicks": -13,
+      "impressions_new": 453,
+      "impressions_old": 300,
+      "delta_impressions": 153,
+      "ctr_new": 0.0706401766004415,
+      "ctr_old": 0.15,
+      "position_new": 13.7,
+      "position_old": 11.9,
+      "delta_position": 1.8,
+      "cause": "ranking-drop"
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-gaming",
+      "clicks_new": 0,
+      "clicks_old": 2,
+      "delta_clicks": -2,
+      "impressions_new": 382,
+      "impressions_old": 229,
+      "delta_impressions": 153,
+      "ctr_new": 0,
+      "ctr_old": 0.008733624454148471,
+      "position_new": 14.2,
+      "position_old": 17.8,
+      "delta_position": -3.6,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/post/digital-resurrection",
+      "clicks_new": 0,
+      "clicks_old": 2,
+      "delta_clicks": -2,
+      "impressions_new": 88,
+      "impressions_old": 57,
+      "delta_impressions": 31,
+      "ctr_new": 0,
+      "ctr_old": 0.03508771929824561,
+      "position_new": 9.5,
+      "position_old": 10.6,
+      "delta_position": -1.1,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-fashion",
+      "clicks_new": 2,
+      "clicks_old": 3,
+      "delta_clicks": -1,
+      "impressions_new": 118,
+      "impressions_old": 108,
+      "delta_impressions": 10,
+      "ctr_new": 0.01694915254237288,
+      "ctr_old": 0.027777777777777776,
+      "position_new": 20.7,
+      "position_old": 7.5,
+      "delta_position": 13.2,
+      "cause": "ranking-drop"
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-business",
+      "clicks_new": 0,
+      "clicks_old": 1,
+      "delta_clicks": -1,
+      "impressions_new": 421,
+      "impressions_old": 784,
+      "delta_impressions": -363,
+      "ctr_new": 0,
+      "ctr_old": 0.0012755102040816326,
+      "position_new": 29.2,
+      "position_old": 31.4,
+      "delta_position": -2.2,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-shopping",
+      "clicks_new": 0,
+      "clicks_old": 1,
+      "delta_clicks": -1,
+      "impressions_new": 108,
+      "impressions_old": 495,
+      "delta_impressions": -387,
+      "ctr_new": 0,
+      "ctr_old": 0.00202020202020202,
+      "position_new": 15.3,
+      "position_old": 5.4,
+      "delta_position": 9.9,
+      "cause": "ranking-drop"
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-wellness",
+      "clicks_new": 0,
+      "clicks_old": 1,
+      "delta_clicks": -1,
+      "impressions_new": 35,
+      "impressions_old": 31,
+      "delta_impressions": 4,
+      "ctr_new": 0,
+      "ctr_old": 0.03225806451612903,
+      "position_new": 33.7,
+      "position_old": 24.5,
+      "delta_position": 9.3,
+      "cause": "ranking-drop"
+    },
+    {
+      "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+      "clicks_new": 0,
+      "clicks_old": 1,
+      "delta_clicks": -1,
+      "impressions_new": 992,
+      "impressions_old": 465,
+      "delta_impressions": 527,
+      "ctr_new": 0,
+      "ctr_old": 0.002150537634408602,
+      "position_new": 14.8,
+      "position_old": 17.6,
+      "delta_position": -2.8,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/post/what-are-embodied-ai-agents",
+      "clicks_new": 0,
+      "clicks_old": 1,
+      "delta_clicks": -1,
+      "impressions_new": 360,
+      "impressions_old": 241,
+      "delta_impressions": 119,
+      "ctr_new": 0,
+      "ctr_old": 0.004149377593360996,
+      "position_new": 27.8,
+      "position_old": 28.2,
+      "delta_position": -0.4,
+      "cause": "demand-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-tutor-avatar-for-education",
+      "clicks_new": 4,
+      "clicks_old": 4,
+      "delta_clicks": 0,
+      "impressions_new": 371,
+      "impressions_old": 365,
+      "delta_impressions": 6,
+      "ctr_new": 0.01078167115902965,
+      "ctr_old": 0.010958904109589041,
+      "position_new": 12,
+      "position_old": 9.1,
+      "delta_position": 2.9,
+      "cause": "ranking-drop"
+    },
+    {
+      "page": "https://www.mimicminds.com/about",
+      "clicks_new": 1,
+      "clicks_old": 1,
+      "delta_clicks": 0,
+      "impressions_new": 110,
+      "impressions_old": 142,
+      "delta_impressions": -32,
+      "ctr_new": 0.00909090909090909,
+      "ctr_old": 0.007042253521126761,
+      "position_new": 4.9,
+      "position_old": 6.9,
+      "delta_position": -2,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/post/ai-in-the-entertainment-industry",
+      "clicks_new": 1,
+      "clicks_old": 1,
+      "delta_clicks": 0,
+      "impressions_new": 1733,
+      "impressions_old": 1795,
+      "delta_impressions": -62,
+      "ctr_new": 0.0005770340450086555,
+      "ctr_old": 0.0005571030640668524,
+      "position_new": 38.3,
+      "position_old": 44,
+      "delta_position": -5.7,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/agents",
+      "clicks_new": 0,
+      "clicks_old": 0,
+      "delta_clicks": 0,
+      "impressions_new": 39,
+      "impressions_old": 54,
+      "delta_impressions": -15,
+      "ctr_new": 0,
+      "ctr_old": 0,
+      "position_new": 29.8,
+      "position_old": 64.7,
+      "delta_position": -34.9,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-creatures",
+      "clicks_new": 0,
+      "clicks_old": 0,
+      "delta_clicks": 0,
+      "impressions_new": 68,
+      "impressions_old": 128,
+      "delta_impressions": -60,
+      "ctr_new": 0,
+      "ctr_old": 0,
+      "position_new": 9,
+      "position_old": 8,
+      "delta_position": 1,
+      "cause": "ranking-drop"
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-healthcare",
+      "clicks_new": 0,
+      "clicks_old": 0,
+      "delta_clicks": 0,
+      "impressions_new": 238,
+      "impressions_old": 166,
+      "delta_impressions": 72,
+      "ctr_new": 0,
+      "ctr_old": 0,
+      "position_new": 19.9,
+      "position_old": 32.8,
+      "delta_position": -12.9,
+      "cause": "ranking-rise"
+    }
+  ],
+  "risers": [
+    {
+      "page": "https://www.mimicminds.com/mimic-ai-studio",
+      "clicks_new": 57,
+      "clicks_old": 22,
+      "delta_clicks": 35,
+      "impressions_new": 1309,
+      "impressions_old": 933,
+      "delta_impressions": 376,
+      "ctr_new": 0.04354469060351413,
+      "ctr_old": 0.023579849946409433,
+      "position_new": 5.1,
+      "position_old": 5.9,
+      "delta_position": -0.7,
+      "cause": "demand-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-robotic",
+      "clicks_new": 2,
+      "clicks_old": 0,
+      "delta_clicks": 2,
+      "impressions_new": 610,
+      "impressions_old": 386,
+      "delta_impressions": 224,
+      "ctr_new": 0.003278688524590164,
+      "ctr_old": 0,
+      "position_new": 12.4,
+      "position_old": 14.7,
+      "delta_position": -2.3,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://studio.mimicminds.com/",
+      "clicks_new": 2,
+      "clicks_old": 0,
+      "delta_clicks": 2,
+      "impressions_new": 145,
+      "impressions_old": 148,
+      "delta_impressions": -3,
+      "ctr_new": 0.013793103448275862,
+      "ctr_old": 0,
+      "position_new": 14.5,
+      "position_old": 18.3,
+      "delta_position": -3.9,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/post/visual-ai-agents-explained",
+      "clicks_new": 1,
+      "clicks_old": 0,
+      "delta_clicks": 1,
+      "impressions_new": 218,
+      "impressions_old": 99,
+      "delta_impressions": 119,
+      "ctr_new": 0.0045871559633027525,
+      "ctr_old": 0,
+      "position_new": 31.4,
+      "position_old": 33.6,
+      "delta_position": -2.1,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/post/embodied-ai-vs-conversational-ai",
+      "clicks_new": 1,
+      "clicks_old": 0,
+      "delta_clicks": 1,
+      "impressions_new": 29,
+      "impressions_old": 0,
+      "delta_impressions": 29,
+      "ctr_new": 0.034482758620689655,
+      "ctr_old": 0,
+      "position_new": 43.8,
+      "position_old": 0,
+      "delta_position": 43.8,
+      "cause": "ranking-drop"
+    },
+    {
+      "page": "https://www.mimicminds.com/post/agentic-ai-vs-generative-ai-key-differences-explained",
+      "clicks_new": 1,
+      "clicks_old": 0,
+      "delta_clicks": 1,
+      "impressions_new": 933,
+      "impressions_old": 1219,
+      "delta_impressions": -286,
+      "ctr_new": 0.0010718113612004287,
+      "ctr_old": 0,
+      "position_new": 68.7,
+      "position_old": 71.2,
+      "delta_position": -2.5,
+      "cause": "ranking-rise"
+    },
+    {
+      "page": "https://www.mimicminds.com/industries/ai-avatar-for-creatures",
+      "clicks_new": 1,
+      "clicks_old": 0,
+      "delta_clicks": 1,
+      "impressions_new": 54,
+      "impressions_old": 0,
+      "delta_impressions": 54,
+      "ctr_new": 0.018518518518518517,
+      "ctr_old": 0,
+      "position_new": 31.2,
+      "position_old": 0,
+      "delta_position": 31.2,
+      "cause": "ranking-drop"
+    },
+    {
+      "page": "https://www.mimicminds.com/industries/ai-avatar-for-cartoon",
+      "clicks_new": 1,
+      "clicks_old": 0,
+      "delta_clicks": 1,
+      "impressions_new": 92,
+      "impressions_old": 0,
+      "delta_impressions": 92,
+      "ctr_new": 0.010869565217391304,
+      "ctr_old": 0,
+      "position_new": 20.6,
+      "position_old": 0,
+      "delta_position": 20.6,
+      "cause": "ranking-drop"
+    },
+    {
+      "page": "https://www.mimicminds.com/industries/ai-avatar-for-business",
+      "clicks_new": 1,
+      "clicks_old": 0,
+      "delta_clicks": 1,
+      "impressions_new": 377,
+      "impressions_old": 0,
+      "delta_impressions": 377,
+      "ctr_new": 0.002652519893899204,
+      "ctr_old": 0,
+      "position_new": 29.2,
+      "position_old": 0,
+      "delta_position": 29.2,
+      "cause": "ranking-drop"
+    },
+    {
+      "page": "https://www.mimicminds.com/enterprise",
+      "clicks_new": 1,
+      "clicks_old": 0,
+      "delta_clicks": 1,
+      "impressions_new": 387,
+      "impressions_old": 224,
+      "delta_impressions": 163,
+      "ctr_new": 0.002583979328165375,
+      "ctr_old": 0,
+      "position_new": 33.8,
+      "position_old": 20.1,
+      "delta_position": 13.7,
+      "cause": "ranking-drop"
+    }
+  ],
+  "quickWins": [
+    {
+      "query": "virtual self for health",
+      "page": "https://www.mimicminds.com/industries/ai-avatar-for-wellness",
+      "position": 10.717391304347826,
+      "ctr": 0,
+      "impressions": 276,
+      "clicks": 0
+    },
+    {
+      "query": "robot avatar",
+      "page": "https://www.mimicminds.com/ai-avatar-for-robotic",
+      "position": 8.836501901140684,
+      "ctr": 0,
+      "impressions": 263,
+      "clicks": 0
+    },
+    {
+      "query": "conversational ai avatar",
+      "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
+      "position": 10.373015873015873,
+      "ctr": 0,
+      "impressions": 252,
+      "clicks": 0
+    },
+    {
+      "query": "npc ai",
+      "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+      "position": 10.101522842639595,
+      "ctr": 0,
+      "impressions": 197,
+      "clicks": 0
+    },
+    {
+      "query": "ai npc",
+      "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+      "position": 11.117977528089888,
+      "ctr": 0,
+      "impressions": 178,
+      "clicks": 0
+    },
+    {
+      "query": "nsfw conversion funnel for massive day 1 sales ai avatar",
+      "page": "https://www.mimicminds.com/post/ai-sales-avatar",
+      "position": 8.737179487179487,
+      "ctr": 0,
+      "impressions": 156,
+      "clicks": 0
+    },
+    {
+      "query": "real-time avatars for virtual events",
+      "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events",
+      "position": 5.91156462585034,
+      "ctr": 0,
+      "impressions": 147,
+      "clicks": 0
+    },
+    {
+      "query": "real-time avatars for virtual events",
+      "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-frtzo408",
+      "position": 5.91156462585034,
+      "ctr": 0,
+      "impressions": 147,
+      "clicks": 0
+    },
+    {
+      "query": "real-time avatars for virtual events",
+      "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-h757c506",
+      "position": 5.91156462585034,
+      "ctr": 0,
+      "impressions": 147,
+      "clicks": 0
+    },
+    {
+      "query": "real-time avatars for virtual events",
+      "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-q49zj308",
+      "position": 5.91156462585034,
+      "ctr": 0,
+      "impressions": 147,
+      "clicks": 0
+    },
+    {
+      "query": "conversational ai avatar",
+      "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-1g8q9902",
+      "position": 7.438356164383562,
+      "ctr": 0,
+      "impressions": 146,
+      "clicks": 0
+    },
+    {
+      "query": "conversational ai avatar",
+      "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-9wf0r923",
+      "position": 7.438356164383562,
+      "ctr": 0,
+      "impressions": 146,
+      "clicks": 0
+    },
+    {
+      "query": "conversational ai avatar",
+      "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-rsgix949",
+      "position": 7.438356164383562,
+      "ctr": 0,
+      "impressions": 146,
+      "clicks": 0
+    },
+    {
+      "query": "ai agent avatar",
+      "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars",
+      "position": 11.13986013986014,
+      "ctr": 0,
+      "impressions": 143,
+      "clicks": 0
+    },
+    {
+      "query": "sales avatar",
+      "page": "https://www.mimicminds.com/post/ai-sales-avatar",
+      "position": 5.905109489051095,
+      "ctr": 0,
+      "impressions": 137,
+      "clicks": 0
+    },
+    {
+      "query": "sales avatar",
+      "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-na32d425",
+      "position": 6.3106060606060606,
+      "ctr": 0,
+      "impressions": 132,
+      "clicks": 0
+    },
+    {
+      "query": "sales avatar",
+      "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-xkugr390",
+      "position": 6.3106060606060606,
+      "ctr": 0,
+      "impressions": 132,
+      "clicks": 0
+    },
+    {
+      "query": "sales avatar",
+      "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-zr76y453",
+      "position": 6.3106060606060606,
+      "ctr": 0,
+      "impressions": 132,
+      "clicks": 0
+    },
+    {
+      "query": "ai sales avatar",
+      "page": "https://www.mimicminds.com/post/ai-sales-avatar",
+      "position": 7.056910569105691,
+      "ctr": 0,
+      "impressions": 123,
+      "clicks": 0
+    },
+    {
+      "query": "ai sales avatar",
+      "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-na32d425",
+      "position": 6.964912280701754,
+      "ctr": 0,
+      "impressions": 114,
+      "clicks": 0
+    },
+    {
+      "query": "ai sales avatar",
+      "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-xkugr390",
+      "position": 6.964912280701754,
+      "ctr": 0,
+      "impressions": 114,
+      "clicks": 0
+    },
+    {
+      "query": "ai sales avatar",
+      "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-zr76y453",
+      "position": 6.964912280701754,
+      "ctr": 0,
+      "impressions": 114,
+      "clicks": 0
+    },
+    {
+      "query": "medical professional ai avatar virtual assistant healthcare marketing",
+      "page": "https://www.mimicminds.com/industries/ai-avatar-for-healthcare",
+      "position": 5.541284403669724,
+      "ctr": 0,
+      "impressions": 109,
+      "clicks": 0
+    },
+    {
+      "query": "interactive avatars for sales support",
+      "page": "https://www.mimicminds.com/post/ai-sales-avatar",
+      "position": 9.222222222222221,
+      "ctr": 0,
+      "impressions": 108,
+      "clicks": 0
+    },
+    {
+      "query": "mimic productions",
+      "page": "https://www.mimicminds.com/",
+      "position": 8.18867924528302,
+      "ctr": 0,
+      "impressions": 106,
+      "clicks": 0
+    },
+    {
+      "query": "virtual assistant avatar",
+      "page": "https://www.mimicminds.com/post/difference-between-an-ai-avatar-and-a-virtual-assistant",
+      "position": 5.149425287356322,
+      "ctr": 0,
+      "impressions": 87,
+      "clicks": 0
+    },
+    {
+      "query": "avatar robot",
+      "page": "https://www.mimicminds.com/ai-avatar-for-robotic",
+      "position": 14.16470588235294,
+      "ctr": 0,
+      "impressions": 85,
+      "clicks": 0
+    },
+    {
+      "query": "mimic ai",
+      "page": "https://www.mimicminds.com/",
+      "position": 9.475,
+      "ctr": 0.0125,
+      "impressions": 80,
+      "clicks": 1
+    },
+    {
+      "query": "conversational ai avatars",
+      "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
+      "position": 10.975,
+      "ctr": 0,
+      "impressions": 80,
+      "clicks": 0
+    },
+    {
+      "query": "ai avatar chatbot",
+      "page": "https://www.mimicminds.com/post/ai-avatars-vs-traditional-chatbots",
+      "position": 14.857142857142858,
+      "ctr": 0,
+      "impressions": 77,
+      "clicks": 0
+    },
+    {
+      "query": "conversational ai avatars",
+      "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-9wf0r923",
+      "position": 8.013513513513512,
+      "ctr": 0,
+      "impressions": 74,
+      "clicks": 0
+    },
+    {
+      "query": "conversational ai avatars",
+      "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-ft73d986",
+      "position": 8.013513513513512,
+      "ctr": 0,
+      "impressions": 74,
+      "clicks": 0
+    },
+    {
+      "query": "conversational ai avatars",
+      "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-rsgix949",
+      "position": 8.013513513513512,
+      "ctr": 0,
+      "impressions": 74,
+      "clicks": 0
+    },
+    {
+      "query": "3d talking avatar",
+      "page": "https://www.mimicminds.com/post/3d-ai-avatar-vs-2d-talking-avatars",
+      "position": 14.547945205479452,
+      "ctr": 0,
+      "impressions": 73,
+      "clicks": 0
+    },
+    {
+      "query": "avatar 2d vs 3d",
+      "page": "https://www.mimicminds.com/post/3d-ai-avatar-vs-2d-talking-avatars",
+      "position": 10.41095890410959,
+      "ctr": 0,
+      "impressions": 73,
+      "clicks": 0
+    },
+    {
+      "query": "gaming avatar",
+      "page": "https://www.mimicminds.com/ai-avatar-for-gaming",
+      "position": 12.785714285714286,
+      "ctr": 0,
+      "impressions": 70,
+      "clicks": 0
+    },
+    {
+      "query": "ai npc in games",
+      "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+      "position": 14.954545454545455,
+      "ctr": 0,
+      "impressions": 66,
+      "clicks": 0
+    },
+    {
+      "query": "embodied agents",
+      "page": "https://www.mimicminds.com/post/what-are-embodied-ai-agents",
+      "position": 14.625,
+      "ctr": 0,
+      "impressions": 64,
+      "clicks": 0
+    },
+    {
+      "query": "top ai avatar tools for virtual event hosting.",
+      "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events",
+      "position": 7.306451612903226,
+      "ctr": 0,
+      "impressions": 62,
+      "clicks": 0
+    },
+    {
+      "query": "ai/npc",
+      "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+      "position": 12.15,
+      "ctr": 0,
+      "impressions": 60,
+      "clicks": 0
+    }
+  ],
+  "keywordMap": [
+    {
+      "page": "https://www.mimicminds.com/mimic-ai-studio",
+      "keywords": [
+        {
+          "query": "mimic ai",
+          "clicks": 46,
+          "impressions": 787,
+          "position": 3.537484116899619
+        },
+        {
+          "query": "mimic studio",
+          "clicks": 3,
+          "impressions": 48,
+          "position": 2.354166666666667
+        },
+        {
+          "query": "mimic.ai",
+          "clicks": 2,
+          "impressions": 12,
+          "position": 3.6666666666666665
+        },
+        {
+          "query": "studio mimic",
+          "clicks": 1,
+          "impressions": 49,
+          "position": 3.6530612244897958
+        },
+        {
+          "query": "ai mimic",
+          "clicks": 1,
+          "impressions": 31,
+          "position": 8.032258064516128
+        },
+        {
+          "query": "mimic studios",
+          "clicks": 1,
+          "impressions": 26,
+          "position": 3.6153846153846154
+        }
+      ]
+    },
+    {
+      "page": "https://www.mimicminds.com/",
+      "keywords": [
+        {
+          "query": "mimic minds",
+          "clicks": 30,
+          "impressions": 94,
+          "position": 1
+        },
+        {
+          "query": "mimic ai",
+          "clicks": 1,
+          "impressions": 80,
+          "position": 9.475
+        },
+        {
+          "query": "mimicminds",
+          "clicks": 1,
+          "impressions": 7,
+          "position": 1
+        },
+        {
+          "query": "mimic productions",
+          "clicks": 0,
+          "impressions": 106,
+          "position": 8.18867924528302
+        },
+        {
+          "query": "mimic studio",
+          "clicks": 0,
+          "impressions": 17,
+          "position": 36.705882352941174
+        },
+        {
+          "query": "mimic production",
+          "clicks": 0,
+          "impressions": 10,
+          "position": 12
+        }
+      ]
+    },
+    {
+      "page": "https://studio.mimicminds.com/",
+      "keywords": [
+        {
+          "query": "mimic ai",
+          "clicks": 2,
+          "impressions": 34,
+          "position": 14.029411764705882
+        },
+        {
+          "query": "mimic studio",
+          "clicks": 0,
+          "impressions": 40,
+          "position": 8.475
+        },
+        {
+          "query": "studio mimic",
+          "clicks": 0,
+          "impressions": 28,
+          "position": 8.785714285714285
+        },
+        {
+          "query": "site:mimicminds.com",
+          "clicks": 0,
+          "impressions": 11,
+          "position": 1
+        },
+        {
+          "query": "mimic studios",
+          "clicks": 0,
+          "impressions": 9,
+          "position": 12.333333333333334
+        },
+        {
+          "query": "mimic productions",
+          "clicks": 0,
+          "impressions": 5,
+          "position": 64.8
+        }
+      ]
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-fashion",
+      "keywords": [
+        {
+          "query": "fashion avatar",
+          "clicks": 2,
+          "impressions": 24,
+          "position": 5.5
+        },
+        {
+          "query": "how to make a clothing brand for my ai avatar",
+          "clicks": 0,
+          "impressions": 35,
+          "position": 28.085714285714285
+        },
+        {
+          "query": "site:mimicminds.com",
+          "clicks": 0,
+          "impressions": 15,
+          "position": 28.4
+        },
+        {
+          "query": "download virtual ai model fashion",
+          "clicks": 0,
+          "impressions": 13,
+          "position": 47.61538461538461
+        },
+        {
+          "query": "fashion avatars",
+          "clicks": 0,
+          "impressions": 9,
+          "position": 4.111111111111111
+        },
+        {
+          "query": "ai fashion avatar",
+          "clicks": 0,
+          "impressions": 4,
+          "position": 3.5
+        }
+      ]
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-robotic",
+      "keywords": [
+        {
+          "query": "ai robot avatar",
+          "clicks": 1,
+          "impressions": 24,
+          "position": 4.791666666666666
+        },
+        {
+          "query": "real avatar robot",
+          "clicks": 1,
+          "impressions": 17,
+          "position": 8.529411764705882
+        },
+        {
+          "query": "robot avatar",
+          "clicks": 0,
+          "impressions": 263,
+          "position": 8.836501901140684
+        },
+        {
+          "query": "avatar robot",
+          "clicks": 0,
+          "impressions": 85,
+          "position": 14.16470588235294
+        },
+        {
+          "query": "robotic avatar",
+          "clicks": 0,
+          "impressions": 28,
+          "position": 9.107142857142858
+        },
+        {
+          "query": "avatar robotics",
+          "clicks": 0,
+          "impressions": 24,
+          "position": 27.458333333333332
+        }
+      ]
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-business",
+      "keywords": [
+        {
+          "query": "ai avatars for business",
+          "clicks": 0,
+          "impressions": 144,
+          "position": 26.041666666666668
+        },
+        {
+          "query": "avatar for business",
+          "clicks": 0,
+          "impressions": 40,
+          "position": 7.9
+        },
+        {
+          "query": "avatar companies",
+          "clicks": 0,
+          "impressions": 14,
+          "position": 14.857142857142858
+        },
+        {
+          "query": "business avatar",
+          "clicks": 0,
+          "impressions": 14,
+          "position": 5.857142857142857
+        },
+        {
+          "query": "digital avatar customer service training",
+          "clicks": 0,
+          "impressions": 11,
+          "position": 8.727272727272727
+        },
+        {
+          "query": "ai avatar platform for business",
+          "clicks": 0,
+          "impressions": 7,
+          "position": 28.285714285714285
+        }
+      ]
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-gaming",
+      "keywords": [
+        {
+          "query": "gaming avatar",
+          "clicks": 0,
+          "impressions": 70,
+          "position": 12.785714285714286
+        },
+        {
+          "query": "how to use avatars for gaming?",
+          "clicks": 0,
+          "impressions": 50,
+          "position": 4.2
+        },
+        {
+          "query": "avatar for games",
+          "clicks": 0,
+          "impressions": 40,
+          "position": 8.975
+        },
+        {
+          "query": "avatar gaming",
+          "clicks": 0,
+          "impressions": 32,
+          "position": 12.96875
+        },
+        {
+          "query": "game avatars",
+          "clicks": 0,
+          "impressions": 26,
+          "position": 11.192307692307692
+        },
+        {
+          "query": "gaming avatars",
+          "clicks": 0,
+          "impressions": 25,
+          "position": 9.16
+        }
+      ]
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-shopping",
+      "keywords": [
+        {
+          "query": "ai avatars for retail",
+          "clicks": 0,
+          "impressions": 18,
+          "position": 1.6666666666666665
+        },
+        {
+          "query": "ai avatars in ecommerce",
+          "clicks": 0,
+          "impressions": 18,
+          "position": 6.5
+        },
+        {
+          "query": "site:mimicminds.com",
+          "clicks": 0,
+          "impressions": 14,
+          "position": 35.785714285714285
+        },
+        {
+          "query": "ai avatars in retail",
+          "clicks": 0,
+          "impressions": 13,
+          "position": 1.1538461538461537
+        },
+        {
+          "query": "shopping avatar",
+          "clicks": 0,
+          "impressions": 10,
+          "position": 3.9
+        },
+        {
+          "query": "ecommerce ai avatar",
+          "clicks": 0,
+          "impressions": 9,
+          "position": 7.777777777777778
+        }
+      ]
+    },
+    {
+      "page": "https://www.mimicminds.com/ai-avatar-for-wellness",
+      "keywords": [
+        {
+          "query": "site:mimicminds.com",
+          "clicks": 0,
+          "impressions": 15,
+          "position": 37
+        },
+        {
+          "query": "virtual self for health",
+          "clicks": 0,
+          "impressions": 7,
+          "position": 8.714285714285715
+        },
+        {
+          "query": "avatar wellness",
+          "clicks": 0,
+          "impressions": 3,
+          "position": 10
+        },
+        {
+          "query": "health avatar",
+          "clicks": 0,
+          "impressions": 3,
+          "position": 68
+        },
+        {
+          "query": "ai coaching avatars employee wellness programs integration",
+          "clicks": 0,
+          "impressions": 2,
+          "position": 61
+        },
+        {
+          "query": "coach avatar",
+          "clicks": 0,
+          "impressions": 2,
+          "position": 52.5
+        }
+      ]
+    },
+    {
+      "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+      "keywords": [
+        {
+          "query": "npc ai",
+          "clicks": 0,
+          "impressions": 197,
+          "position": 10.101522842639595
+        },
+        {
+          "query": "ai npc",
+          "clicks": 0,
+          "impressions": 178,
+          "position": 11.117977528089888
+        },
+        {
+          "query": "ai npcs",
+          "clicks": 0,
+          "impressions": 110,
+          "position": 23.263636363636362
+        },
+        {
+          "query": "ai npc in games",
+          "clicks": 0,
+          "impressions": 66,
+          "position": 14.954545454545455
+        },
+        {
+          "query": "ai npcs in games",
+          "clicks": 0,
+          "impressions": 63,
+          "position": 15.714285714285714
+        },
+        {
+          "query": "ai/npc",
+          "clicks": 0,
+          "impressions": 60,
+          "position": 12.15
+        }
+      ]
+    },
+    {
+      "page": "https://www.mimicminds.com/post/digital-resurrection",
+      "keywords": [
+        {
+          "query": "digital resurrection",
+          "clicks": 0,
+          "impressions": 59,
+          "position": 7.864406779661017
+        },
+        {
+          "query": "site:mimicminds.com",
+          "clicks": 0,
+          "impressions": 14,
+          "position": 5.642857142857143
+        },
+        {
+          "query": "reanimated digital",
+          "clicks": 0,
+          "impressions": 3,
+          "position": 29
+        },
+        {
+          "query": "site:www.mimicminds.com",
+          "clicks": 0,
+          "impressions": 3,
+          "position": 12
+        },
+        {
+          "query": "ai resurrection",
+          "clicks": 0,
+          "impressions": 2,
+          "position": 9
+        },
+        {
+          "query": "what a digital dummy",
+          "clicks": 0,
+          "impressions": 2,
+          "position": 17.5
+        }
+      ]
+    }
+  ],
+  "cannibalization": [
+    {
+      "query": "mimic ai",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/mimic-ai-studio",
+          "impressions": 787,
+          "clicks": 46,
+          "position": 3.537484116899619
+        },
+        {
+          "page": "https://www.mimicminds.com/",
+          "impressions": 80,
+          "clicks": 1,
+          "position": 9.475
+        },
+        {
+          "page": "https://studio.mimicminds.com/",
+          "impressions": 34,
+          "clicks": 2,
+          "position": 14.029411764705882
+        },
+        {
+          "page": "https://www.mimicminds.com/post/how-to-use-mimic-studio",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 7.238095238095238
+        }
+      ]
+    },
+    {
+      "query": "conversational ai avatar",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
+          "impressions": 252,
+          "clicks": 0,
+          "position": 10.373015873015873
+        },
+        {
+          "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-1g8q9902",
+          "impressions": 146,
+          "clicks": 0,
+          "position": 7.438356164383562
+        },
+        {
+          "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-9wf0r923",
+          "impressions": 146,
+          "clicks": 0,
+          "position": 7.438356164383562
+        },
+        {
+          "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-rsgix949",
+          "impressions": 146,
+          "clicks": 0,
+          "position": 7.438356164383562
+        },
+        {
+          "page": "https://www.mimicminds.com/post/how-conversational-ai-avatars-are-redefining-human-machine-interaction-in-real-time-environments",
+          "impressions": 76,
+          "clicks": 0,
+          "position": 59.78947368421053
+        },
+        {
+          "page": "https://www.mimicminds.com/enterprise",
+          "impressions": 48,
+          "clicks": 0,
+          "position": 40.645833333333336
+        },
+        {
+          "page": "https://www.mimicminds.com/blog/categories/conversational-ai",
+          "impressions": 32,
+          "clicks": 0,
+          "position": 62.5625
+        }
+      ]
+    },
+    {
+      "query": "sales avatar",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar",
+          "impressions": 137,
+          "clicks": 0,
+          "position": 5.905109489051095
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-na32d425",
+          "impressions": 132,
+          "clicks": 0,
+          "position": 6.3106060606060606
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-xkugr390",
+          "impressions": 132,
+          "clicks": 0,
+          "position": 6.3106060606060606
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-zr76y453",
+          "impressions": 132,
+          "clicks": 0,
+          "position": 6.3106060606060606
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-54oby469",
+          "impressions": 31,
+          "clicks": 0,
+          "position": 5.806451612903226
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-rblxq457",
+          "impressions": 31,
+          "clicks": 0,
+          "position": 5.806451612903226
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-sktxr403",
+          "impressions": 31,
+          "clicks": 0,
+          "position": 5.806451612903226
+        }
+      ]
+    },
+    {
+      "query": "real-time avatars for virtual events",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events",
+          "impressions": 147,
+          "clicks": 0,
+          "position": 5.91156462585034
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-frtzo408",
+          "impressions": 147,
+          "clicks": 0,
+          "position": 5.91156462585034
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-h757c506",
+          "impressions": 147,
+          "clicks": 0,
+          "position": 5.91156462585034
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-q49zj308",
+          "impressions": 147,
+          "clicks": 0,
+          "position": 5.91156462585034
+        }
+      ]
+    },
+    {
+      "query": "site:mimicminds.com",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/how-to-use-mimic-studio",
+          "impressions": 28,
+          "clicks": 0,
+          "position": 36.92857142857143
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events",
+          "impressions": 26,
+          "clicks": 0,
+          "position": 39.23076923076923
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+          "impressions": 26,
+          "clicks": 0,
+          "position": 32.269230769230774
+        },
+        {
+          "page": "https://www.mimicminds.com/post/d2cin-advancing-inclusive-education-through-conversational-ai",
+          "impressions": 26,
+          "clicks": 0,
+          "position": 67.46153846153847
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-influencers-vs-human-influencers",
+          "impressions": 24,
+          "clicks": 0,
+          "position": 41.833333333333336
+        },
+        {
+          "page": "https://www.mimicminds.com/post/visual-ai-agents-explained",
+          "impressions": 24,
+          "clicks": 0,
+          "position": 22.125
+        },
+        {
+          "page": "https://www.mimicminds.com/contact-us",
+          "impressions": 23,
+          "clicks": 0,
+          "position": 13.869565217391305
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-avatars-for-automotive-vehicle",
+          "impressions": 22,
+          "clicks": 0,
+          "position": 42.54545454545455
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-avatars-vs-traditional-chatbots",
+          "impressions": 22,
+          "clicks": 0,
+          "position": 43.54545454545455
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-npcs-vs-scripted-npcs",
+          "impressions": 22,
+          "clicks": 0,
+          "position": 46.54545454545455
+        },
+        {
+          "page": "https://www.mimicminds.com/post/embodied-ai-vs-conversational-ai",
+          "impressions": 22,
+          "clicks": 0,
+          "position": 45.54545454545455
+        },
+        {
+          "page": "https://www.mimicminds.com/post/what-is-an-ai-agent",
+          "impressions": 22,
+          "clicks": 0,
+          "position": 44.54545454545455
+        },
+        {
+          "page": "https://www.mimicminds.com/mimic-ai-studio",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 18.142857142857142
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 39.19047619047619
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-avatar-fitness-trainer-for-home-workouts",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 64.42857142857143
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-concierge-avatars",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 14.476190476190476
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-in-the-entertainment-industry",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 40.19047619047619
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-interviewer-avatar-for-candidate-screening",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 52.333333333333336
+        },
+        {
+          "page": "https://www.mimicminds.com/post/conversational-ai-in-education",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 16.80952380952381
+        },
+        {
+          "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 67.38095238095238
+        },
+        {
+          "page": "https://www.mimicminds.com/post/the-rise-of-ai-avatars",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 38.19047619047619
+        },
+        {
+          "page": "https://www.mimicminds.com/post/shopping-with-ai-avatar-the-future-of-shopping-is-here",
+          "impressions": 20,
+          "clicks": 0,
+          "position": 56.45
+        },
+        {
+          "page": "https://www.mimicminds.com/post/uncanny-valley-explained",
+          "impressions": 20,
+          "clicks": 0,
+          "position": 12.15
+        },
+        {
+          "page": "https://www.mimicminds.com/post/virtual-agent-vs-chatbot-vs-ai-avatar",
+          "impressions": 20,
+          "clicks": 0,
+          "position": 66.5
+        }
+      ]
+    },
+    {
+      "query": "mimic minds",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/",
+          "impressions": 94,
+          "clicks": 30,
+          "position": 1
+        },
+        {
+          "page": "https://www.mimicminds.com/mimic-ai-studio",
+          "impressions": 91,
+          "clicks": 0,
+          "position": 1.065934065934066
+        },
+        {
+          "page": "https://www.mimicminds.com/about",
+          "impressions": 83,
+          "clicks": 1,
+          "position": 1
+        },
+        {
+          "page": "https://www.mimicminds.com/enterprise",
+          "impressions": 67,
+          "clicks": 0,
+          "position": 1
+        },
+        {
+          "page": "https://www.mimicminds.com/faqs",
+          "impressions": 49,
+          "clicks": 0,
+          "position": 1
+        },
+        {
+          "page": "https://www.mimicminds.com/ai-tutor-avatar-for-education",
+          "impressions": 43,
+          "clicks": 0,
+          "position": 1.302325581395349
+        },
+        {
+          "page": "https://www.mimicminds.com/projects",
+          "impressions": 43,
+          "clicks": 0,
+          "position": 1
+        }
+      ]
+    },
+    {
+      "query": "ai sales avatar",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar",
+          "impressions": 123,
+          "clicks": 0,
+          "position": 7.056910569105691
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-na32d425",
+          "impressions": 114,
+          "clicks": 0,
+          "position": 6.964912280701754
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-xkugr390",
+          "impressions": 114,
+          "clicks": 0,
+          "position": 6.964912280701754
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-sales-avatar#viewer-zr76y453",
+          "impressions": 114,
+          "clicks": 0,
+          "position": 6.964912280701754
+        }
+      ]
+    },
+    {
+      "query": "ai agent avatar",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars",
+          "impressions": 143,
+          "clicks": 0,
+          "position": 11.13986013986014
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars#viewer-2tnf9393",
+          "impressions": 56,
+          "clicks": 0,
+          "position": 8.285714285714285
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars#viewer-402by355",
+          "impressions": 56,
+          "clicks": 0,
+          "position": 8.285714285714285
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars#viewer-4oce4343",
+          "impressions": 56,
+          "clicks": 0,
+          "position": 8.285714285714285
+        },
+        {
+          "page": "https://www.mimicminds.com/post/visual-ai-agents-explained",
+          "impressions": 24,
+          "clicks": 0,
+          "position": 51.791666666666664
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars#viewer-1dq8h379",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 8.523809523809524
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars#viewer-6ruge476",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 8.523809523809524
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars#viewer-8asq3496",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 8.523809523809524
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars#viewer-pl62w367",
+          "impressions": 21,
+          "clicks": 0,
+          "position": 8.523809523809524
+        }
+      ]
+    },
+    {
+      "query": "conversational ai avatars",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
+          "impressions": 80,
+          "clicks": 0,
+          "position": 10.975
+        },
+        {
+          "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-9wf0r923",
+          "impressions": 74,
+          "clicks": 0,
+          "position": 8.013513513513512
+        },
+        {
+          "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-ft73d986",
+          "impressions": 74,
+          "clicks": 0,
+          "position": 8.013513513513512
+        },
+        {
+          "page": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-rsgix949",
+          "impressions": 74,
+          "clicks": 0,
+          "position": 8.013513513513512
+        },
+        {
+          "page": "https://www.mimicminds.com/enterprise",
+          "impressions": 22,
+          "clicks": 0,
+          "position": 37.13636363636363
+        }
+      ]
+    },
+    {
+      "query": "ai avatars for business",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/ai-avatar-for-business",
+          "impressions": 144,
+          "clicks": 0,
+          "position": 26.041666666666668
+        },
+        {
+          "page": "https://www.mimicminds.com/industries/ai-avatar-for-business",
+          "impressions": 131,
+          "clicks": 0,
+          "position": 30.076335877862597
+        }
+      ]
+    },
+    {
+      "query": "ai npcs",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+          "impressions": 110,
+          "clicks": 0,
+          "position": 23.263636363636362
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-npcs-vs-scripted-npcs",
+          "impressions": 81,
+          "clicks": 0,
+          "position": 23.185185185185187
+        },
+        {
+          "page": "https://www.mimicminds.com/blog/categories/ai-npc",
+          "impressions": 63,
+          "clicks": 0,
+          "position": 18.07936507936508
+        }
+      ]
+    },
+    {
+      "query": "ai npc",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+          "impressions": 178,
+          "clicks": 0,
+          "position": 11.117977528089888
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-npcs-vs-scripted-npcs",
+          "impressions": 65,
+          "clicks": 0,
+          "position": 24.876923076923077
+        }
+      ]
+    },
+    {
+      "query": "npc ai",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+          "impressions": 197,
+          "clicks": 0,
+          "position": 10.101522842639595
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-npcs-vs-scripted-npcs",
+          "impressions": 40,
+          "clicks": 0,
+          "position": 26.7
+        }
+      ]
+    },
+    {
+      "query": "medical professional ai avatar virtual assistant healthcare marketing",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/industries/ai-avatar-for-healthcare",
+          "impressions": 109,
+          "clicks": 0,
+          "position": 5.541284403669724
+        },
+        {
+          "page": "https://www.mimicminds.com/ai-avatar-for-healthcare",
+          "impressions": 57,
+          "clicks": 0,
+          "position": 5.754385964912281
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-healthcare-virtual-assistants",
+          "impressions": 43,
+          "clicks": 0,
+          "position": 8.953488372093023
+        }
+      ]
+    },
+    {
+      "query": "avatar ai agent",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars",
+          "impressions": 44,
+          "clicks": 0,
+          "position": 10.022727272727273
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars#viewer-2tnf9393",
+          "impressions": 27,
+          "clicks": 0,
+          "position": 9
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars#viewer-402by355",
+          "impressions": 27,
+          "clicks": 0,
+          "position": 9
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars#viewer-4oce4343",
+          "impressions": 27,
+          "clicks": 0,
+          "position": 9
+        }
+      ]
+    },
+    {
+      "query": "embodied agents",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/what-are-embodied-ai-agents",
+          "impressions": 64,
+          "clicks": 0,
+          "position": 14.625
+        },
+        {
+          "page": "https://www.mimicminds.com/post/what-are-embodied-ai-agents#viewer-3u9kx166",
+          "impressions": 28,
+          "clicks": 0,
+          "position": 9.464285714285714
+        },
+        {
+          "page": "https://www.mimicminds.com/post/what-are-embodied-ai-agents#viewer-4ts4x126",
+          "impressions": 28,
+          "clicks": 0,
+          "position": 9.464285714285714
+        }
+      ]
+    },
+    {
+      "query": "mimic studio",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/mimic-ai-studio",
+          "impressions": 48,
+          "clicks": 3,
+          "position": 2.354166666666667
+        },
+        {
+          "page": "https://studio.mimicminds.com/",
+          "impressions": 40,
+          "clicks": 0,
+          "position": 8.475
+        },
+        {
+          "page": "https://www.mimicminds.com/post/how-to-use-mimic-studio",
+          "impressions": 22,
+          "clicks": 0,
+          "position": 23.09090909090909
+        }
+      ]
+    },
+    {
+      "query": "ai/npc",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+          "impressions": 60,
+          "clicks": 0,
+          "position": 12.15
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-npcs-vs-scripted-npcs",
+          "impressions": 49,
+          "clicks": 0,
+          "position": 23.755102040816325
+        }
+      ]
+    },
+    {
+      "query": "ai avatars for events",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events",
+          "impressions": 28,
+          "clicks": 0,
+          "position": 1.6071428571428572
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-frtzo408",
+          "impressions": 25,
+          "clicks": 0,
+          "position": 5.48
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-h757c506",
+          "impressions": 25,
+          "clicks": 0,
+          "position": 5.48
+        },
+        {
+          "page": "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-r9a5g432",
+          "impressions": 25,
+          "clicks": 0,
+          "position": 5.48
+        }
+      ]
+    },
+    {
+      "query": "studio mimic",
+      "pages": [
+        {
+          "page": "https://www.mimicminds.com/mimic-ai-studio",
+          "impressions": 49,
+          "clicks": 1,
+          "position": 3.6530612244897958
+        },
+        {
+          "page": "https://studio.mimicminds.com/",
+          "impressions": 28,
+          "clicks": 0,
+          "position": 8.785714285714285
+        }
+      ]
+    }
+  ],
+  "orphanPages": [
+    "https://www.mimicminds.com/post/ai-employees-in-workforce",
+    "https://www.mimicminds.com/post/can-an-ai-avatar-brand-spokesperson",
+    "https://www.mimicminds.com/post/customer-service-automation",
+    "https://www.mimicminds.com/post/ai-for-financial-services",
+    "https://www.mimicminds.com/post/what-are-virtual-customer-service-agents",
+    "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
+    "https://www.mimicminds.com/post/how-ai-powered-digital-humans-improve-customer-engagement-in-2025",
+    "https://www.mimicminds.com/post/mimic-minds-joins-the-mediatech-hub-accelerator-in-potsdam",
+    "https://www.mimicminds.com/service/text-to-video",
+    "https://www.mimicminds.com/service/ai-marketing-video-maker",
+    "https://www.mimicminds.com/service/ai-video-presentation-maker",
+    "https://www.mimicminds.com/service/ai-explainer-video-maker",
+    "https://www.mimicminds.com/service/podcast-clip-maker",
+    "https://www.mimicminds.com/service/digital-human-creator",
+    "https://www.mimicminds.com/service/ai-influencer-generator",
+    "https://www.mimicminds.com/service/personal-ai-avatar",
+    "https://www.mimicminds.com/service/ai-avatar-widget-for-websites",
+    "https://www.mimicminds.com/service/ai-spokesperson-videos-with-lifelike-digital-humans",
+    "https://www.mimicminds.com/service/ai-avatars-for-creators-and-real-conversations",
+    "https://www.mimicminds.com/service/ai-video-generator-with-lifelike-avatars",
+    "https://www.mimicminds.com/pricing",
+    "https://www.mimicminds.com/industries/ai-avatar-for-robotic",
+    "https://www.mimicminds.com/industries/ai-avatar-for-education",
+    "https://www.mimicminds.com",
+    "https://www.mimicminds.com/industries/ai-avatar-for-fashion"
+  ],
+  "sitemapUrlCount": 148
+}

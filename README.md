@@ -1,88 +1,72 @@
 # GSC Reoptimizer
 
-Standalone PHP + MySQL dashboard that pulls Google Search Console data daily
-and surfaces what's declining, why, quick wins, keyword-to-page mapping,
-cannibalization, and coverage/orphan gaps. Runs on any cheap PHP+MySQL host,
-no framework, no JS build step.
+Static, colorful GSC-driven SEO reoptimization dashboard. GitHub Pages hosts
+it, GitHub Actions fetches fresh Search Console data on a daily schedule.
+No server, no database, zero hosting cost.
 
-## What it does
-- Cron pulls `(date, page, query)` search analytics daily for each site, stores it
-- Dashboard computes period-over-period diffs, quick wins, keyword maps,
-  cannibalization, and orphan-page checks straight from SQL -- no re-fetching
-  from Google on every page load
-- On-demand URL Inspector page checks indexing status for a specific URL
+**Live at:** `https://<your-github-username>.github.io/gsc-reoptimizer/`
+(enable Pages -- see Setup step 3)
+
+## What it shows
+- Clicks/impressions/CTR/avg-position trend chart, period-over-period
+- Top decliners, each classified as demand-drop / ranking-drop / CTR-drop
+- Top risers -- what's working, worth repeating
+- Quick wins: striking-distance queries (position 4-15, CTR ≤2%)
+- Keyword-to-page map: inferred primary + secondary keywords per page
+- Cannibalization: same query ranking on 2+ pages
+- Coverage gaps: sitemap URLs with ~zero impressions (orphan-page proxy)
 
 ## What it can't do (GSC API limits, not a bug)
-- No internal-links report, no true competitor-SERP data -- Search Console's
-  API doesn't expose either. The dashboard's "coverage gaps" (sitemap URLs
-  with ~zero impressions) is a proxy for orphan pages, not a real link graph.
-- Sitemap `indexed` counts from `sitemaps.list` read 0 for both your
-  properties right now -- that field is known to be unreliable in this API,
-  don't treat it as "nothing is indexed." Use the URL Inspector for ground truth.
+No internal-links report, no true competitor-SERP data -- Search Console's
+API doesn't expose either. "Coverage gaps" is a sitemap-vs-impressions proxy
+for orphan pages, not a real link graph.
+
+## Architecture
+```
+fetch/fetch.js        -- pulls GSC data via service account, writes docs/data/*.json
+fetch/analysis.js      -- pure functions: diffs, quick wins, keyword map, cannibalization, orphans
+docs/                   -- the site itself (GitHub Pages source)
+  index.html, app.js, style.css   -- Chart.js dashboard, reads docs/data/*.json
+  data/*.json                     -- generated data, committed to the repo
+.github/workflows/update-dashboard.yml  -- daily cron: fetch.js + commit + push
+```
+Pushing updated `docs/data/*.json` to `main` is what republishes the site --
+GitHub Pages (branch-deploy mode) auto-rebuilds on every push to `docs/`.
 
 ## Setup
 
 ### 1. Google Cloud service account
-1. Go to console.cloud.google.com, create (or reuse) a project.
+1. console.cloud.google.com -> create/reuse a project.
 2. APIs & Services -> Library -> enable **Google Search Console API**.
-3. APIs & Services -> Credentials -> Create Credentials -> Service Account.
-4. Create a JSON key for it, download as `service-account.json`, place it in
-   the project root (or wherever `config.php` points `service_account_key` to).
-5. Copy the service account's email (looks like `xxx@yyy.iam.gserviceaccount.com`).
-6. In Search Console (search.google.com/search-console), for **each property**:
-   Settings -> Users and permissions -> Add user -> paste the service account
-   email -> permission level "Restricted" is enough (read + inspect, no
-   settings changes).
+3. APIs & Services -> Credentials -> Create Credentials -> Service Account -> create a JSON key.
+4. Copy the service account's email (`xxx@yyy.iam.gserviceaccount.com`).
+5. In Search Console, for **each property** (mimicminds, mimicproductions):
+   Settings -> Users and permissions -> Add user -> paste the email -> "Restricted" is enough.
 
-### 2. Database
-```
-mysql -u root -p -e "CREATE DATABASE gsc_reoptimizer"
-mysql -u root -p gsc_reoptimizer < schema.sql
-```
-`schema.sql` seeds the two known properties (mimicminds, mimicproductions).
-Edit the `INSERT INTO sites` block if URLs change or you add a property.
+### 2. Add the key as a GitHub secret
+Repo -> Settings -> Secrets and variables -> Actions -> New repository secret:
+- Name: `GSC_SERVICE_ACCOUNT_JSON`
+- Value: the full contents of the service account JSON key file (paste as-is)
 
-### 3. Install & configure
-```
-composer install
-cp config.example.php config.php
-```
-Edit `config.php`: DB credentials, path to `service-account.json`.
+### 3. Enable GitHub Pages
+Repo -> Settings -> Pages -> Source: **Deploy from a branch** -> Branch: `main`, folder `/docs`.
 
-### 4. Backfill history
-```
-php cron/fetch_sitemaps.php
-php cron/backfill.php --days=90
-```
-First run only (or re-run anytime to extend history). Loops day-by-day so it
-doesn't hit the API's per-call row cap on busy date ranges.
+### 4. Run the workflow
+Actions tab -> "Update GSC dashboard" -> Run workflow (or wait for the daily
+cron). First successful run fetches real data and pushes it; Pages picks up
+the push automatically.
 
-### 5. Cron (ongoing)
+## Local development
 ```
-0 6 * * *  php /path/to/cron/fetch_daily.php   >> /path/to/logs/fetch.log 2>&1
-0 5 * * 1  php /path/to/cron/fetch_sitemaps.php >> /path/to/logs/sitemaps.log 2>&1
+cd fetch
+npm install
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+node fetch.js          # writes ../docs/data/*.json
+cd ../docs
+python3 -m http.server 8080   # or any static server
 ```
 
-### 6. Deploy `public/` as the web root
-Point your host's document root at `public/`. Everything outside `public/`
-(config, service account key, `vendor/`) stays off the web -- don't move
-`config.php` or `service-account.json` into `public/`.
-
-Protect the dashboard:
-```
-htpasswd -c public/.htpasswd yourusername
-cp public/.htaccess.example public/.htaccess   # edit the AuthUserFile path
-```
-(Apache only. On nginx, use an equivalent `auth_basic` block instead.)
-
-## Files
-- `schema.sql` -- DB schema + seed sites
-- `db.php` / `config.php` -- DB + service account config
-- `src/GscClient.php` -- thin wrapper over `google/apiclient` for Search Analytics + URL Inspection
-- `src/Fetch.php` -- fetch-one-day-and-store, shared by cron + backfill
-- `src/Analysis.php` -- all the SQL: diffs, quick wins, keyword maps, cannibalization, orphans
-- `cron/fetch_daily.php` -- daily incremental fetch (T-3 days, GSC's finalization lag)
-- `cron/backfill.php` -- historical bulk fetch, day-by-day loop
-- `cron/fetch_sitemaps.php` -- weekly sitemap crawl (plain HTTP, recurses sitemap indexes)
-- `public/index.php` -- the dashboard
-- `public/inspect.php` -- on-demand URL Inspector
+## Sites configured
+Edit the `SITES` array in `fetch/fetch.js` to add/remove properties:
+- mimicminds (`sc-domain:mimicminds.com`)
+- mimic productions (`https://www.mimicproductions.com/`)

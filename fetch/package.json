@@ -1,0 +1,11 @@
+{
+  "name": "gsc-reoptimizer-fetch",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch": "node fetch.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  }
+}

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GSC Reoptimizer</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div>
+      <h1>📈 GSC Reoptimizer</h1>
+      <p class="sub" id="period-label">Loading…</p>
+    </div>
+    <div class="controls">
+      <select id="site-select"></select>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <section class="kpi-row" id="kpi-row"></section>
+
+  <section class="grid-2">
+    <div class="card">
+      <h2>🔵 Clicks &amp; impressions trend</h2>
+      <p class="card-sub">Daily, previous period through current period</p>
+      <div class="chart-wrap"><canvas id="trend-chart"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>📊 Biggest movers</h2>
+      <p class="card-sub">Click delta, top decliners (red) vs risers (green)</p>
+      <div class="chart-wrap"><canvas id="movers-chart"></canvas></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>⚡ Quick wins</h2>
+    <p class="card-sub">Striking distance: position 4-15, CTR ≤ 2% -- fastest ROI, fix title/content to convert existing impressions</p>
+    <div class="chart-wrap short"><canvas id="quickwins-chart"></canvas></div>
+    <div id="quickwins-table"></div>
+  </section>
+
+  <section class="grid-2">
+    <div class="card">
+      <h2>🔻 Top decliners</h2>
+      <p class="card-sub">Classified: demand drop, ranking drop, or CTR drop</p>
+      <div id="decliners-table"></div>
+    </div>
+    <div class="card">
+      <h2>🟢 Top risers</h2>
+      <p class="card-sub">What's working -- worth repeating elsewhere</p>
+      <div id="risers-table"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>🔑 Keyword-to-page map</h2>
+    <p class="card-sub">Primary keyword + secondary keywords to add, for the pages that moved most</p>
+    <div id="keyword-map"></div>
+  </section>
+
+  <section class="grid-2">
+    <div class="card">
+      <h2>⚠️ Cannibalization</h2>
+      <p class="card-sub">Same query, multiple pages competing -- ranking signal split</p>
+      <div id="cannibalization-table"></div>
+    </div>
+    <div class="card">
+      <h2>🕳️ Coverage gaps</h2>
+      <p class="card-sub">Sitemap URLs with ~zero impressions -- orphan/indexing proxy, verify before assuming deindexed</p>
+      <div id="orphan-list"></div>
+    </div>
+  </section>
+
+  <p class="footer-note" id="generated-note"></p>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

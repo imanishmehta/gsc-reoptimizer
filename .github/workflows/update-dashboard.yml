@@ -1,0 +1,37 @@
+name: Update GSC dashboard
+
+on:
+  schedule:
+    - cron: '17 6 * * *'  # daily, 06:17 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install fetch script deps
+        working-directory: fetch
+        run: npm ci
+
+      - name: Fetch GSC data
+        working-directory: fetch
+        env:
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+        run: node fetch.js
+
+      - name: Commit updated data
+        run: |
+          git config user.name "gsc-reoptimizer-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/data
+          git diff --cached --quiet || git commit -m "Update GSC data $(date -u +%Y-%m-%d)"
+          git push

@@ -1,5 +1,3 @@
-/vendor/
-/config.php
 /service-account.json
-/public/.htaccess
-/public/.htpasswd
+/fetch/node_modules/
+.gstack/
