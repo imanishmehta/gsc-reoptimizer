@@ -51,7 +51,7 @@ function renderKpis(data) {
 }
 
 function renderTrendChart(data, period) {
-  const rows = data.trend.filter(d => d.date >= period.prevStart && d.date <= period.curEnd);
+  const rows = data.trend.filter(d => d.date >= period.curStart && d.date <= period.curEnd);
   const ctx = document.getElementById('trend-chart');
   if (charts.trend) charts.trend.destroy();
   charts.trend = new Chart(ctx, {
