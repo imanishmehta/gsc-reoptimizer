@@ -17,18 +17,28 @@
     </div>
     <div class="controls">
       <select id="site-select"></select>
+      <select id="period-select">
+        <option value="7">Last 7 days</option>
+        <option value="30" selected>Last 30 days</option>
+        <option value="90">Last 90 days</option>
+        <option value="365">Last 365 days</option>
+      </select>
     </div>
   </div>
 </div>
 
 <main>
 
+  <div id="history-warning" class="history-warning" hidden>
+    ⚠️ Previous-period data for this window is partially outside Google Search Console's ~16-month retention -- the comparison numbers below understate the real previous period. Treat deltas here as directional, not exact.
+  </div>
+
   <section class="kpi-row" id="kpi-row"></section>
 
   <section class="grid-2">
     <div class="card">
       <h2>🔵 Clicks &amp; impressions trend</h2>
-      <p class="card-sub">Daily, previous period through current period</p>
+      <p class="card-sub">Daily, spans the selected window</p>
       <div class="chart-wrap"><canvas id="trend-chart"></canvas></div>
     </div>
     <div class="card">
@@ -45,10 +55,22 @@
     <div id="quickwins-table"></div>
   </section>
 
+  <section class="card">
+    <h2>🌱 Growing queries not yet a primary target</h2>
+    <p class="card-sub">Site-wide queries gaining impressions -- candidates for a new page or a content update targeting them directly</p>
+    <div id="growing-queries"></div>
+  </section>
+
+  <section class="card">
+    <h2>🛠️ Reoptimization plan</h2>
+    <p class="card-sub">Per page: why it moved, what keyword to target, and what to change -- for the pages that moved most this period</p>
+    <div id="reoptimization-list"></div>
+  </section>
+
   <section class="grid-2">
     <div class="card">
       <h2>🔻 Top decliners</h2>
-      <p class="card-sub">Classified: demand drop, ranking drop, or CTR drop</p>
+      <p class="card-sub">Classified: demand drop, ranking drop, CTR drop, or normal fluctuation</p>
       <div id="decliners-table"></div>
     </div>
     <div class="card">
@@ -59,22 +81,9 @@
   </section>
 
   <section class="card">
-    <h2>🔑 Keyword-to-page map</h2>
-    <p class="card-sub">Primary keyword + secondary keywords to add, for the pages that moved most</p>
-    <div id="keyword-map"></div>
-  </section>
-
-  <section class="grid-2">
-    <div class="card">
-      <h2>⚠️ Cannibalization</h2>
-      <p class="card-sub">Same query, multiple pages competing -- ranking signal split</p>
-      <div id="cannibalization-table"></div>
-    </div>
-    <div class="card">
-      <h2>🕳️ Coverage gaps</h2>
-      <p class="card-sub">Sitemap URLs with ~zero impressions -- orphan/indexing proxy, verify before assuming deindexed</p>
-      <div id="orphan-list"></div>
-    </div>
+    <h2>🕳️ Coverage gaps</h2>
+    <p class="card-sub">Sitemap URLs with ~zero impressions -- orphan/indexing proxy, verify before assuming deindexed</p>
+    <div id="orphan-list"></div>
   </section>
 
   <p class="footer-note" id="generated-note"></p>

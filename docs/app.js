@@ -1,4 +1,5 @@
 const charts = {};
+let siteData = null; // full { label, trend, periods } for the currently selected site
 
 function fmtPct(v) { return (v * 100).toFixed(2) + '%'; }
 
@@ -28,6 +29,10 @@ function esc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+function causeLabel(cause) {
+  return cause.replace('-', ' ');
+}
+
 function renderKpis(data) {
   const c = data.headline.current, p = data.headline.previous;
   const rows = [
@@ -45,21 +50,22 @@ function renderKpis(data) {
   `).join('');
 }
 
-function renderTrendChart(data) {
+function renderTrendChart(data, period) {
+  const rows = data.trend.filter(d => d.date >= period.prevStart && d.date <= period.curEnd);
   const ctx = document.getElementById('trend-chart');
   if (charts.trend) charts.trend.destroy();
   charts.trend = new Chart(ctx, {
     type: 'line',
     data: {
-      labels: data.trend.map(d => d.date.slice(5)),
+      labels: rows.map(d => d.date.slice(5)),
       datasets: [
         {
-          label: 'Clicks', data: data.trend.map(d => d.clicks),
+          label: 'Clicks', data: rows.map(d => d.clicks),
           borderColor: '#4285f4', backgroundColor: 'rgba(66,133,244,.12)',
           fill: true, tension: .3, yAxisID: 'y', pointRadius: 0, borderWidth: 2,
         },
         {
-          label: 'Impressions', data: data.trend.map(d => d.impressions),
+          label: 'Impressions', data: rows.map(d => d.impressions),
           borderColor: '#a142f4', backgroundColor: 'rgba(161,66,244,.08)',
           fill: true, tension: .3, yAxisID: 'y1', pointRadius: 0, borderWidth: 2,
         },
@@ -72,7 +78,7 @@ function renderTrendChart(data) {
       scales: {
         y: { position: 'left', title: { display: true, text: 'Clicks' }, grid: { color: '#eef0f7' } },
         y1: { position: 'right', title: { display: true, text: 'Impressions' }, grid: { display: false } },
-        x: { grid: { display: false } },
+        x: { grid: { display: false }, ticks: { maxTicksLimit: 20 } },
       },
     },
   });
@@ -163,46 +169,59 @@ function renderMoversTable(rows, elId, isDecline) {
           <td>${r.clicks_old} → ${r.clicks_new} <span class="${r.delta_clicks < 0 ? 'num-neg' : 'num-pos'}">(${r.delta_clicks > 0 ? '+' : ''}${r.delta_clicks})</span></td>
           <td>${r.delta_impressions > 0 ? '+' : ''}${r.delta_impressions.toLocaleString()}</td>
           <td>${r.delta_position > 0 ? '+' : ''}${r.delta_position}</td>
-          <td><span class="pill ${r.cause}">${r.cause.replace('-', ' ')}</span></td>
+          <td><span class="pill ${r.cause}">${causeLabel(r.cause)}</span></td>
         </tr>
       `).join('')}
     </table>
   `;
 }
 
-function renderKeywordMap(data) {
-  if (!data.keywordMap.length) { document.getElementById('keyword-map').innerHTML = '<p class="empty">No keyword data.</p>'; return; }
-  document.getElementById('keyword-map').innerHTML = data.keywordMap.map(pg => `
-    <div class="keyword-block">
-      <h3><a href="${esc(pg.page)}" target="_blank">${esc(shortPath(pg.page))}</a></h3>
-      <table>
-        <tr><th>Query</th><th>Clicks</th><th>Impressions</th><th>Position</th></tr>
-        ${pg.keywords.map((k, i) => `
-          <tr>
-            <td>${i === 0 ? `<span class="tag primary-tag">primary</span> ` : ''}${esc(k.query)}</td>
-            <td>${k.clicks}</td>
-            <td>${k.impressions.toLocaleString()}</td>
-            <td>${k.position.toFixed(1)}</td>
-          </tr>
-        `).join('')}
-      </table>
+function renderGrowingQueries(data) {
+  if (!data.growingQueries.length) { document.getElementById('growing-queries').innerHTML = '<p class="empty">No standout growing queries this period.</p>'; return; }
+  document.getElementById('growing-queries').innerHTML = `
+    <table>
+      <tr><th>Query</th><th>Impressions</th><th>Δ vs previous</th><th>Position</th><th>Currently ranks via</th></tr>
+      ${data.growingQueries.map(q => `
+        <tr>
+          <td>${esc(q.query)}</td>
+          <td>${q.impressions.toLocaleString()}</td>
+          <td><span class="num-pos">+${q.impressionsDeltaPct}%</span></td>
+          <td>${q.position.toFixed(1)}</td>
+          <td>${q.currentPage ? `<a href="${esc(q.currentPage)}" target="_blank">${esc(shortPath(q.currentPage))}</a>` : '<span class="empty">not yet targeted</span>'}</td>
+        </tr>
+      `).join('')}
+    </table>
+  `;
+}
+
+function renderReoptimization(data) {
+  if (!data.reoptimization.length) { document.getElementById('reoptimization-list').innerHTML = '<p class="empty">Nothing to flag this period.</p>'; return; }
+  document.getElementById('reoptimization-list').innerHTML = data.reoptimization.map(r => `
+    <div class="reopt-card">
+      <div class="reopt-head">
+        <a href="${esc(r.page)}" target="_blank">${esc(shortPath(r.page))}</a>
+        <span class="pill ${r.cause}">${causeLabel(r.cause)}</span>
+      </div>
+      ${r.primaryKeywordCurrent ? `
+        <div class="reopt-kw">
+          <span class="tag">current primary</span> ${esc(r.primaryKeywordCurrent.query)}
+          <span class="kw-meta">${r.primaryKeywordCurrent.impressions.toLocaleString()} impr, pos ${r.primaryKeywordCurrent.position.toFixed(1)}, CTR ${fmtPct(r.primaryKeywordCurrent.ctr)}</span>
+        </div>
+      ` : ''}
+      ${r.primaryKeywordSuggested ? `
+        <div class="reopt-kw">
+          <span class="tag suggest-tag">try instead</span> ${esc(r.primaryKeywordSuggested.query)}
+          <span class="kw-meta">${r.primaryKeywordSuggested.impressions.toLocaleString()} impr, pos ${r.primaryKeywordSuggested.position.toFixed(1)}</span>
+        </div>
+      ` : ''}
+      ${r.secondaryKeywords.length ? `
+        <div class="reopt-secondary">Secondary keywords to add: ${r.secondaryKeywords.map(k => esc(k.query)).join(', ')}</div>
+      ` : ''}
+      <ul class="reopt-actions">
+        ${r.actions.map(a => `<li>${esc(a)}</li>`).join('')}
+      </ul>
     </div>
   `).join('');
-}
-
-function renderCannibalization(data) {
-  if (!data.cannibalization.length) { document.getElementById('cannibalization-table').innerHTML = '<p class="empty">No cannibalization detected.</p>'; return; }
-  document.getElementById('cannibalization-table').innerHTML = `
-    <table>
-      <tr><th>Query</th><th>Competing pages</th></tr>
-      ${data.cannibalization.slice(0, 12).map(c => `
-        <tr>
-          <td>${esc(c.query)}</td>
-          <td>${c.pages.map(p => `<div>${esc(shortPath(p.page))} <span style="color:var(--ink-soft)">(${p.impressions.toLocaleString()} impr, pos ${p.position.toFixed(1)})</span></div>`).join('')}</td>
-        </tr>
-      `).join('')}
-    </table>
-  `;
 }
 
 function renderOrphans(data) {
@@ -216,27 +235,39 @@ function renderOrphans(data) {
   `;
 }
 
-async function loadSite(slug) {
-  const data = await fetch(`data/${slug}.json`).then(r => r.json());
+function renderPeriod() {
+  const periodKey = document.getElementById('period-select').value;
+  const data = siteData.periods[periodKey];
+  if (!data) return;
+
   document.getElementById('period-label').textContent =
-    `${data.label} — ${data.period.curStart} to ${data.period.curEnd} vs ${data.period.prevStart} to ${data.period.prevEnd}`;
+    `${siteData.label} — ${data.period.label}: ${data.period.curStart} to ${data.period.curEnd} vs ${data.period.prevStart} to ${data.period.prevEnd}`;
+
+  document.getElementById('history-warning').hidden = !data.insufficientHistory;
+
   renderKpis(data);
-  renderTrendChart(data);
+  renderTrendChart(siteData, data.period);
   renderMoversChart(data);
   renderQuickWinsChart(data);
   renderQuickWinsTable(data);
+  renderGrowingQueries(data);
+  renderReoptimization(data);
   renderMoversTable(data.decliners, 'decliners-table', true);
   renderMoversTable(data.risers, 'risers-table', false);
-  renderKeywordMap(data);
-  renderCannibalization(data);
   renderOrphans(data);
+}
+
+async function loadSite(slug) {
+  siteData = await fetch(`data/${slug}.json`).then(r => r.json());
+  renderPeriod();
 }
 
 async function init() {
   const meta = await fetch('data/meta.json').then(r => r.json());
-  const select = document.getElementById('site-select');
-  select.innerHTML = meta.sites.map(s => `<option value="${s.slug}">${esc(s.label)}</option>`).join('');
-  select.addEventListener('change', () => loadSite(select.value));
+  const siteSelect = document.getElementById('site-select');
+  siteSelect.innerHTML = meta.sites.map(s => `<option value="${s.slug}">${esc(s.label)}</option>`).join('');
+  siteSelect.addEventListener('change', () => loadSite(siteSelect.value));
+  document.getElementById('period-select').addEventListener('change', renderPeriod);
   document.getElementById('generated-note').textContent = `Data generated ${new Date(meta.generatedAt).toLocaleString()}`;
   await loadSite(meta.sites[0].slug);
 }

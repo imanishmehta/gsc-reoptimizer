@@ -1,6 +1,6 @@
-// Pulls GSC data for each configured site and writes static JSON that
-// docs/app.js renders with Chart.js. Runs via GitHub Actions on a schedule,
-// or locally for testing.
+// Pulls GSC data for each configured site across all period filters (7/30/90/365
+// days) and writes static JSON that docs/app.js renders with Chart.js. Runs via
+// GitHub Actions on a daily schedule, or locally for testing.
 //
 // Auth: service account JSON via GSC_SERVICE_ACCOUNT_JSON env var (a GitHub
 // Actions secret) or GOOGLE_APPLICATION_CREDENTIALS file path for local runs.
@@ -11,7 +11,7 @@ import { google } from 'googleapis';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { fetchSitemapUrls, buildSiteData } from './analysis.js';
+import { PERIODS, datePeriods, fetchSitemapUrls, buildPeriodBlock } from './analysis.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.join(__dirname, '..', 'docs', 'data');
@@ -20,25 +20,6 @@ const SITES = [
   { slug: 'mimicminds', label: 'mimicminds', gscSiteUrl: 'sc-domain:mimicminds.com', sitemapUrl: 'https://www.mimicminds.com/sitemap.xml' },
   { slug: 'mimicproductions', label: 'mimic productions', gscSiteUrl: 'https://www.mimicproductions.com/', sitemapUrl: 'https://www.mimicproductions.com/sitemap.xml' },
 ];
-
-function fmtDate(d) {
-  return d.toISOString().slice(0, 10);
-}
-
-function datePeriods(days = 28) {
-  const curEnd = new Date();
-  curEnd.setDate(curEnd.getDate() - 3); // GSC finalizes data ~3 days after the fact
-  const curStart = new Date(curEnd);
-  curStart.setDate(curStart.getDate() - days);
-  const prevEnd = new Date(curStart);
-  prevEnd.setDate(prevEnd.getDate() - 1);
-  const prevStart = new Date(prevEnd);
-  prevStart.setDate(prevStart.getDate() - days);
-  return {
-    curStart: fmtDate(curStart), curEnd: fmtDate(curEnd),
-    prevStart: fmtDate(prevStart), prevEnd: fmtDate(prevEnd),
-  };
-}
 
 async function getClient() {
   const auth = new google.auth.GoogleAuth({
@@ -58,18 +39,28 @@ async function query(client, siteUrl, startDate, endDate, dimensions, rowLimit =
 }
 
 async function processSite(client, site) {
-  const period = datePeriods(28);
-  const { curStart, curEnd, prevStart, prevEnd } = period;
-  console.log(`[${site.label}] ${prevStart}..${prevEnd} vs ${curStart}..${curEnd}`);
+  console.log(`[${site.label}] fetching sitemap...`);
+  const sitemapUrls = await fetchSitemapUrls(site.sitemapUrl);
 
-  const [curRows, prevRows, trendRows, sitemapUrls] = await Promise.all([
-    query(client, site.gscSiteUrl, curStart, curEnd, ['page', 'query']),
-    query(client, site.gscSiteUrl, prevStart, prevEnd, ['page', 'query']),
-    query(client, site.gscSiteUrl, prevStart, curEnd, ['date']),
-    fetchSitemapUrls(site.sitemapUrl),
-  ]);
+  // longest span needed for the trend chart: previous-365 start through current-end
+  const longest = datePeriods(365);
+  const trendRowsRaw = await query(client, site.gscSiteUrl, longest.prevStart, longest.curEnd, ['date']);
+  const trend = trendRowsRaw
+    .sort((a, b) => a.keys[0].localeCompare(b.keys[0]))
+    .map(r => ({ date: r.keys[0], clicks: r.clicks, impressions: r.impressions, ctr: r.ctr, position: r.position }));
 
-  return buildSiteData(site, { curRows, prevRows, trendRows, sitemapUrls, period });
+  const periods = {};
+  for (const def of PERIODS) {
+    const period = datePeriods(def.days);
+    console.log(`[${site.label}] ${def.label}: ${period.prevStart}..${period.prevEnd} vs ${period.curStart}..${period.curEnd}`);
+    const [curRows, prevRows] = await Promise.all([
+      query(client, site.gscSiteUrl, period.curStart, period.curEnd, ['page', 'query']),
+      query(client, site.gscSiteUrl, period.prevStart, period.prevEnd, ['page', 'query']),
+    ]);
+    periods[def.key] = buildPeriodBlock({ curRows, prevRows, sitemapUrls, period: { ...period, label: def.label } });
+  }
+
+  return { label: site.label, trend, periods };
 }
 
 async function main() {

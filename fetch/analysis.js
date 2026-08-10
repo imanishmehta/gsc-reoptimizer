@@ -1,5 +1,53 @@
 // Pure functions over raw GSC rows -- no network, no fs. Shared by fetch.js
-// (live API) and any one-off local seeding script.
+// (live API) and the local seeding script.
+
+export const PERIODS = [
+  { key: '7', days: 7, label: 'Last 7 days' },
+  { key: '30', days: 30, label: 'Last 30 days' },
+  { key: '90', days: 90, label: 'Last 90 days' },
+  { key: '365', days: 365, label: 'Last 365 days' },
+];
+
+// rough industry CTR-by-position curve, used only to flag pages doing worse
+// than typical for their rank -- not a precise model, a directional signal.
+const CTR_BENCHMARK = [
+  [1, 0.28], [2, 0.15], [3, 0.10], [4, 0.07], [5, 0.06],
+  [6, 0.05], [7, 0.04], [8, 0.035], [9, 0.03], [10, 0.025],
+  [15, 0.015], [20, 0.01], [30, 0.006], [50, 0.003],
+];
+
+export function expectedCtr(position) {
+  if (position <= CTR_BENCHMARK[0][0]) return CTR_BENCHMARK[0][1];
+  for (let i = 1; i < CTR_BENCHMARK.length; i++) {
+    const [p0, c0] = CTR_BENCHMARK[i - 1];
+    const [p1, c1] = CTR_BENCHMARK[i];
+    if (position <= p1) {
+      const t = (position - p0) / (p1 - p0);
+      return c0 + (c1 - c0) * t;
+    }
+  }
+  return CTR_BENCHMARK[CTR_BENCHMARK.length - 1][1];
+}
+
+export function fmtDate(d) {
+  return d.toISOString().slice(0, 10);
+}
+
+export function datePeriods(days) {
+  const curEnd = new Date();
+  curEnd.setDate(curEnd.getDate() - 3); // GSC finalizes data ~3 days after the fact
+  const curStart = new Date(curEnd);
+  curStart.setDate(curStart.getDate() - days);
+  const prevEnd = new Date(curStart);
+  prevEnd.setDate(prevEnd.getDate() - 1);
+  const prevStart = new Date(prevEnd);
+  prevStart.setDate(prevStart.getDate() - days);
+  return {
+    days,
+    curStart: fmtDate(curStart), curEnd: fmtDate(curEnd),
+    prevStart: fmtDate(prevStart), prevEnd: fmtDate(prevEnd),
+  };
+}
 
 export function aggregateBy(rows, keyIndex) {
   const map = new Map();
@@ -37,15 +85,29 @@ export function totals(pageMap) {
   };
 }
 
+// Classifies why a page's numbers moved. Thresholds are deliberately coarse
+// -- this is meant to separate "ignore this" (fluctuation) from "look at
+// this" (demand/ranking/ctr), not to be a precise attribution model.
 export function classify(cur, prev) {
-  const impDelta = prev.impressions > 0 ? (cur.impressions - prev.impressions) / prev.impressions : 0;
+  const impDelta = prev.impressions > 0 ? (cur.impressions - prev.impressions) / prev.impressions : (cur.impressions > 0 ? Infinity : 0);
   const posDelta = cur.position - prev.position; // positive = worse
-  if (Math.abs(impDelta) > 0.2 && Math.abs(posDelta) < 1) return impDelta < 0 ? 'demand-drop' : 'demand-rise';
-  if (posDelta > 1) return 'ranking-drop';
-  if (posDelta < -1) return 'ranking-rise';
-  if (cur.clicks < prev.clicks) return 'ctr-drop';
-  return 'mixed';
+
+  if (Math.abs(impDelta) < 0.15 && Math.abs(posDelta) < 1) return 'fluctuation';
+  if (Math.abs(impDelta) > 0.2 && Math.abs(posDelta) < 1.5) return impDelta < 0 ? 'demand-drop' : 'demand-rise';
+  if (posDelta > 1.5) return 'ranking-drop';
+  if (posDelta < -1.5) return 'ranking-rise';
+  if (cur.clicks < prev.clicks && Math.abs(posDelta) < 1.5) return 'ctr-drop';
+  return 'fluctuation';
 }
+
+const CAUSE_TEXT = {
+  'demand-drop': "Search interest for this page's queries genuinely fell (impressions down, position steady) -- not a site problem. Low priority unless it's a strategic keyword.",
+  'demand-rise': 'Search interest is growing (impressions up, position steady) -- expand content depth/coverage while the topic is hot.',
+  'ranking-drop': 'Position got worse while impressions held or grew -- a competitor outranked it, or a content/backlink/technical issue. Refresh content and add internal links.',
+  'ranking-rise': 'Position improved -- whatever changed here worked. Consider applying the same treatment (title, content depth, internal links) to similar pages.',
+  'ctr-drop': "Position and impressions held but clicks fell -- the title/meta no longer matches intent, or a SERP feature (AI Overview, snippet) is stealing the click. Rewrite title/meta.",
+  'fluctuation': 'Change is within normal week-to-week noise -- no action needed.',
+};
 
 export function pageDiff(curMap, prevMap) {
   const keys = new Set([...curMap.keys(), ...prevMap.keys()]);
@@ -76,39 +138,108 @@ export function quickWins(curRows, { minImpressions = 50, maxCtr = 0.02, posMin 
     .map(r => ({ query: r.keys[1], page: r.keys[0], position: r.position, ctr: r.ctr, impressions: r.impressions, clicks: r.clicks }));
 }
 
-export function keywordMap(curRows, pages) {
-  const byPage = new Map();
+// Site-wide queries gaining impressions that aren't necessarily tied to one
+// page yet -- candidates for a new or heavily-updated piece of content.
+export function growingQueries(curRows, prevRows, minImpressions = 100) {
+  const curQ = aggregateBy(curRows, 1);
+  const prevQ = aggregateBy(prevRows, 1);
+  const bestPagePerQuery = new Map();
   for (const r of curRows) {
-    const page = r.keys[0];
-    if (!pages.has(page)) continue;
-    if (!byPage.has(page)) byPage.set(page, []);
-    byPage.get(page).push({ query: r.keys[1], clicks: r.clicks, impressions: r.impressions, position: r.position });
-  }
-  const out = [];
-  for (const [page, kws] of byPage) {
-    kws.sort((a, b) => b.clicks - a.clicks || b.impressions - a.impressions);
-    out.push({ page, keywords: kws.slice(0, 6) });
-  }
-  return out;
-}
-
-export function cannibalization(curRows, minImpressions = 20) {
-  const byQuery = new Map();
-  for (const r of curRows) {
-    if (r.impressions < minImpressions) continue;
     const q = r.keys[1];
-    if (!byQuery.has(q)) byQuery.set(q, []);
-    byQuery.get(q).push({ page: r.keys[0], impressions: r.impressions, clicks: r.clicks, position: r.position });
+    const existing = bestPagePerQuery.get(q);
+    if (!existing || r.clicks > existing.clicks) bestPagePerQuery.set(q, { page: r.keys[0], clicks: r.clicks });
   }
   const out = [];
-  for (const [query, pages] of byQuery) {
-    if (pages.length > 1) {
-      pages.sort((a, b) => b.impressions - a.impressions);
-      out.push({ query, pages });
+  for (const [query, cur] of curQ) {
+    if (cur.impressions < minImpressions) continue;
+    const prev = prevQ.get(query) || { impressions: 0, clicks: 0, position: 0 };
+    const impDelta = prev.impressions > 0 ? (cur.impressions - prev.impressions) / prev.impressions : Infinity;
+    if (impDelta > 0.3) {
+      out.push({
+        query, impressions: cur.impressions, position: cur.position, ctr: cur.ctr,
+        impressionsDeltaPct: Math.round(impDelta * 100),
+        currentPage: bestPagePerQuery.get(query)?.page || null,
+      });
     }
   }
-  out.sort((a, b) => b.pages.reduce((s, p) => s + p.impressions, 0) - a.pages.reduce((s, p) => s + p.impressions, 0));
-  return out.slice(0, 20);
+  out.sort((a, b) => b.impressions - a.impressions);
+  return out.slice(0, 15);
+}
+
+function keywordsForPage(curRows, page, limit = 8) {
+  const rows = curRows
+    .filter(r => r.keys[0] === page)
+    .map(r => ({ query: r.keys[1], clicks: r.clicks, impressions: r.impressions, position: r.position, ctr: r.ctr }))
+    .sort((a, b) => b.clicks - a.clicks || b.impressions - a.impressions);
+  return rows.slice(0, limit);
+}
+
+function opportunityScore(k) {
+  return k.impressions / Math.max(k.position, 1);
+}
+
+// The core "what do I actually do" output: one entry per focus page, combining
+// cause classification, keyword targeting advice, a CTR-vs-benchmark check,
+// and an internal-linking heuristic (GSC's API has no real link graph, so
+// this recommends linking from the site's current top-traffic pages -- a
+// best-practice heuristic, not a crawled link audit).
+export function buildReoptimization(diffRows, curRows, topPagesByClicks) {
+  return diffRows.map(row => {
+    const keywords = keywordsForPage(curRows, row.page);
+    const primary = keywords[0] || null;
+    let suggestedPrimary = null;
+    if (primary) {
+      const primaryScore = opportunityScore(primary);
+      for (const k of keywords.slice(1)) {
+        if (opportunityScore(k) > primaryScore * 1.3 && k.impressions >= primary.impressions * 0.4) {
+          suggestedPrimary = k;
+          break;
+        }
+      }
+    }
+
+    let ctrBenchmark = null;
+    if (primary && primary.impressions >= 30) {
+      const expected = expectedCtr(primary.position);
+      const gapPct = expected > 0 ? Math.round(((primary.ctr - expected) / expected) * 100) : null;
+      ctrBenchmark = { expected, actual: primary.ctr, gapPct };
+    }
+
+    const internalLinkSuggestion = topPagesByClicks.filter(p => p !== row.page).slice(0, 3);
+
+    const actions = [];
+    actions.push(CAUSE_TEXT[row.cause]);
+    if (suggestedPrimary) {
+      actions.push(`Query "${suggestedPrimary.query}" has better opportunity (${suggestedPrimary.impressions} impr at position ${suggestedPrimary.position.toFixed(1)}) than the current top query "${primary.query}" -- consider making it the primary target: work it into the title/H1 and expand content around it.`);
+    }
+    if (ctrBenchmark && ctrBenchmark.gapPct !== null && ctrBenchmark.gapPct < -30) {
+      actions.push(`CTR is ${Math.abs(ctrBenchmark.gapPct)}% below typical for position ${primary.position.toFixed(1)} (${(ctrBenchmark.actual * 100).toFixed(2)}% vs ~${(ctrBenchmark.expected * 100).toFixed(1)}% expected) -- title/meta likely isn't matching search intent, rewrite it.`);
+    }
+    if (row.cause === 'ranking-drop' || row.cause === 'demand-drop') {
+      actions.push(`Add internal links from your top-traffic pages (${internalLinkSuggestion.map(shortLabel).join(', ') || 'homepage'}) to strengthen this page's relevance signal.`);
+    }
+
+    return {
+      page: row.page,
+      cause: row.cause,
+      causeText: CAUSE_TEXT[row.cause],
+      primaryKeywordCurrent: primary,
+      primaryKeywordSuggested: suggestedPrimary,
+      secondaryKeywords: keywords.slice(1, 6),
+      ctrBenchmark,
+      internalLinkSuggestion,
+      actions,
+    };
+  });
+}
+
+function shortLabel(url) {
+  try {
+    const u = new URL(url);
+    return u.pathname === '/' ? '/ (home)' : u.pathname;
+  } catch {
+    return url;
+  }
 }
 
 export async function fetchSitemapUrls(url, depth = 0) {
@@ -128,31 +259,38 @@ export async function fetchSitemapUrls(url, depth = 0) {
   return locs;
 }
 
-export function buildSiteData(site, { curRows, prevRows, trendRows, sitemapUrls, period }) {
+export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period }) {
   const curPageMap = aggregateBy(curRows, 0);
   const prevPageMap = aggregateBy(prevRows, 0);
+  const prevTotals = totals(prevPageMap);
+  const curTotals = totals(curPageMap);
+
   const diff = pageDiff(curPageMap, prevPageMap);
   const decliners = diff.slice(0, 15);
   const risers = diff.slice().reverse().slice(0, 10);
-  const focusPages = new Set([...decliners.slice(0, 8), ...risers.slice(0, 3)].map(r => r.page));
+  const focusRows = [...decliners.slice(0, 8), ...risers.slice(0, 3)];
 
-  const trend = trendRows
-    .slice()
-    .sort((a, b) => a.keys[0].localeCompare(b.keys[0]))
-    .map(r => ({ date: r.keys[0], clicks: r.clicks, impressions: r.impressions, ctr: r.ctr, position: r.position }));
+  const topPagesByClicks = [...curPageMap.entries()]
+    .sort((a, b) => b[1].clicks - a[1].clicks)
+    .slice(0, 5)
+    .map(([page]) => page);
 
   const orphanPages = sitemapUrls.filter(u => !curPageMap.has(u) || curPageMap.get(u).impressions === 0);
 
   return {
-    label: site.label,
     period,
-    headline: { current: totals(curPageMap), previous: totals(prevPageMap) },
-    trend,
+    // GSC retains ~16 months of data -- a full prior-year window is almost
+    // always partially truncated, and a near-zero-vs-large-current previous
+    // period produces a misleading delta% rather than a real signal.
+    insufficientHistory: prevTotals.impressions < 10
+      || period.days >= 300
+      || prevTotals.impressions < curTotals.impressions * 0.1,
+    headline: { current: curTotals, previous: prevTotals },
     decliners,
     risers,
     quickWins: quickWins(curRows),
-    keywordMap: keywordMap(curRows, focusPages),
-    cannibalization: cannibalization(curRows),
+    growingQueries: growingQueries(curRows, prevRows),
+    reoptimization: buildReoptimization(focusRows, curRows, topPagesByClicks),
     orphanPages,
     sitemapUrlCount: sitemapUrls.length,
   };
