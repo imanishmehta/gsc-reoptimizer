@@ -1,0 +1,5 @@
+# rename to .htaccess and generate .htpasswd with: htpasswd -c .htpasswd yourusername
+AuthType Basic
+AuthName "GSC Reoptimizer"
+AuthUserFile /full/path/to/public/.htpasswd
+Require valid-user
