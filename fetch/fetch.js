@@ -57,7 +57,7 @@ async function processSite(client, site) {
       query(client, site.gscSiteUrl, period.curStart, period.curEnd, ['page', 'query']),
       query(client, site.gscSiteUrl, period.prevStart, period.prevEnd, ['page', 'query']),
     ]);
-    periods[def.key] = buildPeriodBlock({ curRows, prevRows, sitemapUrls, period: { ...period, label: def.label } });
+    periods[def.key] = buildPeriodBlock({ curRows, prevRows, sitemapUrls, trend, period: { ...period, label: def.label } });
   }
 
   return { label: site.label, trend, periods };

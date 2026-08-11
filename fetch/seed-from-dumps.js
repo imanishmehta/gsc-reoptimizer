@@ -35,7 +35,7 @@ async function main() {
       const cfg = site.periods[def.key];
       const period = { ...datePeriods(def.days), label: def.label };
       const [curRows, prevRows] = await Promise.all([loadRows(cfg.curFile), loadRows(cfg.prevFile)]);
-      periods[def.key] = buildPeriodBlock({ curRows, prevRows, sitemapUrls, period });
+      periods[def.key] = buildPeriodBlock({ curRows, prevRows, sitemapUrls, trend, period });
       console.log(`[${site.label}] ${def.label}: ${curRows.length} cur rows, ${prevRows.length} prev rows`);
     }
 

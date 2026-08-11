@@ -71,12 +71,20 @@ export function aggregateBy(rows, keyIndex) {
   return out;
 }
 
-export function totals(pageMap) {
+// Sums accurate site-level totals from date-dimension rows over a range.
+// Used for headline KPIs -- these must match Google's own Performance report.
+// (page,query)-dimension sums do NOT match: Google's API allows a single
+// impression to attribute to multiple similar queries, inflating impressions,
+// while rare/anonymized queries get dropped from query-level rows entirely,
+// deflating clicks. That skew is fine for relative breakdowns (decliners,
+// quick wins) but wrong for a headline number a user checks against GSC's UI.
+export function sumTrend(trendRows, start, end) {
   let clicks = 0, impressions = 0, posWeighted = 0;
-  for (const v of pageMap.values()) {
-    clicks += v.clicks;
-    impressions += v.impressions;
-    posWeighted += v.position * v.impressions;
+  for (const r of trendRows) {
+    if (r.date < start || r.date > end) continue;
+    clicks += r.clicks;
+    impressions += r.impressions;
+    posWeighted += r.position * r.impressions;
   }
   return {
     clicks, impressions,
@@ -259,11 +267,15 @@ export async function fetchSitemapUrls(url, depth = 0) {
   return locs;
 }
 
-export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period }) {
+export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period, trend }) {
   const curPageMap = aggregateBy(curRows, 0);
   const prevPageMap = aggregateBy(prevRows, 0);
-  const prevTotals = totals(prevPageMap);
-  const curTotals = totals(curPageMap);
+
+  // headline uses date-dimension totals (accurate, matches GSC's own
+  // Performance report) -- NOT the page/query-dimension sums, which Google's
+  // API skews (see sumTrend comment above).
+  const curTotals = sumTrend(trend, period.curStart, period.curEnd);
+  const prevTotals = sumTrend(trend, period.prevStart, period.prevEnd);
 
   const diff = pageDiff(curPageMap, prevPageMap);
   const decliners = diff.slice(0, 15);
