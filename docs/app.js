@@ -318,4 +318,35 @@ async function init() {
   await loadSite(meta.sites[0].slug);
 }
 
-init();
+const LOCK_HASH = '69ab739ea2587fb65c8de3f9c2a581779dd8e0c603085830fd6074c5372b588a';
+const LOCK_KEY = 'gsc-reoptimizer-unlocked';
+
+async function sha256Hex(text) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function tryUnlock(password) {
+  return (await sha256Hex(password)) === LOCK_HASH;
+}
+
+function showApp() {
+  document.getElementById('lock-screen').hidden = true;
+  document.getElementById('app-content').hidden = false;
+  init();
+}
+
+if (localStorage.getItem(LOCK_KEY) === '1') {
+  showApp();
+} else {
+  document.getElementById('lock-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = document.getElementById('lock-password').value;
+    if (await tryUnlock(password)) {
+      localStorage.setItem(LOCK_KEY, '1');
+      showApp();
+    } else {
+      document.getElementById('lock-error').hidden = false;
+    }
+  });
+}

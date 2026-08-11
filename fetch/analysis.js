@@ -191,7 +191,7 @@ function opportunityScore(k) {
 // and an internal-linking heuristic (GSC's API has no real link graph, so
 // this recommends linking from the site's current top-traffic pages -- a
 // best-practice heuristic, not a crawled link audit).
-export function buildReoptimization(diffRows, curRows, topPagesByClicks) {
+export function buildReoptimization(diffRows, curRows, topPagesByClicks, linkCandidates) {
   return diffRows.map(row => {
     const keywords = keywordsForPage(curRows, row.page);
     const primary = keywords[0] || null;
@@ -213,7 +213,7 @@ export function buildReoptimization(diffRows, curRows, topPagesByClicks) {
       ctrBenchmark = { expected, actual: primary.ctr, gapPct };
     }
 
-    const internalLinkSuggestion = topPagesByClicks.filter(p => p !== row.page).slice(0, 3);
+    const internalLinkSuggestion = relatedPages(row.page, linkCandidates, topPagesByClicks);
 
     const actions = [];
     actions.push(CAUSE_TEXT[row.cause]);
@@ -267,6 +267,47 @@ export async function fetchSitemapUrls(url, depth = 0) {
   return locs;
 }
 
+const STOPWORDS = new Set(['post', 'service', 'services', 'industries', 'industry', 'the', 'for', 'with', 'and', 'ai', 'vs']);
+
+function tokenize(url) {
+  let path;
+  try {
+    path = new URL(url).pathname;
+  } catch {
+    path = url;
+  }
+  return new Set(
+    path.split(/[/\-_]+/)
+      .map(w => w.toLowerCase())
+      .filter(w => w.length > 2 && !STOPWORDS.has(w))
+  );
+}
+
+// Picks internal-link targets by topical overlap (shared URL-path words)
+// instead of always the same global top pages -- GSC's API has no real
+// content/topic data, so this is a heuristic proxy, not a crawled analysis.
+// Falls back to top-traffic pages when no topical overlap is found.
+function relatedPages(targetUrl, candidatePages, topPagesByClicks, limit = 3) {
+  const targetTokens = tokenize(targetUrl);
+  const scored = candidatePages
+    .filter(p => p !== targetUrl)
+    .map(page => {
+      const tokens = tokenize(page);
+      let overlap = 0;
+      for (const t of targetTokens) if (tokens.has(t)) overlap++;
+      return { page, overlap };
+    })
+    .filter(s => s.overlap > 0)
+    .sort((a, b) => b.overlap - a.overlap);
+
+  const picked = scored.slice(0, limit).map(s => s.page);
+  for (const p of topPagesByClicks) {
+    if (picked.length >= limit) break;
+    if (p !== targetUrl && !picked.includes(p)) picked.push(p);
+  }
+  return picked;
+}
+
 export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period, trend }) {
   const curPageMap = aggregateBy(curRows, 0);
   const prevPageMap = aggregateBy(prevRows, 0);
@@ -287,10 +328,14 @@ export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period, trend
     .slice(0, 5)
     .map(([page]) => page);
 
+  // full page set for topical matching -- click volume only matters for the
+  // fallback tier (topPagesByClicks), not for finding a relevant match
+  const linkCandidates = [...curPageMap.keys()];
+
   const orphanUrls = sitemapUrls.filter(u => !curPageMap.has(u) || curPageMap.get(u).impressions === 0);
   const orphanPages = orphanUrls.map(url => ({
     url,
-    internalLinkSuggestion: topPagesByClicks.filter(p => p !== url).slice(0, 3),
+    internalLinkSuggestion: relatedPages(url, linkCandidates, topPagesByClicks),
   }));
 
   return {
@@ -306,7 +351,7 @@ export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period, trend
     risers,
     quickWins: quickWins(curRows),
     growingQueries: growingQueries(curRows, prevRows),
-    reoptimization: buildReoptimization(focusRows, curRows, topPagesByClicks),
+    reoptimization: buildReoptimization(focusRows, curRows, topPagesByClicks, linkCandidates),
     orphanPages,
     sitemapUrlCount: sitemapUrls.length,
   };

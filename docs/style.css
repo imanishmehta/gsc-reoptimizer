@@ -19,6 +19,57 @@
 
 * { box-sizing: border-box; }
 
+.lock-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(120deg, #4285f4 0%, #a142f4 55%, #ff6d9c 100%);
+}
+
+.lock-box {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: var(--shadow);
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+}
+
+.lock-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: .4rem;
+}
+
+.lock-box input {
+  padding: .7rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: .95rem;
+}
+
+.lock-box button {
+  padding: .7rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: .95rem;
+}
+
+.lock-error {
+  color: var(--red);
+  font-size: .82rem;
+  text-align: center;
+  margin: 0;
+}
+
 body {
   margin: 0;
   background: var(--bg);

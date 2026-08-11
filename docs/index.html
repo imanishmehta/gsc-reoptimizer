@@ -3,11 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>GSC Reoptimizer</title>
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 <body>
+
+<div id="lock-screen" class="lock-screen">
+  <form id="lock-form" class="lock-box">
+    <div class="lock-title">🔒 GSC Reoptimizer</div>
+    <input type="password" id="lock-password" placeholder="Password" autocomplete="off" autofocus>
+    <button type="submit">Unlock</button>
+    <p id="lock-error" class="lock-error" hidden>Wrong password.</p>
+  </form>
+</div>
+
+<div id="app-content" hidden>
 
 <div class="topbar">
   <div class="topbar-inner">
@@ -96,6 +108,8 @@
   <p class="footer-note" id="generated-note"></p>
 
 </main>
+
+</div>
 
 <script src="app.js"></script>
 </body>
