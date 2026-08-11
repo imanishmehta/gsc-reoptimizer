@@ -14,6 +14,7 @@
     <div>
       <h1>📈 GSC Reoptimizer</h1>
       <p class="sub" id="period-label">Loading…</p>
+      <p class="sub" id="generated-note-top"></p>
     </div>
     <div class="controls">
       <select id="site-select"></select>
@@ -34,6 +35,12 @@
   </div>
 
   <section class="kpi-row" id="kpi-row"></section>
+
+  <section class="card">
+    <h2>📅 Period comparison</h2>
+    <p class="card-sub">Actual numbers for the selected window vs the equivalent window before it</p>
+    <div id="period-comparison-table"></div>
+  </section>
 
   <section class="grid-2">
     <div class="card">

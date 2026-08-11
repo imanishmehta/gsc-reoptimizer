@@ -50,6 +50,34 @@ function renderKpis(data) {
   `).join('');
 }
 
+function renderPeriodComparison(data) {
+  const c = data.headline.current, p = data.headline.previous;
+  const rows = [
+    ['Clicks', c.clicks.toLocaleString(), p.clicks.toLocaleString(), deltaBadge(c.clicks, p.clicks)],
+    ['Impressions', c.impressions.toLocaleString(), p.impressions.toLocaleString(), deltaBadge(c.impressions, p.impressions)],
+    ['CTR', fmtPct(c.ctr), fmtPct(p.ctr), deltaBadge(c.ctr, p.ctr)],
+    ['Avg position', c.position.toFixed(1), p.position.toFixed(1), deltaBadge(c.position, p.position, true)],
+  ];
+  document.getElementById('period-comparison-table').innerHTML = `
+    <table>
+      <tr>
+        <th>Metric</th>
+        <th>${esc(data.period.curStart)} to ${esc(data.period.curEnd)}</th>
+        <th>${esc(data.period.prevStart)} to ${esc(data.period.prevEnd)}</th>
+        <th>Change</th>
+      </tr>
+      ${rows.map(([label, curVal, prevVal, badge]) => `
+        <tr>
+          <td>${label}</td>
+          <td><strong>${curVal}</strong></td>
+          <td>${prevVal}</td>
+          <td>${badge}</td>
+        </tr>
+      `).join('')}
+    </table>
+  `;
+}
+
 function renderTrendChart(data, period) {
   const rows = data.trend.filter(d => d.date >= period.curStart && d.date <= period.curEnd);
   const ctx = document.getElementById('trend-chart');
@@ -224,13 +252,28 @@ function renderReoptimization(data) {
   `).join('');
 }
 
+const ORPHAN_FIX_STEPS = [
+  'Check it\'s actually indexed: Search Console → URL Inspection → paste the URL. If "Discovered, not indexed" or "Crawled, not indexed", that\'s the real problem, not content quality.',
+  'Add internal links to it from your top-traffic pages (listed below per URL) -- pages with no internal links pointing in rank worse and get crawled less often.',
+  'If indexed but still ~zero impressions: the content likely doesn\'t match any real search query. Check what people actually search for on this topic and rework the title/content around it.',
+  'If genuinely thin/duplicate content, consider merging it into a stronger page and 301-redirecting, rather than leaving it to drag on crawl budget.',
+];
+
 function renderOrphans(data) {
   if (!data.orphanPages.length) { document.getElementById('orphan-list').innerHTML = '<p class="empty">No coverage gaps found.</p>'; return; }
   const shown = data.orphanPages.slice(0, 25);
   document.getElementById('orphan-list').innerHTML = `
     <p style="font-size:.82rem;color:var(--ink-soft)">${data.orphanPages.length} of ${data.sitemapUrlCount} sitemap URLs, near-zero impressions this period</p>
+    <ul class="reopt-actions" style="margin-bottom:.8rem">
+      ${ORPHAN_FIX_STEPS.map(s => `<li>${esc(s)}</li>`).join('')}
+    </ul>
     <ul class="page-list">
-      ${shown.map(u => `<li><a href="${esc(u)}" target="_blank">${esc(shortPath(u))}</a></li>`).join('')}
+      ${shown.map(o => `
+        <li>
+          <a href="${esc(o.url)}" target="_blank">${esc(shortPath(o.url))}</a>
+          ${o.internalLinkSuggestion.length ? `<div class="kw-meta">Link to it from: ${o.internalLinkSuggestion.map(p => esc(shortPath(p))).join(', ')}</div>` : ''}
+        </li>
+      `).join('')}
     </ul>
   `;
 }
@@ -246,6 +289,7 @@ function renderPeriod() {
   document.getElementById('history-warning').hidden = !data.insufficientHistory;
 
   renderKpis(data);
+  renderPeriodComparison(data);
   renderTrendChart(siteData, data.period);
   renderMoversChart(data);
   renderQuickWinsChart(data);
@@ -268,7 +312,9 @@ async function init() {
   siteSelect.innerHTML = meta.sites.map(s => `<option value="${s.slug}">${esc(s.label)}</option>`).join('');
   siteSelect.addEventListener('change', () => loadSite(siteSelect.value));
   document.getElementById('period-select').addEventListener('change', renderPeriod);
-  document.getElementById('generated-note').textContent = `Data generated ${new Date(meta.generatedAt).toLocaleString()}`;
+  const generatedText = `Data generated ${new Date(meta.generatedAt).toLocaleString()}`;
+  document.getElementById('generated-note').textContent = generatedText;
+  document.getElementById('generated-note-top').textContent = generatedText;
   await loadSite(meta.sites[0].slug);
 }
 

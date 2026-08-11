@@ -287,7 +287,11 @@ export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period, trend
     .slice(0, 5)
     .map(([page]) => page);
 
-  const orphanPages = sitemapUrls.filter(u => !curPageMap.has(u) || curPageMap.get(u).impressions === 0);
+  const orphanUrls = sitemapUrls.filter(u => !curPageMap.has(u) || curPageMap.get(u).impressions === 0);
+  const orphanPages = orphanUrls.map(url => ({
+    url,
+    internalLinkSuggestion: topPagesByClicks.filter(p => p !== url).slice(0, 3),
+  }));
 
   return {
     period,
