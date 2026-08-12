@@ -30,12 +30,22 @@ async function getClient() {
   return google.searchconsole({ version: 'v1', auth });
 }
 
-async function query(client, siteUrl, startDate, endDate, dimensions, rowLimit = 25000) {
+async function query(client, siteUrl, startDate, endDate, dimensions, rowLimit = 25000, type = undefined) {
   const res = await client.searchanalytics.query({
     siteUrl,
-    requestBody: { startDate, endDate, dimensions, rowLimit },
+    requestBody: { startDate, endDate, dimensions, rowLimit, ...(type ? { type } : {}) },
   });
   return res.data.rows || [];
+}
+
+// dims=[] returns a single aggregate row for the whole range -- used for
+// image-search totals, where we don't need a per-page/query breakdown.
+async function queryTotal(client, siteUrl, startDate, endDate, type) {
+  const rows = await query(client, siteUrl, startDate, endDate, [], 1, type);
+  const r = rows[0];
+  return r
+    ? { clicks: r.clicks, impressions: r.impressions, ctr: r.ctr, position: r.position }
+    : { clicks: 0, impressions: 0, ctr: 0, position: 0 };
 }
 
 async function processSite(client, site) {
@@ -53,11 +63,20 @@ async function processSite(client, site) {
   for (const def of PERIODS) {
     const period = datePeriods(def.days);
     console.log(`[${site.label}] ${def.label}: ${period.prevStart}..${period.prevEnd} vs ${period.curStart}..${period.curEnd}`);
-    const [curRows, prevRows] = await Promise.all([
+    const [curRows, prevRows, imagesCur, imagesPrev, appearanceCur, appearancePrev] = await Promise.all([
       query(client, site.gscSiteUrl, period.curStart, period.curEnd, ['page', 'query']),
       query(client, site.gscSiteUrl, period.prevStart, period.prevEnd, ['page', 'query']),
+      queryTotal(client, site.gscSiteUrl, period.curStart, period.curEnd, 'image'),
+      queryTotal(client, site.gscSiteUrl, period.prevStart, period.prevEnd, 'image'),
+      query(client, site.gscSiteUrl, period.curStart, period.curEnd, ['searchAppearance'], 25),
+      query(client, site.gscSiteUrl, period.prevStart, period.prevEnd, ['searchAppearance'], 25),
     ]);
-    periods[def.key] = buildPeriodBlock({ curRows, prevRows, sitemapUrls, trend, period: { ...period, label: def.label } });
+    periods[def.key] = buildPeriodBlock({
+      curRows, prevRows, sitemapUrls, trend,
+      images: { current: imagesCur, previous: imagesPrev },
+      appearanceCur, appearancePrev,
+      period: { ...period, label: def.label },
+    });
   }
 
   return { label: site.label, trend, periods };

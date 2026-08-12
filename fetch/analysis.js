@@ -308,7 +308,39 @@ function relatedPages(targetUrl, candidatePages, topPagesByClicks, limit = 3) {
   return picked;
 }
 
-export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period, trend }) {
+function prettifyAppearance(key) {
+  return key
+    .toLowerCase()
+    .split('_')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
+
+// Search Appearance breaks down traffic by rich-result/SERP-feature type.
+// Google surfaces AI Overview presence here (key contains "AI") -- this is
+// the closest real signal GSC exposes for "is this site showing up in
+// generative AI answers," not a separate product API.
+function buildSearchAppearance(appearanceCur, appearancePrev) {
+  const prevMap = new Map(appearancePrev.map(r => [r.keys[0], r]));
+  const rows = appearanceCur
+    .map(r => {
+      const key = r.keys[0];
+      const prev = prevMap.get(key);
+      return {
+        type: key,
+        label: prettifyAppearance(key),
+        isAI: key.toUpperCase().includes('AI'),
+        clicks: r.clicks, impressions: r.impressions, ctr: r.ctr, position: r.position,
+        clicksPrev: prev ? prev.clicks : 0, impressionsPrev: prev ? prev.impressions : 0,
+      };
+    })
+    .sort((a, b) => b.impressions - a.impressions);
+
+  const aiOverview = rows.find(r => r.isAI) || null;
+  return { rows, aiOverview };
+}
+
+export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period, trend, images, appearanceCur, appearancePrev }) {
   const curPageMap = aggregateBy(curRows, 0);
   const prevPageMap = aggregateBy(prevRows, 0);
 
@@ -354,5 +386,7 @@ export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period, trend
     reoptimization: buildReoptimization(focusRows, curRows, topPagesByClicks, linkCandidates),
     orphanPages,
     sitemapUrlCount: sitemapUrls.length,
+    images,
+    searchAppearance: buildSearchAppearance(appearanceCur, appearancePrev),
   };
 }

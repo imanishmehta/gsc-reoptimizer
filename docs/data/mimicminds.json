@@ -4616,43 +4616,11 @@
       ],
       "orphanPages": [
         {
-          "url": "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
+          "url": "https://www.mimicminds.com/post/customer-service-automation",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
-            "https://www.mimicminds.com/blog/categories/ai-avatars",
-            "https://www.mimicminds.com/post/3d-ai-avatar-vs-2d-talking-avatars"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/post/mimic-minds-3d-ai-avatars-ifa-kick-off-2026",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/post/mimic-minds-at-hannover-messe",
-            "https://www.mimicminds.com/post/mimic-studio-use-cases-ai-avatars",
-            "https://www.mimicminds.com/mimic-ai-studio"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/post/ai-employees-in-workforce",
-          "internalLinkSuggestion": [
             "https://www.mimicminds.com/mimic-ai-studio",
-            "https://www.mimicminds.com/",
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/post/embeddable-avatar-widget-for-websites",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
-            "https://www.mimicminds.com/ai-avatar-for-fashion",
-            "https://www.mimicminds.com/ai-avatar-for-robotic"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/post/how-ai-powered-digital-humans-improve-customer-engagement-in-2025",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/blog/categories/digital-humans",
-            "https://www.mimicminds.com/services/ai-spokesperson-videos-with-lifelike-digital-humans",
-            "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams"
+            "https://www.mimicminds.com/"
           ]
         },
         {
@@ -4664,19 +4632,19 @@
           ]
         },
         {
-          "url": "https://www.mimicminds.com/post/kai-ai-event-host-bold-community-experience",
+          "url": "https://www.mimicminds.com/post/how-ai-powered-digital-humans-improve-customer-engagement-in-2025",
           "internalLinkSuggestion": [
-            "https://www.mimicminds.com/post/ai-host-avatar-for-events",
-            "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-4vwpm334",
-            "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-8edmx359"
+            "https://www.mimicminds.com/blog/categories/digital-humans",
+            "https://www.mimicminds.com/services/ai-spokesperson-videos-with-lifelike-digital-humans",
+            "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams"
           ]
         },
         {
-          "url": "https://www.mimicminds.com/post/can-an-ai-avatar-brand-spokesperson",
+          "url": "https://www.mimicminds.com/post/ai-for-financial-services",
           "internalLinkSuggestion": [
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
-            "https://www.mimicminds.com/ai-avatar-for-fashion",
-            "https://www.mimicminds.com/ai-avatar-for-robotic"
+            "https://www.mimicminds.com/mimic-ai-studio",
+            "https://www.mimicminds.com/",
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
           ]
         },
         {
@@ -4696,19 +4664,27 @@
           ]
         },
         {
-          "url": "https://www.mimicminds.com/post/ai-for-financial-services",
+          "url": "https://www.mimicminds.com/post/can-an-ai-avatar-brand-spokesperson",
           "internalLinkSuggestion": [
-            "https://www.mimicminds.com/mimic-ai-studio",
-            "https://www.mimicminds.com/",
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
+            "https://www.mimicminds.com/ai-avatar-for-fashion",
+            "https://www.mimicminds.com/ai-avatar-for-robotic"
           ]
         },
         {
-          "url": "https://www.mimicminds.com/post/customer-service-automation",
+          "url": "https://www.mimicminds.com/post/kai-ai-event-host-bold-community-experience",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/post/ai-host-avatar-for-events",
+            "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-4vwpm334",
+            "https://www.mimicminds.com/post/ai-host-avatar-for-events#viewer-8edmx359"
+          ]
+        },
+        {
+          "url": "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
-            "https://www.mimicminds.com/mimic-ai-studio",
-            "https://www.mimicminds.com/"
+            "https://www.mimicminds.com/blog/categories/ai-avatars",
+            "https://www.mimicminds.com/post/3d-ai-avatar-vs-2d-talking-avatars"
           ]
         },
         {
@@ -4725,6 +4701,30 @@
             "https://www.mimicminds.com/post/conversational-ai-in-education",
             "https://www.mimicminds.com/ai-tutor-avatar-for-education",
             "https://www.mimicminds.com/post/embodied-ai-vs-conversational-ai"
+          ]
+        },
+        {
+          "url": "https://www.mimicminds.com/post/mimic-minds-3d-ai-avatars-ifa-kick-off-2026",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/post/mimic-minds-at-hannover-messe",
+            "https://www.mimicminds.com/post/mimic-studio-use-cases-ai-avatars",
+            "https://www.mimicminds.com/mimic-ai-studio"
+          ]
+        },
+        {
+          "url": "https://www.mimicminds.com/post/embeddable-avatar-widget-for-websites",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
+            "https://www.mimicminds.com/ai-avatar-for-fashion",
+            "https://www.mimicminds.com/ai-avatar-for-robotic"
+          ]
+        },
+        {
+          "url": "https://www.mimicminds.com/post/ai-employees-in-workforce",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/mimic-ai-studio",
+            "https://www.mimicminds.com/",
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
           ]
         },
         {
@@ -4824,6 +4824,30 @@
           ]
         },
         {
+          "url": "https://www.mimicminds.com/pricing",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/mimic-ai-studio",
+            "https://www.mimicminds.com/",
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
+          ]
+        },
+        {
+          "url": "https://www.mimicminds.com/services/conversational-ai-avatars",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/post/how-conversational-ai-avatars-are-redefining-human-machine-interaction-in-real-time-environments",
+            "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
+            "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-1g8q9902"
+          ]
+        },
+        {
+          "url": "https://www.mimicminds.com/industries/ai-avatar-for-robotic",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/ai-avatar-for-robotic",
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
+            "https://www.mimicminds.com/ai-avatar-for-fashion"
+          ]
+        },
+        {
           "url": "https://www.mimicminds.com/industries/ai-avatar-for-education",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/ai-tutor-avatar-for-education",
@@ -4837,14 +4861,6 @@
             "https://www.mimicminds.com/mimic-ai-studio",
             "https://www.mimicminds.com/",
             "https://www.mimicminds.com/ai-tutor-avatar-for-education"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/services/conversational-ai-avatars",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/post/how-conversational-ai-avatars-are-redefining-human-machine-interaction-in-real-time-environments",
-            "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
-            "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars#viewer-1g8q9902"
           ]
         },
         {
@@ -4862,25 +4878,39 @@
             "https://www.mimicminds.com/post/mimic-studio-use-cases-ai-avatars",
             "https://www.mimicminds.com/ai-avatar-for-streaming-platforms"
           ]
-        },
-        {
-          "url": "https://www.mimicminds.com/pricing",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/mimic-ai-studio",
-            "https://www.mimicminds.com/",
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/industries/ai-avatar-for-robotic",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/ai-avatar-for-robotic",
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
-            "https://www.mimicminds.com/ai-avatar-for-fashion"
-          ]
         }
       ],
-      "sitemapUrlCount": 148
+      "sitemapUrlCount": 148,
+      "images": {
+        "current": {
+          "clicks": 5,
+          "impressions": 10621,
+          "ctr": 0.00047076546464551363,
+          "position": 35.312399962338766
+        },
+        "previous": {
+          "clicks": 11,
+          "impressions": 8906,
+          "ctr": 0.0012351223894004042,
+          "position": 35.52717269256681
+        }
+      },
+      "searchAppearance": {
+        "rows": [
+          {
+            "type": "TRANSLATED_RESULT",
+            "label": "Translated Result",
+            "isAI": false,
+            "clicks": 0,
+            "impressions": 20,
+            "ctr": 0,
+            "position": 7.65,
+            "clicksPrev": 0,
+            "impressionsPrev": 24
+          }
+        ],
+        "aiOverview": null
+      }
     },
     "30": {
       "period": {
@@ -6450,19 +6480,11 @@
       ],
       "orphanPages": [
         {
-          "url": "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
+          "url": "https://www.mimicminds.com/post/customer-service-automation",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
-            "https://www.mimicminds.com/blog/categories/ai-avatars",
-            "https://www.mimicminds.com/post/3d-ai-avatar-vs-2d-talking-avatars"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/post/ai-employees-in-workforce",
-          "internalLinkSuggestion": [
             "https://www.mimicminds.com/mimic-ai-studio",
-            "https://www.mimicminds.com/",
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
+            "https://www.mimicminds.com/"
           ]
         },
         {
@@ -6474,11 +6496,11 @@
           ]
         },
         {
-          "url": "https://www.mimicminds.com/post/can-an-ai-avatar-brand-spokesperson",
+          "url": "https://www.mimicminds.com/post/ai-for-financial-services",
           "internalLinkSuggestion": [
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
-            "https://www.mimicminds.com/ai-avatar-for-fashion",
-            "https://www.mimicminds.com/ai-avatar-for-cartoon"
+            "https://www.mimicminds.com/mimic-ai-studio",
+            "https://www.mimicminds.com/",
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
           ]
         },
         {
@@ -6498,19 +6520,27 @@
           ]
         },
         {
-          "url": "https://www.mimicminds.com/post/ai-for-financial-services",
+          "url": "https://www.mimicminds.com/post/can-an-ai-avatar-brand-spokesperson",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
+            "https://www.mimicminds.com/ai-avatar-for-fashion",
+            "https://www.mimicminds.com/ai-avatar-for-cartoon"
+          ]
+        },
+        {
+          "url": "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
+            "https://www.mimicminds.com/blog/categories/ai-avatars",
+            "https://www.mimicminds.com/post/3d-ai-avatar-vs-2d-talking-avatars"
+          ]
+        },
+        {
+          "url": "https://www.mimicminds.com/post/ai-employees-in-workforce",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/mimic-ai-studio",
             "https://www.mimicminds.com/",
             "https://www.mimicminds.com/ai-tutor-avatar-for-education"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/post/customer-service-automation",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
-            "https://www.mimicminds.com/mimic-ai-studio",
-            "https://www.mimicminds.com/"
           ]
         },
         {
@@ -6602,6 +6632,22 @@
           ]
         },
         {
+          "url": "https://www.mimicminds.com/pricing",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/mimic-ai-studio",
+            "https://www.mimicminds.com/",
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
+          ]
+        },
+        {
+          "url": "https://www.mimicminds.com/industries/ai-avatar-for-robotic",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/ai-avatar-for-robotic",
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
+            "https://www.mimicminds.com/ai-avatar-for-fashion"
+          ]
+        },
+        {
           "url": "https://www.mimicminds.com/industries/ai-avatar-for-education",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/ai-tutor-avatar-for-education",
@@ -6624,25 +6670,50 @@
             "https://www.mimicminds.com/ai-tutor-avatar-for-education",
             "https://www.mimicminds.com/ai-avatar-for-cartoon"
           ]
-        },
-        {
-          "url": "https://www.mimicminds.com/pricing",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/mimic-ai-studio",
-            "https://www.mimicminds.com/",
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/industries/ai-avatar-for-robotic",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/ai-avatar-for-robotic",
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
-            "https://www.mimicminds.com/ai-avatar-for-fashion"
-          ]
         }
       ],
-      "sitemapUrlCount": 148
+      "sitemapUrlCount": 148,
+      "images": {
+        "current": {
+          "clicks": 25,
+          "impressions": 34255,
+          "ctr": 0.0007298204641658152,
+          "position": 34.27768209020581
+        },
+        "previous": {
+          "clicks": 20,
+          "impressions": 31348,
+          "ctr": 0.0006379992344009187,
+          "position": 34.63248054102335
+        }
+      },
+      "searchAppearance": {
+        "rows": [
+          {
+            "type": "REVIEW_SNIPPET",
+            "label": "Review Snippet",
+            "isAI": false,
+            "clicks": 2,
+            "impressions": 276,
+            "ctr": 0.007246376811594203,
+            "position": 13.485507246376812,
+            "clicksPrev": 2,
+            "impressionsPrev": 223
+          },
+          {
+            "type": "TRANSLATED_RESULT",
+            "label": "Translated Result",
+            "isAI": false,
+            "clicks": 1,
+            "impressions": 61,
+            "ctr": 0.01639344262295082,
+            "position": 8.01639344262295,
+            "clicksPrev": 1,
+            "impressionsPrev": 143
+          }
+        ],
+        "aiOverview": null
+      }
     },
     "90": {
       "period": {
@@ -8225,11 +8296,11 @@
       ],
       "orphanPages": [
         {
-          "url": "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
+          "url": "https://www.mimicminds.com/post/customer-service-automation",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
-            "https://www.mimicminds.com/post/3d-ai-avatar-vs-2d-talking-avatars",
-            "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars"
+            "https://www.mimicminds.com/mimic-ai-studio",
+            "https://www.mimicminds.com/"
           ]
         },
         {
@@ -8238,6 +8309,14 @@
             "https://www.mimicminds.com/blog/categories/digital-humans",
             "https://www.mimicminds.com/services/ai-spokesperson-videos-with-lifelike-digital-humans",
             "https://www.mimicminds.com/post/digital-resurrection"
+          ]
+        },
+        {
+          "url": "https://www.mimicminds.com/post/ai-for-financial-services",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/mimic-ai-studio",
+            "https://www.mimicminds.com/",
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
           ]
         },
         {
@@ -8257,19 +8336,11 @@
           ]
         },
         {
-          "url": "https://www.mimicminds.com/post/ai-for-financial-services",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/mimic-ai-studio",
-            "https://www.mimicminds.com/",
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/post/customer-service-automation",
+          "url": "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
-            "https://www.mimicminds.com/mimic-ai-studio",
-            "https://www.mimicminds.com/"
+            "https://www.mimicminds.com/post/3d-ai-avatar-vs-2d-talking-avatars",
+            "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars"
           ]
         },
         {
@@ -8329,6 +8400,14 @@
           ]
         },
         {
+          "url": "https://www.mimicminds.com/industries/ai-avatar-for-robotic",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/ai-avatar-for-robotic",
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
+            "https://www.mimicminds.com/ai-avatar-for-fashion"
+          ]
+        },
+        {
           "url": "https://www.mimicminds.com/industries/ai-avatar-for-education",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/ai-tutor-avatar-for-education",
@@ -8351,17 +8430,50 @@
             "https://www.mimicminds.com/ai-tutor-avatar-for-education",
             "https://www.mimicminds.com/ai-avatar-for-cartoon"
           ]
-        },
-        {
-          "url": "https://www.mimicminds.com/industries/ai-avatar-for-robotic",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/ai-avatar-for-robotic",
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
-            "https://www.mimicminds.com/ai-avatar-for-fashion"
-          ]
         }
       ],
-      "sitemapUrlCount": 148
+      "sitemapUrlCount": 148,
+      "images": {
+        "current": {
+          "clicks": 71,
+          "impressions": 116041,
+          "ctr": 0.0006118527072327884,
+          "position": 34.64289346007015
+        },
+        "previous": {
+          "clicks": 69,
+          "impressions": 223131,
+          "ctr": 0.00030923538190569667,
+          "position": 34.13207039810694
+        }
+      },
+      "searchAppearance": {
+        "rows": [
+          {
+            "type": "REVIEW_SNIPPET",
+            "label": "Review Snippet",
+            "isAI": false,
+            "clicks": 7,
+            "impressions": 1739,
+            "ctr": 0.0040253018976423235,
+            "position": 10.189764232317424,
+            "clicksPrev": 15,
+            "impressionsPrev": 8698
+          },
+          {
+            "type": "TRANSLATED_RESULT",
+            "label": "Translated Result",
+            "isAI": false,
+            "clicks": 2,
+            "impressions": 267,
+            "ctr": 0.00749063670411985,
+            "position": 7.584269662921348,
+            "clicksPrev": 0,
+            "impressionsPrev": 48
+          }
+        ],
+        "aiOverview": null
+      }
     },
     "365": {
       "period": {
@@ -9810,19 +9922,19 @@
       ],
       "orphanPages": [
         {
+          "url": "https://www.mimicminds.com/post/customer-service-automation",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
+            "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
+            "https://www.mimicminds.com/post/what-are-virtual-customer-service-agents"
+          ]
+        },
+        {
           "url": "https://www.mimicminds.com/post/how-ai-powered-digital-humans-improve-customer-engagement-in-2025",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/blog/categories/digital-humans",
             "https://www.mimicminds.com/services/ai-spokesperson-videos-with-lifelike-digital-humans",
             "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars"
-          ]
-        },
-        {
-          "url": "https://www.mimicminds.com/post/mimic-minds-joins-the-mediatech-hub-accelerator-in-potsdam",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/post/mimic-minds-3d-ai-avatars-ifa-kick-off-2026",
-            "https://www.mimicminds.com/post/mimic-minds-at-hannover-messe",
-            "https://www.mimicminds.com/mimic-ai-studio"
           ]
         },
         {
@@ -9834,11 +9946,11 @@
           ]
         },
         {
-          "url": "https://www.mimicminds.com/post/customer-service-automation",
+          "url": "https://www.mimicminds.com/post/mimic-minds-joins-the-mediatech-hub-accelerator-in-potsdam",
           "internalLinkSuggestion": [
-            "https://www.mimicminds.com/post/ai-avatars-in-customer-support",
-            "https://www.mimicminds.com/post/ai-avatars-replace-customer-support-teams",
-            "https://www.mimicminds.com/post/what-are-virtual-customer-service-agents"
+            "https://www.mimicminds.com/post/mimic-minds-3d-ai-avatars-ifa-kick-off-2026",
+            "https://www.mimicminds.com/post/mimic-minds-at-hannover-messe",
+            "https://www.mimicminds.com/mimic-ai-studio"
           ]
         },
         {
@@ -9890,6 +10002,14 @@
           ]
         },
         {
+          "url": "https://www.mimicminds.com/industries/ai-avatar-for-robotic",
+          "internalLinkSuggestion": [
+            "https://www.mimicminds.com/ai-avatar-for-robotic",
+            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
+            "https://www.mimicminds.com/ai-avatar-for-fashion"
+          ]
+        },
+        {
           "url": "https://www.mimicminds.com/industries/ai-avatar-for-education",
           "internalLinkSuggestion": [
             "https://www.mimicminds.com/ai-tutor-avatar-for-education",
@@ -9912,17 +10032,50 @@
             "https://www.mimicminds.com/ai-tutor-avatar-for-education",
             "https://www.mimicminds.com/ai-avatar-for-robotic"
           ]
-        },
-        {
-          "url": "https://www.mimicminds.com/industries/ai-avatar-for-robotic",
-          "internalLinkSuggestion": [
-            "https://www.mimicminds.com/ai-avatar-for-robotic",
-            "https://www.mimicminds.com/ai-tutor-avatar-for-education",
-            "https://www.mimicminds.com/ai-avatar-for-fashion"
-          ]
         }
       ],
-      "sitemapUrlCount": 148
+      "sitemapUrlCount": 148,
+      "images": {
+        "current": {
+          "clicks": 195,
+          "impressions": 397419,
+          "ctr": 0.0004906660225102474,
+          "position": 34.895015084834895
+        },
+        "previous": {
+          "clicks": 2,
+          "impressions": 717,
+          "ctr": 0.002789400278940028,
+          "position": 40.19386331938633
+        }
+      },
+      "searchAppearance": {
+        "rows": [
+          {
+            "type": "REVIEW_SNIPPET",
+            "label": "Review Snippet",
+            "isAI": false,
+            "clicks": 47,
+            "impressions": 12113,
+            "ctr": 0.003880128787253364,
+            "position": 6.907785024354,
+            "clicksPrev": 0,
+            "impressionsPrev": 0
+          },
+          {
+            "type": "TRANSLATED_RESULT",
+            "label": "Translated Result",
+            "isAI": false,
+            "clicks": 2,
+            "impressions": 315,
+            "ctr": 0.006349206349206349,
+            "position": 7.631746031746032,
+            "clicksPrev": 0,
+            "impressionsPrev": 0
+          }
+        ],
+        "aiOverview": null
+      }
     }
   }
 }

@@ -33,21 +33,66 @@ function causeLabel(cause) {
   return cause.replace('-', ' ');
 }
 
-function renderKpis(data) {
-  const c = data.headline.current, p = data.headline.previous;
+function renderKpiRow(elId, current, previous) {
+  const c = current, p = previous;
   const rows = [
     ['Clicks', c.clicks.toLocaleString(), deltaBadge(c.clicks, p.clicks)],
     ['Impressions', c.impressions.toLocaleString(), deltaBadge(c.impressions, p.impressions)],
     ['CTR', fmtPct(c.ctr), deltaBadge(c.ctr, p.ctr)],
     ['Avg position', c.position.toFixed(1), deltaBadge(c.position, p.position, true)],
   ];
-  document.getElementById('kpi-row').innerHTML = rows.map(([label, value, badge]) => `
+  document.getElementById(elId).innerHTML = rows.map(([label, value, badge]) => `
     <div class="kpi">
       <div class="label">${label}</div>
       <div class="value">${value}</div>
       ${badge}
     </div>
   `).join('');
+}
+
+function renderKpis(data) {
+  renderKpiRow('kpi-row', data.headline.current, data.headline.previous);
+}
+
+function renderImageKpis(data) {
+  renderKpiRow('image-kpi-row', data.images.current, data.images.previous);
+}
+
+function renderSearchAppearance(data) {
+  const { rows, aiOverview } = data.searchAppearance;
+
+  document.getElementById('ai-overview-callout').innerHTML = aiOverview
+    ? `<div class="ai-callout ai-callout-yes">
+         🤖 Your pages appeared in <strong>Google AI Overview</strong> results this period --
+         ${aiOverview.impressions.toLocaleString()} impressions, ${aiOverview.clicks} clicks
+         (${deltaBadge(aiOverview.impressions, aiOverview.impressionsPrev)} vs previous period).
+       </div>`
+    : `<div class="ai-callout ai-callout-no">
+         No AI Overview appearances detected in Search Console data for this period.
+         Either Google hasn't surfaced your pages in AI Overviews for the queries you rank on
+         yet, or your current content isn't structured as a direct, extractable answer.
+         Clear H2/H3 question headings, concise 40-60 word answers right under them, and
+         FAQ/HowTo schema are what Google tends to pull into AI Overviews.
+       </div>`;
+
+  if (!rows.length) {
+    document.getElementById('search-appearance-table').innerHTML = '<p class="empty">No search appearance data for this period.</p>';
+    return;
+  }
+  document.getElementById('search-appearance-table').innerHTML = `
+    <table>
+      <tr><th>Appearance type</th><th>Clicks</th><th>Impressions</th><th>CTR</th><th>Position</th></tr>
+      ${rows.map(r => `
+        <tr class="${r.isAI ? 'ai-row' : ''}">
+          <td>${r.isAI ? '🤖 ' : ''}${esc(r.label)}</td>
+          <td>${r.clicks.toLocaleString()} ${deltaBadge(r.clicks, r.clicksPrev)}</td>
+          <td>${r.impressions.toLocaleString()} ${deltaBadge(r.impressions, r.impressionsPrev)}</td>
+          <td>${fmtPct(r.ctr)}</td>
+          <td>${r.position.toFixed(1)}</td>
+        </tr>
+      `).join('')}
+    </table>
+  `;
 }
 
 function renderPeriodComparison(data) {
@@ -290,6 +335,8 @@ function renderPeriod() {
 
   renderKpis(data);
   renderPeriodComparison(data);
+  renderImageKpis(data);
+  renderSearchAppearance(data);
   renderTrendChart(siteData, data.period);
   renderMoversChart(data);
   renderQuickWinsChart(data);

@@ -285,6 +285,17 @@ tr:last-child td { border-bottom: none; }
 }
 .reopt-actions li { margin-bottom: .3rem; }
 
+.ai-callout {
+  border-radius: 10px;
+  padding: .9rem 1.1rem;
+  font-size: .88rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+.ai-callout-yes { background: var(--purple-soft); color: #6b2fc7; border: 1px solid #d9bffa; }
+.ai-callout-no { background: var(--border); color: var(--ink-soft); }
+tr.ai-row { background: var(--purple-soft); }
+
 @media (max-width: 900px) {
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
   .grid-2 { grid-template-columns: 1fr; }
