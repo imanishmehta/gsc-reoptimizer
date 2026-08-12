@@ -1,6 +1,6 @@
-// Pulls GSC data for each configured site across all period filters (7/30/90/365
-// days) and writes static JSON that docs/app.js renders with Chart.js. Runs via
-// GitHub Actions on a daily schedule, or locally for testing.
+// Pulls GSC data for each configured site across all period filters (7/30/90
+// days, 6mo/8mo) and writes static JSON that docs/app.js renders with
+// Chart.js. Runs via GitHub Actions on a daily schedule, or locally for testing.
 //
 // Auth: service account JSON via GSC_SERVICE_ACCOUNT_JSON env var (a GitHub
 // Actions secret) or GOOGLE_APPLICATION_CREDENTIALS file path for local runs.
@@ -52,8 +52,10 @@ async function processSite(client, site) {
   console.log(`[${site.label}] fetching sitemap...`);
   const sitemapUrls = await fetchSitemapUrls(site.sitemapUrl);
 
-  // longest span needed for the trend chart: previous-365 start through current-end
-  const longest = datePeriods(365);
+  // longest span needed for the trend chart: previous-period start of the
+  // longest configured filter, through current-end
+  const maxDays = Math.max(...PERIODS.map(p => p.days));
+  const longest = datePeriods(maxDays);
   const trendRowsRaw = await query(client, site.gscSiteUrl, longest.prevStart, longest.curEnd, ['date']);
   const trend = trendRowsRaw
     .sort((a, b) => a.keys[0].localeCompare(b.keys[0]))

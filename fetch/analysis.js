@@ -1,11 +1,17 @@
 // Pure functions over raw GSC rows -- no network, no fs. Shared by fetch.js
 // (live API) and the local seeding script.
 
+// No 365-day filter: comparing it to a previous 365 days needs 24 months of
+// GSC history, and Search Console only retains ~16 months -- the "previous"
+// side would always be truncated/empty. 240 days (8 months) sits right at
+// that retention edge; insufficientHistory below catches it dynamically if
+// the previous window comes back thin, rather than a hardcoded day cutoff.
 export const PERIODS = [
   { key: '7', days: 7, label: 'Last 7 days' },
   { key: '30', days: 30, label: 'Last 30 days' },
   { key: '90', days: 90, label: 'Last 90 days' },
-  { key: '365', days: 365, label: 'Last 365 days' },
+  { key: '180', days: 180, label: 'Last 6 months' },
+  { key: '240', days: 240, label: 'Last 8 months' },
 ];
 
 // rough industry CTR-by-position curve, used only to flag pages doing worse
@@ -370,14 +376,17 @@ export function buildPeriodBlock({ curRows, prevRows, sitemapUrls, period, trend
     internalLinkSuggestion: relatedPages(url, linkCandidates, topPagesByClicks),
   }));
 
+  // Date-based, not ratio-based: a real 10x+ organic growth spike (this
+  // happens -- a page catching a broad head-term query can 10x impressions
+  // in months) looks identical to retention truncation on a ratio check, but
+  // isn't. Only flag when the previous window's start actually falls near
+  // GSC's ~487-day (16mo) retention edge.
+  const prevStartAgeDays = Math.floor((Date.now() - new Date(period.prevStart + 'T00:00:00Z').getTime()) / 86400000);
+  const RETENTION_SAFE_DAYS = 450;
+
   return {
     period,
-    // GSC retains ~16 months of data -- a full prior-year window is almost
-    // always partially truncated, and a near-zero-vs-large-current previous
-    // period produces a misleading delta% rather than a real signal.
-    insufficientHistory: prevTotals.impressions < 10
-      || period.days >= 300
-      || prevTotals.impressions < curTotals.impressions * 0.1,
+    insufficientHistory: prevTotals.impressions < 10 || prevStartAgeDays > RETENTION_SAFE_DAYS,
     headline: { current: curTotals, previous: prevTotals },
     decliners,
     risers,
