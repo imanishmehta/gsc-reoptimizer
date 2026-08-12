@@ -348,13 +348,17 @@ function renderPeriod() {
   renderOrphans(data);
 }
 
+// cache-bust: data/*.json changes daily via cron, but browsers apply their
+// own heuristic caching independent of server cache-control headers -- a
+// plain fetch('data/x.json') can silently keep serving yesterday's file.
+// Date.now() forces a genuinely unique URL every load.
 async function loadSite(slug) {
-  siteData = await fetch(`data/${slug}.json`).then(r => r.json());
+  siteData = await fetch(`data/${slug}.json?v=${Date.now()}`).then(r => r.json());
   renderPeriod();
 }
 
 async function init() {
-  const meta = await fetch('data/meta.json').then(r => r.json());
+  const meta = await fetch(`data/meta.json?v=${Date.now()}`).then(r => r.json());
   const siteSelect = document.getElementById('site-select');
   siteSelect.innerHTML = meta.sites.map(s => `<option value="${s.slug}">${esc(s.label)}</option>`).join('');
   siteSelect.addEventListener('change', () => loadSite(siteSelect.value));
