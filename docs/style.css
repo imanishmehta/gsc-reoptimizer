@@ -24,8 +24,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(120deg, #4285f4 0%, #a142f4 55%, #ff6d9c 100%);
+  background: linear-gradient(90deg, #18C1A5 0%, #7A61FD 100%);
 }
+
+.lock-screen[hidden] { display: none; }
 
 .lock-box {
   background: var(--card);
@@ -78,7 +80,7 @@ body {
 }
 
 .topbar {
-  background: linear-gradient(120deg, #4285f4 0%, #a142f4 55%, #ff6d9c 100%);
+  background: linear-gradient(90deg, #18C1A5 0%, #7A61FD 100%);
   color: #fff;
   padding: 1.6rem 2rem 2.4rem;
 }
@@ -99,7 +101,13 @@ body {
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: .6rem;
+}
+
+.brand-logo {
+  height: 22px;
+  width: auto;
+  display: block;
 }
 
 .topbar .sub {
