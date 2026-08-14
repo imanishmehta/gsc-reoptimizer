@@ -701,7 +701,7 @@
       "itemId": "ac2844da-ee0d-4499-93f0-517b6194ae3c",
       "matched": true,
       "current": {
-        "title": "AI NPCs in Gaming: Bringing Characters to Life",
+        "title": "AI NPCs in Gaming: Bringing Characters to Life | Npc Ai",
         "metaDescription": "Discover how AI NPC characters are revolutionizing gaming. Learn how AI in gaming creates smarter, more adaptive worlds with Mimic Minds’ insights into gaming AI innovation.",
         "focusKeywords": [
           {
@@ -755,13 +755,6 @@
         }
       ],
       "issues": [
-        {
-          "type": "title",
-          "field": "title",
-          "message": "Title doesn't contain the top query \"npc ai\" (214 impr, pos 10.1).",
-          "current": "AI NPCs in Gaming: Bringing Characters to Life",
-          "suggested": "AI NPCs in Gaming: Bringing Characters to Life | Npc Ai"
-        },
         {
           "type": "meta",
           "field": "metaDescription",
