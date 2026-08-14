@@ -296,6 +296,39 @@ tr:last-child td { border-bottom: none; }
 .ai-callout-no { background: var(--border); color: var(--ink-soft); }
 tr.ai-row { background: var(--purple-soft); }
 
+.tabbar { background: #fff; border-bottom: 1px solid var(--border); }
+.tabbar-inner { max-width: 1240px; margin: 0 auto; display: flex; gap: .3rem; padding: 0 2rem; }
+.tab-btn {
+  background: none; border: none; padding: .9rem 1.1rem; font-size: .92rem; font-weight: 600;
+  color: var(--ink-soft); cursor: pointer; border-bottom: 3px solid transparent;
+}
+.tab-btn.active { color: var(--ink); border-bottom-color: var(--blue); }
+
+.ca-page-card {
+  background: var(--card); border-radius: 14px; padding: 1.2rem 1.4rem;
+  box-shadow: var(--shadow); margin-bottom: 1.2rem;
+}
+.ca-page-head { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-bottom: .6rem; }
+.ca-page-head a { font-weight: 600; color: var(--ink); text-decoration: none; word-break: break-all; font-size: .92rem; }
+.ca-page-head a:hover { color: var(--blue); }
+.ca-current { font-size: .82rem; color: var(--ink-soft); margin-bottom: .8rem; line-height: 1.6; }
+.ca-current strong { color: var(--ink); }
+
+.ca-issue { border-top: 1px solid var(--border); padding: .8rem 0; }
+.ca-issue:first-of-type { border-top: none; }
+.ca-issue-msg { font-size: .85rem; margin-bottom: .4rem; }
+.ca-issue-suggested { font-size: .82rem; color: var(--green); background: var(--green-soft); padding: .5rem .7rem; border-radius: 6px; margin-bottom: .5rem; }
+.ca-apply-btn {
+  background: var(--blue); color: #fff; border: none; border-radius: 999px;
+  padding: .45rem 1rem; font-size: .8rem; font-weight: 600; cursor: pointer;
+}
+.ca-apply-btn:hover { background: #3367d6; }
+.ca-apply-btn:disabled { background: var(--border); color: var(--ink-soft); cursor: default; }
+.ca-result { margin-top: .6rem; font-size: .8rem; padding: .6rem .8rem; border-radius: 6px; }
+.ca-result.ok { background: var(--green-soft); color: #1a6b2f; }
+.ca-result.error { background: var(--red-soft); color: var(--red); }
+.ca-unmatched-note { font-size: .82rem; color: var(--ink-soft); font-style: italic; }
+
 @media (max-width: 900px) {
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
   .grid-2 { grid-template-columns: 1fr; }

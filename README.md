@@ -70,3 +70,51 @@ python3 -m http.server 8080   # or any static server
 Edit the `SITES` array in `fetch/fetch.js` to add/remove properties:
 - mimicminds (`sc-domain:mimicminds.com`)
 - mimic productions (`https://www.mimicproductions.com/`)
+
+## Content Audit tab
+Separate pipeline from the main dashboard above -- own data files
+(`docs/data/content-audit-*.json`), own script (`fetch/content-audit.js`),
+own frontend (`docs/content-audit-app.js`), reachable as a second tab on the
+same page (shares the page's password lock, nothing else). Cross-references
+live Wix SEO data (title/meta/focus keywords/body content, via the Wix Admin
+API) against 30-day GSC performance and flags concrete issues per page, each
+with its own "Apply live" button.
+
+**Apply live** writes go through a small Cloudflare Worker
+(`worker/`), because a write-capable Wix API key can never live in client-side
+JS on a public static site. The Worker holds the key server-side; the button
+click hits the Worker, the Worker calls Wix.
+
+### Setup
+1. Wix Admin API Key (Wix dashboard -> Settings -> API Keys -> Generate),
+   scoped to at least `wix-seo.edit`, `BLOG.READ-PUBLICATION`. Site IDs are
+   hardcoded in `fetch/content-audit.js` and `worker/src/index.js` -- update
+   `SITES`/`SITES` map there if properties change.
+2. `cd worker && npx wrangler login`, then:
+   ```
+   npx wrangler deploy
+   npx wrangler secret put WIX_API_KEY        # paste the Wix key
+   npx wrangler secret put ACTION_PASSWORD    # same password as the page lock
+   ```
+3. Add `WIX_API_KEY` as a GitHub Actions secret too (for `content-audit.js`'s
+   own cron run, separate from the Worker's copy).
+4. `worker/wrangler.toml`'s deployed URL must match `WORKER_URL` in
+   `docs/content-audit-app.js`.
+
+### Known Wix API quirks (undocumented, found by testing)
+- The docs' "Method API Endpoint" field is sometimes wrong -- the curl
+  example's path is the one that actually works (e.g.
+  `/seo-metatags-server/v1/...`, not the declared `/promote/seo/v1/...`).
+  Hit this on both Item SEO Tags and Blog Posts.
+- `List Item SEO Tags` intermittently 499s at `paging.limit=100` on some
+  sites/item-types (undocumented cap somewhere between 50-75) -- use 50.
+- `focusKeywords` items are `{term, isMain}` objects, not plain strings.
+- `resolvedTags` wraps each tag one level deeper: `{tag: {...}, source}`.
+- Classic Editor/Studio static pages have no URL field anywhere in the SEO
+  APIs -- matched here by fetching the live page's rendered `<title>` and
+  comparing against each item's resolved title (decode HTML entities first,
+  or `&amp;` vs `&` silently breaks every match).
+- GSC page URLs with a `#viewer-*` fragment are deep-link variants of the
+  same underlying page, not separate pages -- stripped/merged before
+  building the page list, or one popular post's fragments crowd out the
+  entire top-N.

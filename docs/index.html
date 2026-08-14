@@ -41,7 +41,14 @@
   </div>
 </div>
 
-<main>
+<div class="tabbar">
+  <div class="tabbar-inner">
+    <button class="tab-btn active" id="tab-btn-reoptimizer" onclick="switchTab('reoptimizer')">📈 Reoptimizer</button>
+    <button class="tab-btn" id="tab-btn-content-audit" onclick="switchTab('content-audit')">📝 Content Audit</button>
+  </div>
+</div>
+
+<main id="tab-panel-reoptimizer" class="tab-panel">
 
   <div id="history-warning" class="history-warning" hidden>
     ⚠️ Previous-period data for this window is partially outside Google Search Console's ~16-month retention -- the comparison numbers below understate the real previous period. Treat deltas here as directional, not exact.
@@ -123,8 +130,37 @@
 
 </main>
 
+<main id="tab-panel-content-audit" class="tab-panel" hidden>
+  <div class="topbar" style="margin-bottom:1.5rem">
+    <div class="topbar-inner">
+      <div>
+        <h2 style="color:#fff;margin:0">📝 Content Audit</h2>
+        <p class="sub" id="ca-generated-note"></p>
+      </div>
+      <div class="controls">
+        <select id="ca-site-select"></select>
+      </div>
+    </div>
+  </div>
+  <p class="card-sub" style="margin-bottom:1.5rem">
+    Live Wix title/meta/focus-keyword data cross-referenced against 30-day GSC performance. Each fix has its own
+    Apply button -- click one, it writes straight to the live Wix page and shows you the before/after.
+  </p>
+  <div id="ca-page-list"></div>
+</main>
+
 </div>
 
 <script src="app.js"></script>
+<script src="content-audit-app.js"></script>
+<script>
+function switchTab(tab) {
+  document.getElementById('tab-panel-reoptimizer').hidden = tab !== 'reoptimizer';
+  document.getElementById('tab-panel-content-audit').hidden = tab !== 'content-audit';
+  document.getElementById('tab-btn-reoptimizer').classList.toggle('active', tab === 'reoptimizer');
+  document.getElementById('tab-btn-content-audit').classList.toggle('active', tab === 'content-audit');
+  if (tab === 'content-audit' && window.initContentAudit) window.initContentAudit();
+}
+</script>
 </body>
 </html>
