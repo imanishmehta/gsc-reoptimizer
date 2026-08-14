@@ -80,10 +80,16 @@ async function handleApply(request, env) {
   }
   const current = (await getRes.json()).itemSeoTags;
   const existingTags = current.tags || [];
+  // resolvedTags is what the page actually renders with (inherited/pattern
+  // defaults included) -- only used for an accurate "before" snapshot to
+  // show the user; the write below merges into the raw `tags` array, which
+  // is correct as-is (an item with no own tags should stay that way except
+  // for the field being changed).
+  const resolvedFlat = (current.resolvedTags || []).map(rt => rt.tag);
 
   const previous = {
-    title: extractTag(existingTags, 'title'),
-    metaDescription: extractTag(existingTags, 'meta', 'description'),
+    title: extractTag(existingTags, 'title') || extractTag(resolvedFlat, 'title'),
+    metaDescription: extractTag(existingTags, 'meta', 'description') || extractTag(resolvedFlat, 'meta', 'description'),
     focusKeywords: current.focusKeywords || [],
   };
 
