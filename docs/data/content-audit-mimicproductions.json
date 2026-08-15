@@ -19,53 +19,53 @@
       },
       "primary": {
         "query": "hologram",
-        "clicks": 30,
-        "impressions": 19057,
-        "ctr": 0.0015742246943380386,
-        "position": 7.903919819488902
+        "clicks": 33,
+        "impressions": 19117,
+        "ctr": 0.0017262122717999686,
+        "position": 7.895851859601402
       },
       "secondary": [
         {
           "query": "hologram technology",
-          "clicks": 20,
-          "impressions": 1622,
-          "ctr": 0.012330456226880395,
-          "position": 5.448212083847102
+          "clicks": 21,
+          "impressions": 1633,
+          "ctr": 0.012859767299448868,
+          "position": 5.475199020208206
         },
         {
           "query": "holograms",
           "clicks": 16,
-          "impressions": 3572,
-          "ctr": 0.004479283314669653,
-          "position": 7.6422172452407615
+          "impressions": 3583,
+          "ctr": 0.004465531677365337,
+          "position": 7.666201507116941
         },
         {
           "query": "hologram technology 2026",
-          "clicks": 9,
-          "impressions": 977,
-          "ctr": 0.009211873080859774,
-          "position": 3.6356192425793243
+          "clicks": 8,
+          "impressions": 909,
+          "ctr": 0.0088008800880088,
+          "position": 3.5742574257425743
         },
         {
           "query": "how do holograms work",
           "clicks": 8,
-          "impressions": 573,
-          "ctr": 0.013961605584642234,
-          "position": 8.094240837696336
+          "impressions": 587,
+          "ctr": 0.013628620102214651,
+          "position": 8.153321976149915
         },
         {
           "query": "holographic technology",
           "clicks": 6,
-          "impressions": 1769,
-          "ctr": 0.0033917467495760316,
-          "position": 8.449406444318825
+          "impressions": 1770,
+          "ctr": 0.003389830508474576,
+          "position": 8.440677966101696
         }
       ],
       "issues": [
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.16% is well below the ~3.5% typical for position 7.9 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.17% is well below the ~3.6% typical for position 7.9 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         },
@@ -97,7 +97,7 @@
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"hologram technology 2026\" (977 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"hologram technology 2026\" (909 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "hologram technology 2026"
         }
@@ -124,52 +124,52 @@
       "primary": {
         "query": "vfx vs cgi",
         "clicks": 9,
-        "impressions": 4357,
-        "ctr": 0.0020656414964425065,
-        "position": 7.186596281845306
+        "impressions": 4386,
+        "ctr": 0.002051983584131327,
+        "position": 7.169174646602827
       },
       "secondary": [
         {
           "query": "cgi vs vfx",
           "clicks": 3,
-          "impressions": 3915,
-          "ctr": 0.0007662835249042146,
-          "position": 7.261558109833972
+          "impressions": 3941,
+          "ctr": 0.0007612281146917026,
+          "position": 7.235219487439736
         },
         {
           "query": "sfx full form",
           "clicks": 1,
-          "impressions": 2583,
-          "ctr": 0.00038714672861014324,
-          "position": 10.614014711575686
+          "impressions": 2742,
+          "ctr": 0.00036469730123997083,
+          "position": 10.469365426695843
         },
         {
           "query": "cgi vs special effects",
           "clicks": 1,
-          "impressions": 573,
-          "ctr": 0.0017452006980802793,
-          "position": 9.300174520069808
+          "impressions": 565,
+          "ctr": 0.0017699115044247787,
+          "position": 9.31858407079646
         },
         {
           "query": "cgi vfx sfx",
           "clicks": 1,
-          "impressions": 527,
-          "ctr": 0.0018975332068311196,
-          "position": 6.299810246679317
+          "impressions": 524,
+          "ctr": 0.0019083969465648854,
+          "position": 6.322519083969466
         },
         {
           "query": "vfx vs cgi vs sfx",
           "clicks": 1,
-          "impressions": 334,
-          "ctr": 0.0029940119760479044,
-          "position": 3.182634730538922
+          "impressions": 328,
+          "ctr": 0.003048780487804878,
+          "position": 3.1310975609756095
         }
       ],
       "issues": [
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"vfx vs cgi\" (4357 impr, pos 7.2).",
+          "message": "Title doesn't contain the top query \"vfx vs cgi\" (4386 impr, pos 7.2).",
           "current": "CGI vs VFX vs SFX: What's the Difference and Why It Matters",
           "suggested": null
         },
@@ -233,45 +233,45 @@
       "primary": {
         "query": "motion capture",
         "clicks": 14,
-        "impressions": 4218,
-        "ctr": 0.003319108582266477,
-        "position": 8.55737316263632
+        "impressions": 4206,
+        "ctr": 0.0033285782215882074,
+        "position": 8.62791250594389
       },
       "secondary": [
         {
           "query": "motion capture technology",
           "clicks": 2,
-          "impressions": 489,
-          "ctr": 0.00408997955010225,
-          "position": 6.932515337423313
+          "impressions": 486,
+          "ctr": 0.00411522633744856,
+          "position": 6.911522633744856
         },
         {
           "query": "motion capture camera",
           "clicks": 1,
-          "impressions": 445,
-          "ctr": 0.0022471910112359553,
-          "position": 10.806741573033708
+          "impressions": 449,
+          "ctr": 0.0022271714922048997,
+          "position": 10.768374164810691
         },
         {
           "query": "mocap system",
           "clicks": 1,
-          "impressions": 382,
-          "ctr": 0.002617801047120419,
-          "position": 10.041884816753926
+          "impressions": 406,
+          "ctr": 0.0024630541871921183,
+          "position": 10.086206896551724
         },
         {
           "query": "optical motion capture",
           "clicks": 1,
-          "impressions": 240,
-          "ctr": 0.004166666666666667,
-          "position": 10.066666666666666
+          "impressions": 246,
+          "ctr": 0.0040650406504065045,
+          "position": 10.605691056910569
         },
         {
           "query": "what is motion capture in camera",
           "clicks": 1,
-          "impressions": 168,
-          "ctr": 0.005952380952380952,
-          "position": 8.80952380952381
+          "impressions": 175,
+          "ctr": 0.005714285714285714,
+          "position": 8.862857142857143
         }
       ],
       "issues": [
@@ -310,8 +310,8 @@
       ],
       "internalLinkSuggestion": [
         "https://www.mimicproductions.com/post/motion-capture-suits",
-        "https://www.mimicproductions.com/post/motion-capture-in-animation",
-        "https://www.mimicproductions.com/post/facial-motion-capture"
+        "https://www.mimicproductions.com/post/facial-motion-capture",
+        "https://www.mimicproductions.com/post/motion-capture-in-animation"
       ]
     },
     {
@@ -331,61 +331,135 @@
       },
       "primary": {
         "query": "motion capture suit",
-        "clicks": 18,
-        "impressions": 2119,
-        "ctr": 0.008494572911750826,
-        "position": 7.256252949504483
+        "clicks": 17,
+        "impressions": 2124,
+        "ctr": 0.00800376647834275,
+        "position": 7.274482109227872
       },
       "secondary": [
         {
           "query": "mocap suit",
-          "clicks": 8,
-          "impressions": 2455,
-          "ctr": 0.003258655804480652,
-          "position": 6.722199592668025
+          "clicks": 7,
+          "impressions": 2490,
+          "ctr": 0.002811244979919679,
+          "position": 6.698795180722891
         },
         {
           "query": "motion capture suits",
           "clicks": 3,
-          "impressions": 159,
-          "ctr": 0.018867924528301886,
-          "position": 7.515723270440252
+          "impressions": 164,
+          "ctr": 0.018292682926829267,
+          "position": 7.475609756097561
         },
         {
           "query": "performance capture suit",
           "clicks": 1,
-          "impressions": 447,
-          "ctr": 0.0022371364653243847,
-          "position": 5.402684563758389
+          "impressions": 434,
+          "ctr": 0.002304147465437788,
+          "position": 5.357142857142857
         },
         {
           "query": "mocap suits",
           "clicks": 1,
           "impressions": 229,
           "ctr": 0.004366812227074236,
-          "position": 8.209606986899562
+          "position": 8.05240174672489
         },
         {
           "query": "animation suit",
           "clicks": 1,
-          "impressions": 145,
-          "ctr": 0.006896551724137931,
-          "position": 7.068965517241379
+          "impressions": 150,
+          "ctr": 0.006666666666666667,
+          "position": 7.12
         }
       ],
       "issues": [
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.85% is well below the ~3.9% typical for position 7.3 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.80% is well below the ~3.9% typical for position 7.3 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         }
       ],
       "internalLinkSuggestion": [
         "https://www.mimicproductions.com/post/motion-capture-technology-types-of-motion-capture",
-        "https://www.mimicproductions.com/post/motion-capture-in-animation",
-        "https://www.mimicproductions.com/post/facial-motion-capture"
+        "https://www.mimicproductions.com/post/facial-motion-capture",
+        "https://www.mimicproductions.com/post/motion-capture-in-animation"
+      ]
+    },
+    {
+      "url": "https://www.mimicproductions.com/post/facial-motion-capture",
+      "itemType": "BLOG_POST",
+      "itemId": "c76a366f-bc40-40ec-8263-2533570ce7e0",
+      "matched": true,
+      "current": {
+        "title": "Facial Motion Capture | Facial Mocap & Digital Humans",
+        "metaDescription": "Facial motion capture explained—discover how facial mocap works, its applications, benefits, challenges, and why Mimic Productions is a global leader in high-end facial performance capture.",
+        "focusKeywords": [
+          {
+            "term": "Facial Motion Capture",
+            "isMain": true
+          }
+        ]
+      },
+      "primary": {
+        "query": "facial motion capture",
+        "clicks": 5,
+        "impressions": 1978,
+        "ctr": 0.0025278058645096056,
+        "position": 3.0495449949443882
+      },
+      "secondary": [
+        {
+          "query": "face motion capture",
+          "clicks": 2,
+          "impressions": 100,
+          "ctr": 0.02,
+          "position": 5.2
+        },
+        {
+          "query": "facial capture",
+          "clicks": 1,
+          "impressions": 441,
+          "ctr": 0.0022675736961451248,
+          "position": 7.179138321995465
+        },
+        {
+          "query": "mocap face",
+          "clicks": 1,
+          "impressions": 129,
+          "ctr": 0.007751937984496124,
+          "position": 8.418604651162791
+        },
+        {
+          "query": "motion capture face",
+          "clicks": 0,
+          "impressions": 353,
+          "ctr": 0,
+          "position": 5.515580736543909
+        },
+        {
+          "query": "facial performance capture",
+          "clicks": 0,
+          "impressions": 201,
+          "ctr": 0,
+          "position": 7.1393034825870645
+        }
+      ],
+      "issues": [
+        {
+          "type": "ctr",
+          "field": null,
+          "message": "CTR 0.25% is well below the ~9.9% typical for position 3.0 -- title/meta likely isn't matching search intent.",
+          "current": null,
+          "suggested": null
+        }
+      ],
+      "internalLinkSuggestion": [
+        "https://www.mimicproductions.com/post/motion-capture-technology-types-of-motion-capture",
+        "https://www.mimicproductions.com/post/motion-capture-suits",
+        "https://www.mimicproductions.com/post/motion-capture-in-animation"
       ]
     },
     {
@@ -406,52 +480,52 @@
       "primary": {
         "query": "how does motion capture animation work",
         "clicks": 1,
-        "impressions": 11,
-        "ctr": 0.09090909090909091,
-        "position": 12.272727272727273
+        "impressions": 12,
+        "ctr": 0.08333333333333333,
+        "position": 12.666666666666666
       },
       "secondary": [
         {
-          "query": "motion capture performance",
-          "clicks": 1,
-          "impressions": 3,
-          "ctr": 0.3333333333333333,
-          "position": 53
-        },
-        {
           "query": "how does motion capture work for animation",
           "clicks": 0,
-          "impressions": 3116,
+          "impressions": 2509,
           "ctr": 0,
-          "position": 3.819961489088575
+          "position": 3.6660023913909923
         },
         {
           "query": "motion capture animation",
           "clicks": 0,
-          "impressions": 723,
+          "impressions": 638,
           "ctr": 0,
-          "position": 9.092669432918395
+          "position": 9.19435736677116
         },
         {
           "query": "motion capture",
           "clicks": 0,
-          "impressions": 269,
+          "impressions": 249,
           "ctr": 0,
-          "position": 17.62825278810409
+          "position": 16.911646586345384
         },
         {
           "query": "how does motion capture work",
           "clicks": 0,
-          "impressions": 75,
+          "impressions": 71,
           "ctr": 0,
-          "position": 10.613333333333333
+          "position": 11.014084507042254
+        },
+        {
+          "query": "what is motion capture in animation",
+          "clicks": 0,
+          "impressions": 61,
+          "ctr": 0,
+          "position": 23.983606557377048
         }
       ],
       "issues": [
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"how does motion capture animation work\" (11 impr, pos 12.3).",
+          "message": "Title doesn't contain the top query \"how does motion capture animation work\" (12 impr, pos 12.7).",
           "current": "Motion Capture in Animation: How It Works and Use Cases",
           "suggested": null
         },
@@ -478,11 +552,11 @@
               "isMain": true
             },
             {
-              "term": "motion capture performance",
+              "term": "how does motion capture work for animation",
               "isMain": false
             },
             {
-              "term": "how does motion capture work for animation",
+              "term": "motion capture animation",
               "isMain": false
             }
           ]
@@ -492,80 +566,6 @@
         "https://www.mimicproductions.com/post/motion-capture-vs-animation-a-detailed-comparison",
         "https://www.mimicproductions.com/post/motion-capture-technology-types-of-motion-capture",
         "https://www.mimicproductions.com/post/motion-capture-suits"
-      ]
-    },
-    {
-      "url": "https://www.mimicproductions.com/post/facial-motion-capture",
-      "itemType": "BLOG_POST",
-      "itemId": "c76a366f-bc40-40ec-8263-2533570ce7e0",
-      "matched": true,
-      "current": {
-        "title": "Facial Motion Capture | Facial Mocap & Digital Humans",
-        "metaDescription": "Facial motion capture explained—discover how facial mocap works, its applications, benefits, challenges, and why Mimic Productions is a global leader in high-end facial performance capture.",
-        "focusKeywords": [
-          {
-            "term": "Facial Motion Capture",
-            "isMain": true
-          }
-        ]
-      },
-      "primary": {
-        "query": "facial motion capture",
-        "clicks": 4,
-        "impressions": 1955,
-        "ctr": 0.0020460358056265983,
-        "position": 3.0951406649616366
-      },
-      "secondary": [
-        {
-          "query": "face motion capture",
-          "clicks": 2,
-          "impressions": 103,
-          "ctr": 0.019417475728155338,
-          "position": 5.242718446601942
-        },
-        {
-          "query": "facial capture",
-          "clicks": 1,
-          "impressions": 449,
-          "ctr": 0.0022271714922048997,
-          "position": 7.202672605790646
-        },
-        {
-          "query": "mocap face",
-          "clicks": 1,
-          "impressions": 124,
-          "ctr": 0.008064516129032258,
-          "position": 8.57258064516129
-        },
-        {
-          "query": "motion capture face",
-          "clicks": 0,
-          "impressions": 355,
-          "ctr": 0,
-          "position": 5.687323943661972
-        },
-        {
-          "query": "facial performance capture",
-          "clicks": 0,
-          "impressions": 187,
-          "ctr": 0,
-          "position": 6.689839572192513
-        }
-      ],
-      "issues": [
-        {
-          "type": "ctr",
-          "field": null,
-          "message": "CTR 0.20% is well below the ~9.7% typical for position 3.1 -- title/meta likely isn't matching search intent.",
-          "current": null,
-          "suggested": null
-        }
-      ],
-      "internalLinkSuggestion": [
-        "https://www.mimicproductions.com/post/motion-capture-technology-types-of-motion-capture",
-        "https://www.mimicproductions.com/post/motion-capture-suits",
-        "https://www.mimicproductions.com/post/motion-capture-in-animation"
       ]
     },
     {
@@ -585,24 +585,24 @@
       },
       "primary": {
         "query": "mimic productions",
-        "clicks": 166,
-        "impressions": 355,
-        "ctr": 0.4676056338028169,
-        "position": 1.8901408450704225
+        "clicks": 170,
+        "impressions": 356,
+        "ctr": 0.47752808988764045,
+        "position": 1.8820224719101124
       },
       "secondary": [
         {
           "query": "mimic production",
           "clicks": 26,
-          "impressions": 59,
-          "ctr": 0.4406779661016949,
-          "position": 2.0338983050847457
+          "impressions": 58,
+          "ctr": 0.4482758620689655,
+          "position": 2.0517241379310347
         },
         {
           "query": "mimic studios",
-          "clicks": 12,
+          "clicks": 13,
           "impressions": 36,
-          "ctr": 0.3333333333333333,
+          "ctr": 0.3611111111111111,
           "position": 3.361111111111111
         },
         {
@@ -615,9 +615,9 @@
         {
           "query": "mimic studio",
           "clicks": 5,
-          "impressions": 51,
-          "ctr": 0.09803921568627451,
-          "position": 3.803921568627451
+          "impressions": 58,
+          "ctr": 0.08620689655172414,
+          "position": 4.637931034482758
         },
         {
           "query": "mimics productions",
@@ -680,60 +680,60 @@
       },
       "primary": {
         "query": "3d character modeling",
-        "clicks": 5,
-        "impressions": 380,
-        "ctr": 0.013157894736842105,
-        "position": 10.93157894736842
+        "clicks": 6,
+        "impressions": 390,
+        "ctr": 0.015384615384615385,
+        "position": 10.866666666666667
       },
       "secondary": [
         {
           "query": "3d character",
           "clicks": 1,
-          "impressions": 281,
-          "ctr": 0.0035587188612099642,
-          "position": 20.647686832740213
+          "impressions": 262,
+          "ctr": 0.003816793893129771,
+          "position": 20.931297709923665
         },
         {
           "query": "3d character design",
           "clicks": 0,
-          "impressions": 341,
+          "impressions": 332,
           "ctr": 0,
-          "position": 19.39589442815249
+          "position": 19.237951807228917
         },
         {
           "query": "character modeling",
           "clicks": 0,
-          "impressions": 285,
+          "impressions": 275,
           "ctr": 0,
-          "position": 14.357894736842105
+          "position": 14.163636363636364
         },
         {
           "query": "3d character model",
           "clicks": 0,
-          "impressions": 255,
+          "impressions": 239,
           "ctr": 0,
-          "position": 17.45098039215686
+          "position": 17.690376569037657
         },
         {
           "query": "3d character modelling",
           "clicks": 0,
-          "impressions": 199,
+          "impressions": 205,
           "ctr": 0,
-          "position": 7.0703517587939695
+          "position": 7.1414634146341465
         }
       ],
       "issues": [
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"3d character design\" (341 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"3d character design\" (332 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "3d character design"
         },
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"3d character modelling\" (199 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"3d character modelling\" (205 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "3d character modelling"
         }
@@ -759,75 +759,68 @@
         ]
       },
       "primary": {
-        "query": "motion capture animation",
-        "clicks": 1,
-        "impressions": 409,
-        "ctr": 0.0024449877750611247,
-        "position": 9.10757946210269
+        "query": "motion capture 3d animation",
+        "clicks": 2,
+        "impressions": 17,
+        "ctr": 0.11764705882352941,
+        "position": 5.117647058823529
       },
       "secondary": [
         {
+          "query": "motion capture animation",
+          "clicks": 1,
+          "impressions": 415,
+          "ctr": 0.0024096385542168677,
+          "position": 9.024096385542169
+        },
+        {
           "query": "what is mocap animation",
           "clicks": 1,
-          "impressions": 60,
-          "ctr": 0.016666666666666666,
-          "position": 7.166666666666667
-        },
-        {
-          "query": "motion capture 3d animation",
-          "clicks": 1,
-          "impressions": 15,
-          "ctr": 0.06666666666666667,
-          "position": 5.066666666666666
-        },
-        {
-          "query": "mocap vs animation",
-          "clicks": 1,
-          "impressions": 10,
-          "ctr": 0.1,
-          "position": 3.5
+          "impressions": 65,
+          "ctr": 0.015384615384615385,
+          "position": 7.2615384615384615
         },
         {
           "query": "what is motion capture",
           "clicks": 1,
-          "impressions": 3,
-          "ctr": 0.3333333333333333,
+          "impressions": 2,
+          "ctr": 0.5,
           "position": 2
         },
         {
           "query": "what is motion capture in animation",
           "clicks": 0,
-          "impressions": 1454,
+          "impressions": 1407,
           "ctr": 0,
-          "position": 6.111416781292985
+          "position": 6.342572850035537
+        },
+        {
+          "query": "3d animation motion capture",
+          "clicks": 0,
+          "impressions": 88,
+          "ctr": 0,
+          "position": 13.556818181818182
         }
       ],
       "issues": [
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"motion capture animation\" (409 impr, pos 9.1).",
+          "message": "Title doesn't contain the top query \"motion capture 3d animation\" (17 impr, pos 5.1).",
           "current": "Motion Capture vs 3D Animation: Key Differences",
           "suggested": null
         },
         {
           "type": "meta",
           "field": "metaDescription",
-          "message": "Meta description doesn't mention the top query \"motion capture animation\".",
+          "message": "Meta description doesn't mention the top query \"motion capture 3d animation\".",
           "current": "Discover the key differences between motion capture and 3D animation in this detailed comparison by Mimic Productions. Learn which technique suits your project best—from realism to creative control.",
-          "suggested": null
-        },
-        {
-          "type": "ctr",
-          "field": null,
-          "message": "CTR 0.24% is well below the ~2.9% typical for position 9.1 -- title/meta likely isn't matching search intent.",
-          "current": null,
           "suggested": null
         },
         {
           "type": "focus-keyword",
           "field": "focusKeywords",
-          "message": "Focus keyword doesn't include the top GSC query \"motion capture animation\".",
+          "message": "Focus keyword doesn't include the top GSC query \"motion capture 3d animation\".",
           "current": [
             {
               "term": "motion capture",
@@ -836,15 +829,15 @@
           ],
           "suggested": [
             {
-              "term": "motion capture animation",
+              "term": "motion capture 3d animation",
               "isMain": true
             },
             {
-              "term": "what is mocap animation",
+              "term": "motion capture animation",
               "isMain": false
             },
             {
-              "term": "motion capture 3d animation",
+              "term": "what is mocap animation",
               "isMain": false
             }
           ]
@@ -874,45 +867,45 @@
       "primary": {
         "query": "motion capture vs performance capture",
         "clicks": 2,
-        "impressions": 257,
-        "ctr": 0.007782101167315175,
-        "position": 3.0311284046692606
+        "impressions": 261,
+        "ctr": 0.007662835249042145,
+        "position": 3.0114942528735633
       },
       "secondary": [
         {
           "query": "performance capture",
           "clicks": 1,
-          "impressions": 1055,
-          "ctr": 0.0009478672985781991,
-          "position": 5.703317535545024
+          "impressions": 1014,
+          "ctr": 0.0009861932938856016,
+          "position": 5.870808678500986
         },
         {
           "query": "performance capture vs motion capture",
           "clicks": 1,
-          "impressions": 443,
-          "ctr": 0.002257336343115124,
-          "position": 3
+          "impressions": 439,
+          "ctr": 0.002277904328018223,
+          "position": 2.9703872437357632
         },
         {
           "query": "game performance capture",
           "clicks": 0,
           "impressions": 152,
           "ctr": 0,
-          "position": 3.5789473684210527
+          "position": 3.6842105263157894
         },
         {
           "query": "game performance capture system",
           "clicks": 0,
-          "impressions": 112,
+          "impressions": 120,
           "ctr": 0,
-          "position": 4.357142857142858
+          "position": 4.333333333333334
         },
         {
           "query": "what is performance capture",
           "clicks": 0,
-          "impressions": 95,
+          "impressions": 94,
           "ctr": 0,
-          "position": 7.936842105263158
+          "position": 8.053191489361701
         }
       ],
       "issues": [
@@ -926,7 +919,7 @@
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.78% is well below the ~9.9% typical for position 3.0 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.77% is well below the ~10.0% typical for position 3.0 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         },
@@ -958,7 +951,7 @@
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"game performance capture system\" (112 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"game performance capture system\" (120 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "game performance capture system"
         }
@@ -966,7 +959,7 @@
       "internalLinkSuggestion": [
         "https://www.mimicproductions.com/post/motion-capture-technology-types-of-motion-capture",
         "https://www.mimicproductions.com/post/motion-capture-suits",
-        "https://www.mimicproductions.com/post/motion-capture-in-animation"
+        "https://www.mimicproductions.com/post/facial-motion-capture"
       ]
     },
     {
@@ -987,9 +980,9 @@
       "primary": {
         "query": "digital human",
         "clicks": 1,
-        "impressions": 337,
-        "ctr": 0.002967359050445104,
-        "position": 21.465875370919882
+        "impressions": 339,
+        "ctr": 0.0029498525073746312,
+        "position": 21.44542772861357
       },
       "secondary": [
         {
@@ -997,42 +990,42 @@
           "clicks": 0,
           "impressions": 363,
           "ctr": 0,
-          "position": 30.798898071625345
+          "position": 30.829201101928376
         },
         {
           "query": "digital humans",
           "clicks": 0,
-          "impressions": 262,
+          "impressions": 263,
           "ctr": 0,
-          "position": 27.782442748091604
+          "position": 27.85551330798479
         },
         {
           "query": "what is a digital character",
           "clicks": 0,
-          "impressions": 121,
+          "impressions": 117,
           "ctr": 0,
-          "position": 13.96694214876033
+          "position": 14.102564102564102
         },
         {
           "query": "ai digital human",
           "clicks": 0,
-          "impressions": 114,
+          "impressions": 111,
           "ctr": 0,
-          "position": 39.94736842105263
+          "position": 40.486486486486484
         },
         {
           "query": "digital person",
           "clicks": 0,
-          "impressions": 92,
+          "impressions": 98,
           "ctr": 0,
-          "position": 9.119565217391305
+          "position": 8.938775510204081
         }
       ],
       "issues": [
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.30% is well below the ~0.9% typical for position 21.5 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.29% is well below the ~0.9% typical for position 21.4 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         },
@@ -1101,30 +1094,30 @@
         {
           "query": "cloud server mesh processing 3d facial scanning",
           "clicks": 0,
-          "impressions": 1041,
+          "impressions": 1040,
           "ctr": 0,
-          "position": 8.178674351585014
+          "position": 8.158653846153847
         },
         {
           "query": "3d face capture",
           "clicks": 0,
-          "impressions": 92,
+          "impressions": 93,
           "ctr": 0,
-          "position": 7.532608695652174
+          "position": 7.419354838709677
         },
         {
           "query": "3d face scanning",
           "clicks": 0,
-          "impressions": 88,
+          "impressions": 86,
           "ctr": 0,
-          "position": 16.988636363636363
+          "position": 16.883720930232556
         },
         {
           "query": "3d facial scanning",
           "clicks": 0,
-          "impressions": 60,
+          "impressions": 58,
           "ctr": 0,
-          "position": 15.033333333333333
+          "position": 15.017241379310345
         }
       ],
       "issues": [
@@ -1170,7 +1163,7 @@
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"cloud server mesh processing 3d facial scanning\" (1041 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"cloud server mesh processing 3d facial scanning\" (1040 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "cloud server mesh processing 3d facial scanning"
         }
@@ -1197,24 +1190,24 @@
       "primary": {
         "query": "digital double",
         "clicks": 3,
-        "impressions": 1213,
-        "ctr": 0.00247320692497939,
-        "position": 4.046990931574609
+        "impressions": 1247,
+        "ctr": 0.0024057738572574178,
+        "position": 3.9703287890938253
       },
       "secondary": [
         {
           "query": "double digital",
           "clicks": 0,
-          "impressions": 252,
+          "impressions": 256,
           "ctr": 0,
-          "position": 7.380952380952381
+          "position": 7.421875
         },
         {
           "query": "digital doubles",
           "clicks": 0,
-          "impressions": 227,
+          "impressions": 239,
           "ctr": 0,
-          "position": 4.819383259911894
+          "position": 4.707112970711297
         },
         {
           "query": "digital double meaning",
@@ -1226,7 +1219,7 @@
         {
           "query": "3d digital doubles",
           "clicks": 0,
-          "impressions": 24,
+          "impressions": 28,
           "ctr": 0,
           "position": 5
         },
@@ -1242,7 +1235,7 @@
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.25% is well below the ~7.0% typical for position 4.0 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.24% is well below the ~7.1% typical for position 4.0 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         },
@@ -1295,52 +1288,52 @@
       "primary": {
         "query": "how does motion capture work in video games",
         "clicks": 0,
-        "impressions": 1087,
+        "impressions": 1084,
         "ctr": 0,
-        "position": 7.7828886844526215
+        "position": 7.785055350553505
       },
       "secondary": [
         {
-          "query": "motion capture video games",
-          "clicks": 0,
-          "impressions": 71,
-          "ctr": 0,
-          "position": 13.394366197183098
-        },
-        {
           "query": "motion capture games",
           "clicks": 0,
-          "impressions": 69,
+          "impressions": 70,
           "ctr": 0,
-          "position": 13.898550724637682
+          "position": 13.628571428571428
         },
         {
           "query": "motion capture for games",
           "clicks": 0,
-          "impressions": 68,
+          "impressions": 67,
           "ctr": 0,
-          "position": 15.661764705882353
+          "position": 16.731343283582092
+        },
+        {
+          "query": "motion capture video games",
+          "clicks": 0,
+          "impressions": 65,
+          "ctr": 0,
+          "position": 13.276923076923078
         },
         {
           "query": "motion capture in video games",
           "clicks": 0,
-          "impressions": 58,
+          "impressions": 59,
           "ctr": 0,
-          "position": 14.5
+          "position": 14.508474576271187
         },
         {
           "query": "game motion capture",
           "clicks": 0,
-          "impressions": 57,
+          "impressions": 58,
           "ctr": 0,
-          "position": 9
+          "position": 8.931034482758621
         }
       ],
       "issues": [
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"how does motion capture work in video games\" (1087 impr, pos 7.8).",
+          "message": "Title doesn't contain the top query \"how does motion capture work in video games\" (1084 impr, pos 7.8).",
           "current": "How Motion Capture Works in Game Development",
           "suggested": null
         },
@@ -1374,11 +1367,11 @@
               "isMain": true
             },
             {
-              "term": "motion capture video games",
+              "term": "motion capture games",
               "isMain": false
             },
             {
-              "term": "motion capture games",
+              "term": "motion capture for games",
               "isMain": false
             }
           ]
@@ -1386,14 +1379,14 @@
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"motion capture video games\" (71 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"motion capture video games\" (65 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "motion capture video games"
         },
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"motion capture in video games\" (58 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"motion capture in video games\" (59 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "motion capture in video games"
         }
@@ -1401,7 +1394,7 @@
       "internalLinkSuggestion": [
         "https://www.mimicproductions.com/post/motion-capture-technology-types-of-motion-capture",
         "https://www.mimicproductions.com/post/motion-capture-suits",
-        "https://www.mimicproductions.com/post/motion-capture-in-animation"
+        "https://www.mimicproductions.com/post/facial-motion-capture"
       ]
     },
     {
@@ -1430,37 +1423,37 @@
         {
           "query": "digital human ai",
           "clicks": 0,
-          "impressions": 344,
+          "impressions": 345,
           "ctr": 0,
-          "position": 21.069767441860463
+          "position": 20.92463768115942
         },
         {
           "query": "ai digital human",
           "clicks": 0,
-          "impressions": 181,
+          "impressions": 180,
           "ctr": 0,
-          "position": 24.723756906077348
+          "position": 24.572222222222223
         },
         {
           "query": "human avatar",
           "clicks": 0,
-          "impressions": 118,
+          "impressions": 116,
           "ctr": 0,
-          "position": 16.508474576271187
-        },
-        {
-          "query": "digital human",
-          "clicks": 0,
-          "impressions": 105,
-          "ctr": 0,
-          "position": 13.628571428571428
+          "position": 16.189655172413794
         },
         {
           "query": "what is an ai avatar and how is it different from a regular digital avatar",
           "clicks": 0,
-          "impressions": 105,
+          "impressions": 104,
           "ctr": 0,
-          "position": 5.533333333333333
+          "position": 5.586538461538462
+        },
+        {
+          "query": "digital human",
+          "clicks": 0,
+          "impressions": 94,
+          "ctr": 0,
+          "position": 13.457446808510639
         }
       ],
       "issues": [
@@ -1474,7 +1467,7 @@
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"what is an ai avatar and how is it different from a regular digital avatar\" (105 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"what is an ai avatar and how is it different from a regular digital avatar\" (104 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "what is an ai avatar and how is it different from a regular digital avatar"
         }
@@ -1502,9 +1495,9 @@
       "primary": {
         "query": "embodied ai vs physical ai",
         "clicks": 2,
-        "impressions": 889,
-        "ctr": 0.0022497187851518562,
-        "position": 6.0956130483689535
+        "impressions": 932,
+        "ctr": 0.002145922746781116,
+        "position": 5.973175965665236
       },
       "secondary": [
         {
@@ -1517,16 +1510,16 @@
         {
           "query": "physical ai vs embodied ai",
           "clicks": 0,
-          "impressions": 255,
+          "impressions": 248,
           "ctr": 0,
-          "position": 7.556862745098039
+          "position": 7.459677419354839
         },
         {
           "query": "difference between physical ai and embodied ai",
           "clicks": 0,
-          "impressions": 77,
+          "impressions": 81,
           "ctr": 0,
-          "position": 8.116883116883116
+          "position": 8.160493827160494
         },
         {
           "query": "what is the difference between physical ai and embodied ai",
@@ -1547,7 +1540,7 @@
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"embodied ai vs physical ai\" (889 impr, pos 6.1).",
+          "message": "Title doesn't contain the top query \"embodied ai vs physical ai\" (932 impr, pos 6.0).",
           "current": "Embodied AI vs. Physical AI: From Digital Humans to Real World",
           "suggested": null
         },
@@ -1568,7 +1561,7 @@
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.22% is well below the ~4.9% typical for position 6.1 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.21% is well below the ~5.0% typical for position 6.0 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         },
@@ -1626,16 +1619,16 @@
         {
           "query": "ai in animation industry",
           "clicks": 1,
-          "impressions": 19,
-          "ctr": 0.05263157894736842,
-          "position": 8.421052631578947
+          "impressions": 18,
+          "ctr": 0.05555555555555555,
+          "position": 8.333333333333334
         },
         {
           "query": "animation artificial intelligence",
           "clicks": 1,
-          "impressions": 8,
-          "ctr": 0.125,
-          "position": 11.875
+          "impressions": 7,
+          "ctr": 0.14285714285714285,
+          "position": 13.428571428571429
         },
         {
           "query": "ai animation pipeline",
@@ -1654,9 +1647,9 @@
         {
           "query": "what is ai animation",
           "clicks": 0,
-          "impressions": 240,
+          "impressions": 239,
           "ctr": 0,
-          "position": 24.845833333333335
+          "position": 24.661087866108787
         }
       ],
       "issues": [
@@ -1730,24 +1723,24 @@
       "primary": {
         "query": "body scan clothing",
         "clicks": 0,
-        "impressions": 862,
+        "impressions": 848,
         "ctr": 0,
-        "position": 9.647331786542923
+        "position": 9.628537735849056
       },
       "secondary": [
         {
           "query": "3d bodyscan clothing",
           "clicks": 0,
-          "impressions": 246,
+          "impressions": 248,
           "ctr": 0,
-          "position": 9.609756097560975
+          "position": 9.612903225806452
         },
         {
           "query": "fashion scanning",
           "clicks": 0,
-          "impressions": 32,
+          "impressions": 33,
           "ctr": 0,
-          "position": 6
+          "position": 5.9393939393939394
         },
         {
           "query": "bodyscan clothing",
@@ -1775,7 +1768,7 @@
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"body scan clothing\" (862 impr, pos 9.6).",
+          "message": "Title doesn't contain the top query \"body scan clothing\" (848 impr, pos 9.6).",
           "current": "Full Body 3D Scanning for Fashion & Virtual Try On",
           "suggested": null
         },
@@ -1821,7 +1814,7 @@
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"3d bodyscan clothing\" (246 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"3d bodyscan clothing\" (248 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "3d bodyscan clothing"
         },
@@ -1852,6 +1845,115 @@
       ]
     },
     {
+      "url": "https://www.mimicproductions.com/post/holograms-vs-ar-vs-vr",
+      "itemType": "BLOG_POST",
+      "itemId": "30e11c0b-adab-4947-8ddb-648a876cd71d",
+      "matched": true,
+      "current": {
+        "title": "Hologram VR vs AR vs VR | Differences, Uses & Technology",
+        "metaDescription": "Explore the real differences between holograms, augmented reality, and virtual reality from a production perspective. Learn when each format works best.",
+        "focusKeywords": [
+          {
+            "term": "Holograms vs AR vs VR",
+            "isMain": true
+          }
+        ]
+      },
+      "primary": {
+        "query": "augmented reality hologram",
+        "clicks": 1,
+        "impressions": 173,
+        "ctr": 0.005780346820809248,
+        "position": 8.38150289017341
+      },
+      "secondary": [
+        {
+          "query": "holograms",
+          "clicks": 1,
+          "impressions": 1,
+          "ctr": 1,
+          "position": 3
+        },
+        {
+          "query": "hologram vr",
+          "clicks": 0,
+          "impressions": 433,
+          "ctr": 0,
+          "position": 5.953810623556582
+        },
+        {
+          "query": "vr hologram",
+          "clicks": 0,
+          "impressions": 159,
+          "ctr": 0,
+          "position": 9.767295597484276
+        },
+        {
+          "query": "ar hologram",
+          "clicks": 0,
+          "impressions": 73,
+          "ctr": 0,
+          "position": 6.47945205479452
+        },
+        {
+          "query": "virtual reality hologram",
+          "clicks": 0,
+          "impressions": 57,
+          "ctr": 0,
+          "position": 8
+        }
+      ],
+      "issues": [
+        {
+          "type": "title",
+          "field": "title",
+          "message": "Title doesn't contain the top query \"augmented reality hologram\" (173 impr, pos 8.4).",
+          "current": "Hologram VR vs AR vs VR | Differences, Uses & Technology",
+          "suggested": null
+        },
+        {
+          "type": "meta",
+          "field": "metaDescription",
+          "message": "Meta description doesn't mention the top query \"augmented reality hologram\".",
+          "current": "Explore the real differences between holograms, augmented reality, and virtual reality from a production perspective. Learn when each format works best.",
+          "suggested": null
+        },
+        {
+          "type": "ctr",
+          "field": null,
+          "message": "CTR 0.58% is well below the ~3.3% typical for position 8.4 -- title/meta likely isn't matching search intent.",
+          "current": null,
+          "suggested": null
+        },
+        {
+          "type": "focus-keyword",
+          "field": "focusKeywords",
+          "message": "Focus keyword doesn't include the top GSC query \"augmented reality hologram\".",
+          "current": [
+            {
+              "term": "Holograms vs AR vs VR",
+              "isMain": true
+            }
+          ],
+          "suggested": [
+            {
+              "term": "augmented reality hologram",
+              "isMain": true
+            },
+            {
+              "term": "holograms",
+              "isMain": false
+            },
+            {
+              "term": "hologram vr",
+              "isMain": false
+            }
+          ]
+        }
+      ],
+      "internalLinkSuggestion": []
+    },
+    {
       "url": "https://www.mimicproductions.com/post/what-is-photogrammetry",
       "itemType": "BLOG_POST",
       "itemId": "f077e288-2856-4505-b336-b561f7b1fc1e",
@@ -1869,45 +1971,45 @@
       "primary": {
         "query": "photogrammetry",
         "clicks": 0,
-        "impressions": 379,
+        "impressions": 378,
         "ctr": 0,
-        "position": 33.50923482849604
+        "position": 33.58465608465608
       },
       "secondary": [
         {
           "query": "3d photogrammetry",
           "clicks": 0,
-          "impressions": 183,
+          "impressions": 181,
           "ctr": 0,
-          "position": 22.497267759562842
+          "position": 22.497237569060772
         },
         {
           "query": "photogrammetry 3d",
           "clicks": 0,
-          "impressions": 136,
+          "impressions": 133,
           "ctr": 0,
-          "position": 27.698529411764707
+          "position": 27.68421052631579
         },
         {
           "query": "how does photogrammetry work",
           "clicks": 0,
-          "impressions": 92,
+          "impressions": 89,
           "ctr": 0,
-          "position": 25.66304347826087
+          "position": 25.629213483146067
         },
         {
           "query": "photogrammetry technology",
           "clicks": 0,
-          "impressions": 64,
+          "impressions": 66,
           "ctr": 0,
-          "position": 22.625
+          "position": 22.78787878787879
         },
         {
           "query": "photogrammetry process",
           "clicks": 0,
-          "impressions": 63,
+          "impressions": 65,
           "ctr": 0,
-          "position": 18.26984126984127
+          "position": 18.415384615384614
         }
       ],
       "issues": [
@@ -1921,7 +2023,7 @@
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.00% is well below the ~0.5% typical for position 33.5 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.00% is well below the ~0.5% typical for position 33.6 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         },
@@ -1955,122 +2057,6 @@
         "https://www.mimicproductions.com/post/what-is-3d-character-modeling",
         "https://www.mimicproductions.com/post/what-is-a-digital-human"
       ]
-    },
-    {
-      "url": "https://www.mimicproductions.com/post/holograms-vs-ar-vs-vr",
-      "itemType": "BLOG_POST",
-      "itemId": "30e11c0b-adab-4947-8ddb-648a876cd71d",
-      "matched": true,
-      "current": {
-        "title": "Hologram VR vs AR vs VR | Differences, Uses & Technology",
-        "metaDescription": "Explore the real differences between holograms, augmented reality, and virtual reality from a production perspective. Learn when each format works best.",
-        "focusKeywords": [
-          {
-            "term": "Holograms vs AR vs VR",
-            "isMain": true
-          }
-        ]
-      },
-      "primary": {
-        "query": "augmented reality hologram",
-        "clicks": 1,
-        "impressions": 176,
-        "ctr": 0.005681818181818182,
-        "position": 8.392045454545455
-      },
-      "secondary": [
-        {
-          "query": "holograms",
-          "clicks": 1,
-          "impressions": 1,
-          "ctr": 1,
-          "position": 3
-        },
-        {
-          "query": "hologram vr",
-          "clicks": 0,
-          "impressions": 426,
-          "ctr": 0,
-          "position": 5.875586854460094
-        },
-        {
-          "query": "vr hologram",
-          "clicks": 0,
-          "impressions": 163,
-          "ctr": 0,
-          "position": 9.920245398773005
-        },
-        {
-          "query": "ar hologram",
-          "clicks": 0,
-          "impressions": 73,
-          "ctr": 0,
-          "position": 6.47945205479452
-        },
-        {
-          "query": "holography augmented reality",
-          "clicks": 0,
-          "impressions": 58,
-          "ctr": 0,
-          "position": 8.10344827586207
-        }
-      ],
-      "issues": [
-        {
-          "type": "title",
-          "field": "title",
-          "message": "Title doesn't contain the top query \"augmented reality hologram\" (176 impr, pos 8.4).",
-          "current": "Hologram VR vs AR vs VR | Differences, Uses & Technology",
-          "suggested": null
-        },
-        {
-          "type": "meta",
-          "field": "metaDescription",
-          "message": "Meta description doesn't mention the top query \"augmented reality hologram\".",
-          "current": "Explore the real differences between holograms, augmented reality, and virtual reality from a production perspective. Learn when each format works best.",
-          "suggested": null
-        },
-        {
-          "type": "ctr",
-          "field": null,
-          "message": "CTR 0.57% is well below the ~3.3% typical for position 8.4 -- title/meta likely isn't matching search intent.",
-          "current": null,
-          "suggested": null
-        },
-        {
-          "type": "focus-keyword",
-          "field": "focusKeywords",
-          "message": "Focus keyword doesn't include the top GSC query \"augmented reality hologram\".",
-          "current": [
-            {
-              "term": "Holograms vs AR vs VR",
-              "isMain": true
-            }
-          ],
-          "suggested": [
-            {
-              "term": "augmented reality hologram",
-              "isMain": true
-            },
-            {
-              "term": "holograms",
-              "isMain": false
-            },
-            {
-              "term": "hologram vr",
-              "isMain": false
-            }
-          ]
-        },
-        {
-          "type": "content-gap",
-          "field": null,
-          "message": "Secondary keyword \"holography augmented reality\" (58 impr) doesn't appear in the page content.",
-          "current": null,
-          "suggested": "holography augmented reality"
-        }
-      ],
-      "internalLinkSuggestion": []
     }
   ]
 }
