@@ -45,6 +45,7 @@
   <div class="tabbar-inner">
     <button class="tab-btn active" id="tab-btn-reoptimizer" onclick="switchTab('reoptimizer')">📈 Reoptimizer</button>
     <button class="tab-btn" id="tab-btn-content-audit" onclick="switchTab('content-audit')">📝 Content Audit</button>
+    <button class="tab-btn" id="tab-btn-wix-analytics" onclick="switchTab('wix-analytics')">🧑‍🤝‍🧑 Wix Analytics</button>
   </div>
 </div>
 
@@ -60,47 +61,6 @@
     <h2>📅 Period comparison</h2>
     <p class="card-sub">Actual numbers for the selected window vs the equivalent window before it</p>
     <div id="period-comparison-table"></div>
-  </section>
-
-  <section class="card" id="wix-analytics-section" hidden>
-    <h2>🧑‍🤝‍🧑 Wix Site Analytics</h2>
-    <p class="card-sub" id="wix-analytics-sub">Actual site traffic from Wix (not just organic search), for the period selected above.</p>
-    <div id="wix-capped-note" class="history-warning" hidden></div>
-    <div class="kpi-row" id="wix-kpi-row"></div>
-    <div class="chart-wrap" style="margin-top:1rem"><canvas id="wix-trend-chart"></canvas></div>
-
-    <div class="grid-2" style="margin-top:1.5rem">
-      <div>
-        <h3>Sessions by device</h3>
-        <div id="wix-device-list"></div>
-      </div>
-      <div>
-        <h3>New vs returning visitors</h3>
-        <div id="wix-visitor-type-list"></div>
-      </div>
-    </div>
-    <div class="grid-2" style="margin-top:1rem">
-      <div>
-        <h3>Sessions by country</h3>
-        <div id="wix-country-list"></div>
-      </div>
-      <div>
-        <h3>Traffic sources</h3>
-        <div id="wix-referrer-list"></div>
-      </div>
-    </div>
-
-    <div style="margin-top:1.5rem">
-      <h3>🤖 AI &amp; LLM traffic</h3>
-      <p class="card-sub">Visitors arriving from AI platforms (ChatGPT, Claude, Gemini, Perplexity, etc.) -- the GEO signal Wix tracks directly</p>
-      <div id="wix-ai-platforms"></div>
-    </div>
-  </section>
-
-  <section class="card" id="wix-blog-section" hidden>
-    <h2>📰 Blog Post Analytics</h2>
-    <p class="card-sub">Per-post views, visitors, and engagement from Wix -- for the period selected above</p>
-    <div id="wix-blog-table"></div>
   </section>
 
   <section class="card">
@@ -190,17 +150,83 @@
   <div id="ca-page-list"></div>
 </main>
 
+<main id="tab-panel-wix-analytics" class="tab-panel" hidden>
+  <div class="topbar" style="margin-bottom:1.5rem">
+    <div class="topbar-inner">
+      <div>
+        <h2 style="color:#fff;margin:0">🧑‍🤝‍🧑 Wix Analytics</h2>
+        <p class="sub" id="wix-tab-generated-note"></p>
+      </div>
+      <div class="controls">
+        <select id="wix-tab-site-select"></select>
+        <select id="wix-tab-period-select">
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="180">Last 6 months</option>
+          <option value="240">Last 8 months</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <section class="card" id="wix-analytics-section" hidden>
+    <h2>📊 Site Traffic</h2>
+    <p class="card-sub" id="wix-analytics-sub">Actual site traffic from Wix (not just organic search), for the period selected above.</p>
+    <div id="wix-capped-note" class="history-warning" hidden></div>
+    <div class="kpi-row" id="wix-kpi-row"></div>
+    <div class="chart-wrap" style="margin-top:1rem"><canvas id="wix-trend-chart"></canvas></div>
+
+    <div class="grid-2" style="margin-top:1.5rem">
+      <div>
+        <h3>Sessions by device</h3>
+        <div id="wix-device-list"></div>
+      </div>
+      <div>
+        <h3>New vs returning visitors</h3>
+        <div id="wix-visitor-type-list"></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:1rem">
+      <div>
+        <h3>Sessions by country</h3>
+        <div id="wix-country-list"></div>
+      </div>
+      <div>
+        <h3>Traffic sources</h3>
+        <div id="wix-referrer-list"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <h3>🤖 AI &amp; LLM traffic</h3>
+      <p class="card-sub">Visitors arriving from AI platforms (ChatGPT, Claude, Gemini, Perplexity, etc.) -- the GEO signal Wix tracks directly</p>
+      <div id="wix-ai-platforms"></div>
+    </div>
+  </section>
+
+  <section class="card" id="wix-blog-section" hidden>
+    <h2>📰 Blog Post Analytics</h2>
+    <p class="card-sub">Per-post views, visitors, and engagement from Wix -- for the period selected above</p>
+    <div id="wix-blog-table"></div>
+  </section>
+</main>
+
 </div>
 
 <script src="app.js"></script>
 <script src="content-audit-app.js"></script>
+<script src="wix-analytics-app.js"></script>
 <script>
 function switchTab(tab) {
   document.getElementById('tab-panel-reoptimizer').hidden = tab !== 'reoptimizer';
   document.getElementById('tab-panel-content-audit').hidden = tab !== 'content-audit';
+  document.getElementById('tab-panel-wix-analytics').hidden = tab !== 'wix-analytics';
   document.getElementById('tab-btn-reoptimizer').classList.toggle('active', tab === 'reoptimizer');
   document.getElementById('tab-btn-content-audit').classList.toggle('active', tab === 'content-audit');
+  document.getElementById('tab-btn-wix-analytics').classList.toggle('active', tab === 'wix-analytics');
   if (tab === 'content-audit' && window.initContentAudit) window.initContentAudit();
+  if (tab === 'wix-analytics' && window.initWixAnalyticsTab) window.initWixAnalyticsTab();
 }
 </script>
 </body>

@@ -58,116 +58,6 @@ function renderImageKpis(data) {
   renderKpiRow('image-kpi-row', data.images.current, data.images.previous);
 }
 
-const WIX_METRIC_LABELS = {
-  TOTAL_SESSIONS: 'Sessions',
-  TOTAL_UNIQUE_VISITORS: 'Unique visitors',
-  TOTAL_FORMS_SUBMITTED: 'Forms submitted',
-  CLICKS_TO_CONTACT: 'Clicks to contact',
-};
-
-function renderBreakdown(elId, rows, className) {
-  if (!rows.length) { document.getElementById(elId).innerHTML = '<p class="empty">No data.</p>'; return; }
-  const max = Math.max(...rows.map(r => r.count));
-  document.getElementById(elId).innerHTML = rows.map(r => `
-    <div class="breakdown-row ${className || ''}">
-      <div class="breakdown-label">${esc(r.label)}</div>
-      <div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:${max > 0 ? (r.count / max * 100) : 0}%"></div></div>
-      <div class="breakdown-count">${r.count.toLocaleString()}</div>
-    </div>
-  `).join('');
-}
-
-function fmtReferrerLabel(label) {
-  const names = { direct: 'Direct', organic_search: 'Google/search (organic)', referral: 'Referral', social: 'Social', ai_platform: 'AI platforms', paid_search: 'Paid search' };
-  return names[label] || label;
-}
-
-function fmtSeconds(s) {
-  if (!s) return '0s';
-  return s < 60 ? `${Math.round(s)}s` : `${Math.floor(s / 60)}m ${Math.round(s % 60)}s`;
-}
-
-function renderWixAnalytics(data) {
-  const section = document.getElementById('wix-analytics-section');
-  const blogSection = document.getElementById('wix-blog-section');
-  const wa = data.wixAnalytics;
-  if (!wa) { section.hidden = true; blogSection.hidden = true; return; }
-  section.hidden = false;
-
-  document.getElementById('wix-analytics-sub').textContent = wa.period.hasComparison
-    ? `Actual site traffic from Wix -- ${wa.period.curStart} to ${wa.period.curEnd} vs ${wa.period.prevStart} to ${wa.period.prevEnd}.`
-    : `Actual site traffic from Wix -- ${wa.period.curStart} to ${wa.period.curEnd} (no prior-period comparison available for this window).`;
-
-  const cappedNote = document.getElementById('wix-capped-note');
-  cappedNote.hidden = !wa.period.capped;
-  if (wa.period.capped) {
-    cappedNote.textContent = `⚠️ Wix only retains ~60 days of analytics data -- this period was capped to the earliest available date (${wa.period.curStart}) rather than the full selected range.`;
-  }
-
-  const rows = Object.entries(WIX_METRIC_LABELS).map(([key, label]) => {
-    const cur = wa.current[key]?.total ?? 0;
-    const prev = wa.previous[key]?.total ?? 0;
-    return [label, cur.toLocaleString(), wa.period.hasComparison ? deltaBadge(cur, prev) : ''];
-  });
-  document.getElementById('wix-kpi-row').innerHTML = rows.map(([label, value, badge]) => `
-    <div class="kpi">
-      <div class="label">${label}</div>
-      <div class="value">${value}</div>
-      ${badge}
-    </div>
-  `).join('');
-
-  const sessionsTrend = wa.current.TOTAL_SESSIONS?.trend || [];
-  const visitorsTrend = wa.current.TOTAL_UNIQUE_VISITORS?.trend || [];
-  const ctx = document.getElementById('wix-trend-chart');
-  if (charts.wixTrend) charts.wixTrend.destroy();
-  charts.wixTrend = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: sessionsTrend.map(d => d.date.slice(5)),
-      datasets: [
-        { label: 'Sessions', data: sessionsTrend.map(d => d.value), borderColor: '#18C1A5', backgroundColor: 'rgba(24,193,165,.12)', fill: true, tension: .3, pointRadius: 0, borderWidth: 2 },
-        { label: 'Unique visitors', data: visitorsTrend.map(d => d.value), borderColor: '#7A61FD', backgroundColor: 'rgba(122,97,253,.08)', fill: true, tension: .3, pointRadius: 0, borderWidth: 2 },
-      ],
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, usePointStyle: true } } },
-      scales: { y: { grid: { color: '#eef0f7' } }, x: { grid: { display: false } } },
-    },
-  });
-
-  renderBreakdown('wix-device-list', wa.traffic.device);
-  renderBreakdown('wix-country-list', wa.traffic.country);
-  renderBreakdown('wix-visitor-type-list', wa.traffic.visitorType.map(r => ({ ...r, label: r.label === 'first_time_visitor' ? 'New' : 'Returning' })));
-  renderBreakdown('wix-referrer-list', wa.traffic.referrer.map(r => ({ ...r, label: fmtReferrerLabel(r.label) })));
-
-  if (wa.traffic.aiPlatforms.length) {
-    renderBreakdown('wix-ai-platforms', wa.traffic.aiPlatforms, 'ai-platform-row');
-  } else {
-    document.getElementById('wix-ai-platforms').innerHTML = '<p class="empty">No AI-platform-attributed traffic (ChatGPT, Claude, Gemini, Perplexity, etc.) detected this period.</p>';
-  }
-
-  blogSection.hidden = !wa.blogPosts.length;
-  if (wa.blogPosts.length) {
-    document.getElementById('wix-blog-table').innerHTML = `
-      <table>
-        <tr><th>Post</th><th>Views</th><th>Visitors</th><th>Avg read time</th><th>Engagements</th></tr>
-        ${wa.blogPosts.map(p => `
-          <tr>
-            <td><a href="${esc(p.url)}" target="_blank">${esc(p.title)}</a></td>
-            <td>${p.views.toLocaleString()}</td>
-            <td>${p.visitors.toLocaleString()}</td>
-            <td>${fmtSeconds(p.avgReadSeconds)}</td>
-            <td>${p.engagements.toLocaleString()}</td>
-          </tr>
-        `).join('')}
-      </table>
-    `;
-  }
-}
-
 function renderSearchAppearance(data) {
   const { rows, aiOverview } = data.searchAppearance;
 
@@ -456,7 +346,6 @@ function renderPeriod() {
   renderMoversTable(data.decliners, 'decliners-table', true);
   renderMoversTable(data.risers, 'risers-table', false);
   renderOrphans(data);
-  renderWixAnalytics(data);
 }
 
 // cache-bust: data/*.json changes daily via cron, but browsers apply their
