@@ -24,14 +24,12 @@ const SITES = [
 // Orders/Sales dropped -- both sites are non-ecommerce, always 0, pure noise.
 const WIX_ANALYTICS_TYPES = ['TOTAL_SESSIONS', 'TOTAL_UNIQUE_VISITORS', 'TOTAL_FORMS_SUBMITTED', 'CLICKS_TO_CONTACT'];
 
-// Wix only retains ~62 days of analytics data. For the shorter GSC period
-// filters (7/30d) this fits a real current-vs-previous comparison; for the
-// longer ones (90d/6mo/8mo) the requested window gets clamped to the
-// retention limit and there's no room left for a "previous" comparison at
-// all -- current-period-only, clearly flagged, rather than silently wrong
-// or erroring out.
+// The basic Sessions/Visitors/Forms/Contact-clicks KPI (Analytics Data API)
+// has a real, confirmed-by-testing hard wall: it 400s on any startDate more
+// than ~60 days back, no exceptions. Capped here, current-period-only past
+// that point.
 const WIX_RETENTION_SAFE_DAYS = 58; // small buffer under the real ~62-day cap
-function wixPeriodWindow(days) {
+function wixKpiPeriodWindow(days) {
   const f = d => d.toISOString().slice(0, 10);
   const today = new Date();
   const maxPast = new Date(today); maxPast.setDate(maxPast.getDate() - WIX_RETENTION_SAFE_DAYS);
@@ -50,6 +48,17 @@ function wixPeriodWindow(days) {
     prevStart: hasComparison ? f(desiredPrevStart) : null,
     prevEnd: hasComparison ? f(prevEnd) : null,
   };
+}
+
+// Everything else (traffic/blog/bots breakdowns, via the Semantic Model API)
+// does NOT have that same wall -- confirmed live: a 6-month-back previous
+// window returns real data (1534 sessions), an 8-month-back one returns
+// genuinely zero (this site's Wix tracking history doesn't reach that far,
+// not a query-shape or API problem). So these use the real, uncapped dates
+// (same as GSC's own periods) and let "was there real data" be discovered
+// per-fetch rather than predicted from a fixed day-count rule.
+function wixBreakdownPeriodWindow(days) {
+  return datePeriods(days); // real prevStart/prevEnd, same math GSC's periods use
 }
 
 async function fetchWixAnalytics(wixSiteId, startDate, endDate) {
@@ -114,13 +123,13 @@ async function queryModel(wixSiteId, semanticModelId, fields, startDate, endDate
   });
 }
 
-// Fetches a (label, count) breakdown for current + (if available) previous
-// period, joins them by label so the frontend can show a %-change badge per
-// row, same as every other comparison in this tool.
+// Fetches a (label, count) breakdown for current + previous period (real
+// dates, not retention-capped -- see wixBreakdownPeriodWindow), joins them
+// by label so the frontend can show a %-change badge per row.
 async function queryBreakdownWithDelta(wixSiteId, modelId, labelField, countField, period) {
   const [curRows, prevRows] = await Promise.all([
     queryModel(wixSiteId, modelId, [labelField, countField], period.curStart, period.curEnd),
-    period.hasComparison ? queryModel(wixSiteId, modelId, [labelField, countField], period.prevStart, period.prevEnd) : Promise.resolve([]),
+    queryModel(wixSiteId, modelId, [labelField, countField], period.prevStart, period.prevEnd),
   ]);
   const prevByLabel = new Map(prevRows.map(r => [r[labelField], r[countField] || 0]));
   return curRows
@@ -137,9 +146,7 @@ async function getWixTrafficBreakdown(wixSiteId, period) {
     // referring domains, ...), not just the 5 umbrella categories -- "take
     // all the sources", matches Wix's own Top Traffic Sources report.
     queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.referrer_source_name', 'traffic.referrer_category_name', 'traffic.sessions_count', 'traffic.visitors_count'], period.curStart, period.curEnd),
-    period.hasComparison
-      ? queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.referrer_source_name', 'traffic.sessions_count'], period.prevStart, period.prevEnd)
-      : Promise.resolve([]),
+    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.referrer_source_name', 'traffic.sessions_count'], period.prevStart, period.prevEnd),
   ]);
 
   const prevSessionsBySource = new Map(referrerAllPrev.map(r => [r['traffic.referrer_source_name'], r['traffic.sessions_count'] || 0]));
@@ -157,12 +164,21 @@ async function getWixTrafficBreakdown(wixSiteId, period) {
     .filter(r => r.category === 'ai_platform')
     .map(r => ({ label: r.source, count: r.sessions, countPrev: r.sessionsPrev }));
 
+  // Signal for the frontend: is the previous-period side real data, or is
+  // this period's "previous" window reaching back before the site's Wix
+  // analytics history even starts? Device breakdown always has data if
+  // there was any traffic at all, so its previous-side total is a reliable
+  // proxy -- confirmed live (6mo-back previous window: real data; 8mo-back:
+  // genuinely zero, not a bug).
+  const hasComparison = device.reduce((s, r) => s + r.countPrev, 0) > 0;
+
   return {
     device,
     country: country.slice(0, 8),
     visitorType,
     referrerAll: referrerAll.slice(0, 30),
     aiPlatforms,
+    hasComparison,
   };
 }
 
@@ -182,7 +198,7 @@ async function getWixBlogAnalytics(wixSiteId, period) {
   ];
   const [curRows, prevRows] = await Promise.all([
     queryModel(wixSiteId, BLOG_MODEL_ID, fields, period.curStart, period.curEnd),
-    period.hasComparison ? queryModel(wixSiteId, BLOG_MODEL_ID, fields, period.prevStart, period.prevEnd) : Promise.resolve([]),
+    queryModel(wixSiteId, BLOG_MODEL_ID, fields, period.prevStart, period.prevEnd),
   ]);
   const prevByUrl = new Map(prevRows.map(r => [r['posts.post_url'], r]));
 
@@ -208,18 +224,21 @@ async function getWixBlogAnalytics(wixSiteId, period) {
 const EMPTY_METRICS = () => Object.fromEntries(WIX_ANALYTICS_TYPES.map(t => [t, { total: 0, trend: [] }]));
 
 // One block per GSC period filter (7/30/90/180/240), so switching the
-// existing period selector also updates Wix data -- capped to Wix's real
-// retention window per period (see wixPeriodWindow), not silently wrong.
+// existing period selector also updates Wix data. Two separate windows:
+// the basic KPI (sessions/visitors/forms/contact) is capped to Wix's real
+// ~60-day retention wall; everything else (breakdowns/blog/bots) uses the
+// same real dates GSC uses, since that data isn't subject to the same cap.
 async function getWixAnalyticsForPeriod(site, days) {
-  const period = wixPeriodWindow(days);
+  const kpiPeriod = wixKpiPeriodWindow(days);
+  const breakdownPeriod = wixBreakdownPeriodWindow(days);
   const [current, previous, traffic, bots, blogPosts] = await Promise.all([
-    fetchWixAnalytics(site.wixSiteId, period.curStart, period.curEnd),
-    period.hasComparison ? fetchWixAnalytics(site.wixSiteId, period.prevStart, period.prevEnd) : Promise.resolve(EMPTY_METRICS()),
-    getWixTrafficBreakdown(site.wixSiteId, period),
-    getWixBotActivity(site.wixSiteId, period),
-    getWixBlogAnalytics(site.wixSiteId, period),
+    fetchWixAnalytics(site.wixSiteId, kpiPeriod.curStart, kpiPeriod.curEnd),
+    kpiPeriod.hasComparison ? fetchWixAnalytics(site.wixSiteId, kpiPeriod.prevStart, kpiPeriod.prevEnd) : Promise.resolve(EMPTY_METRICS()),
+    getWixTrafficBreakdown(site.wixSiteId, breakdownPeriod),
+    getWixBotActivity(site.wixSiteId, breakdownPeriod),
+    getWixBlogAnalytics(site.wixSiteId, breakdownPeriod),
   ]);
-  return { period, current, previous, traffic, bots, blogPosts };
+  return { kpiPeriod, breakdownPeriod, current, previous, traffic, bots, blogPosts };
 }
 
 async function getClient() {

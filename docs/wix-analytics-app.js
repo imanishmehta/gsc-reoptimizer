@@ -96,22 +96,27 @@ function waRenderPeriod() {
 
   if (!wa) { section.hidden = true; blogSection.hidden = true; return; }
   section.hidden = false;
-  const hasComparison = wa.period.hasComparison;
+  // Two independent signals: the basic Sessions/Visitors KPI is capped to
+  // Wix's real ~60-day retention wall, but breakdowns/bots/blog (a
+  // different Wix API) have real history much further back -- so whether
+  // there's a usable previous-period comparison differs per section.
+  const kpiHasComparison = wa.kpiPeriod.hasComparison;
+  const breakdownHasComparison = wa.traffic.hasComparison;
 
-  document.getElementById('wix-analytics-sub').textContent = hasComparison
-    ? `Actual site traffic from Wix -- ${wa.period.curStart} to ${wa.period.curEnd} vs ${wa.period.prevStart} to ${wa.period.prevEnd}.`
-    : `Actual site traffic from Wix -- ${wa.period.curStart} to ${wa.period.curEnd} (no prior-period comparison available for this window).`;
+  document.getElementById('wix-analytics-sub').textContent = kpiHasComparison
+    ? `Actual site traffic from Wix -- ${wa.kpiPeriod.curStart} to ${wa.kpiPeriod.curEnd} vs ${wa.kpiPeriod.prevStart} to ${wa.kpiPeriod.prevEnd}.`
+    : `Actual site traffic from Wix -- ${wa.kpiPeriod.curStart} to ${wa.kpiPeriod.curEnd} (no prior-period comparison available for this window).`;
 
   const cappedNote = document.getElementById('wix-capped-note');
-  cappedNote.hidden = !wa.period.capped;
-  if (wa.period.capped) {
-    cappedNote.textContent = `⚠️ Wix only retains ~60 days of analytics data -- this period was capped to the earliest available date (${wa.period.curStart}) rather than the full selected range.`;
+  cappedNote.hidden = !wa.kpiPeriod.capped;
+  if (wa.kpiPeriod.capped) {
+    cappedNote.textContent = `⚠️ The Sessions/Visitors KPI above only retains ~60 days of history -- capped to the earliest available date (${wa.kpiPeriod.curStart}) rather than the full selected range. Traffic sources, AI/bot activity, and blog analytics below use a different Wix data source with much longer history and aren't affected by this cap.`;
   }
 
   const rows = Object.entries(WIX_METRIC_LABELS).map(([key, label]) => {
     const cur = wa.current[key]?.total ?? 0;
     const prev = wa.previous[key]?.total ?? 0;
-    return [label, cur.toLocaleString(), hasComparison ? waDeltaBadge(cur, prev) : ''];
+    return [label, cur.toLocaleString(), kpiHasComparison ? waDeltaBadge(cur, prev) : ''];
   });
   document.getElementById('wix-kpi-row').innerHTML = rows.map(([label, value, badge]) => `
     <div class="kpi">
@@ -142,20 +147,20 @@ function waRenderPeriod() {
     },
   });
 
-  waRenderBreakdown('wix-device-list', wa.traffic.device, hasComparison);
-  waRenderBreakdown('wix-country-list', wa.traffic.country, hasComparison);
-  waRenderBreakdown('wix-visitor-type-list', wa.traffic.visitorType.map(r => ({ ...r, label: r.label === 'first_time_visitor' ? 'New' : 'Returning' })), hasComparison);
+  waRenderBreakdown('wix-device-list', wa.traffic.device, breakdownHasComparison);
+  waRenderBreakdown('wix-country-list', wa.traffic.country, breakdownHasComparison);
+  waRenderBreakdown('wix-visitor-type-list', wa.traffic.visitorType.map(r => ({ ...r, label: r.label === 'first_time_visitor' ? 'New' : 'Returning' })), breakdownHasComparison);
 
-  waRenderReferrerTable(wa.traffic.referrerAll, hasComparison);
+  waRenderReferrerTable(wa.traffic.referrerAll, breakdownHasComparison);
 
   if (wa.traffic.aiPlatforms.length) {
-    waRenderBreakdown('wix-ai-platforms', wa.traffic.aiPlatforms, hasComparison, 'ai-platform-row');
+    waRenderBreakdown('wix-ai-platforms', wa.traffic.aiPlatforms, breakdownHasComparison, 'ai-platform-row');
   } else {
     document.getElementById('wix-ai-platforms').innerHTML = '<p class="empty">No AI-platform-attributed referral traffic (ChatGPT, Claude, Gemini, Perplexity, etc.) detected this period.</p>';
   }
 
-  waRenderBotTable('wix-ai-bots', wa.bots.aiBots, hasComparison);
-  waRenderBotTable('wix-other-bots', wa.bots.otherBots, hasComparison);
+  waRenderBotTable('wix-ai-bots', wa.bots.aiBots, breakdownHasComparison);
+  waRenderBotTable('wix-other-bots', wa.bots.otherBots, breakdownHasComparison);
 
   blogSection.hidden = !wa.blogPosts.length;
   if (wa.blogPosts.length) {
@@ -165,8 +170,8 @@ function waRenderPeriod() {
         ${wa.blogPosts.map(p => `
           <tr>
             <td><a href="${waEsc(p.url)}" target="_blank">${waEsc(p.title)}</a></td>
-            <td>${p.views.toLocaleString()} ${hasComparison ? waDeltaBadge(p.views, p.viewsPrev) : ''}</td>
-            <td>${p.clicks.toLocaleString()} ${hasComparison ? waDeltaBadge(p.clicks, p.clicksPrev) : ''}</td>
+            <td>${p.views.toLocaleString()} ${breakdownHasComparison ? waDeltaBadge(p.views, p.viewsPrev) : ''}</td>
+            <td>${p.clicks.toLocaleString()} ${breakdownHasComparison ? waDeltaBadge(p.clicks, p.clicksPrev) : ''}</td>
             <td>${p.visitors.toLocaleString()}</td>
             <td>${waFmtSeconds(p.avgReadSeconds)}</td>
             <td>${p.engagements.toLocaleString()}</td>
