@@ -329,6 +329,28 @@ tr.ai-row { background: var(--purple-soft); }
 .ca-result.error { background: var(--red-soft); color: var(--red); }
 .ca-unmatched-note { font-size: .82rem; color: var(--ink-soft); font-style: italic; }
 
+#wix-analytics-section h3, #wix-blog-section h3 {
+  font-size: .9rem;
+  margin: 0 0 .6rem;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+
+.breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: .5rem;
+  font-size: .85rem;
+}
+.breakdown-row .breakdown-label { flex: 0 0 130px; color: var(--ink); }
+.breakdown-row .breakdown-bar-wrap { flex: 1; background: var(--border); border-radius: 999px; height: 8px; overflow: hidden; }
+.breakdown-row .breakdown-bar { height: 100%; background: var(--blue); border-radius: 999px; }
+.breakdown-row .breakdown-count { flex: 0 0 auto; color: var(--ink-soft); font-variant-numeric: tabular-nums; min-width: 3.5rem; text-align: right; }
+
+.ai-platform-row .breakdown-bar { background: var(--purple); }
+
 @media (max-width: 900px) {
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
   .grid-2 { grid-template-columns: 1fr; }

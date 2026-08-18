@@ -21,17 +21,35 @@ const SITES = [
   { slug: 'mimicproductions', label: 'mimic productions', gscSiteUrl: 'https://www.mimicproductions.com/', sitemapUrl: 'https://www.mimicproductions.com/sitemap.xml', wixSiteId: '20db1d0f-b8d3-49e6-8100-03577875df69' },
 ];
 
-const WIX_ANALYTICS_TYPES = ['TOTAL_SESSIONS', 'TOTAL_UNIQUE_VISITORS', 'TOTAL_ORDERS', 'TOTAL_SALES', 'TOTAL_FORMS_SUBMITTED', 'CLICKS_TO_CONTACT'];
+// Orders/Sales dropped -- both sites are non-ecommerce, always 0, pure noise.
+const WIX_ANALYTICS_TYPES = ['TOTAL_SESSIONS', 'TOTAL_UNIQUE_VISITORS', 'TOTAL_FORMS_SUBMITTED', 'CLICKS_TO_CONTACT'];
 
-// Wix only retains 62 days of analytics data -- 28+28 current/previous
-// leaves a 6-day safety margin rather than cutting it right at the edge.
-function wixAnalyticsPeriods() {
-  const curEnd = new Date();
-  const curStart = new Date(curEnd); curStart.setDate(curStart.getDate() - 28);
-  const prevEnd = new Date(curStart); prevEnd.setDate(prevEnd.getDate() - 1);
-  const prevStart = new Date(prevEnd); prevStart.setDate(prevStart.getDate() - 28);
+// Wix only retains ~62 days of analytics data. For the shorter GSC period
+// filters (7/30d) this fits a real current-vs-previous comparison; for the
+// longer ones (90d/6mo/8mo) the requested window gets clamped to the
+// retention limit and there's no room left for a "previous" comparison at
+// all -- current-period-only, clearly flagged, rather than silently wrong
+// or erroring out.
+const WIX_RETENTION_SAFE_DAYS = 58; // small buffer under the real ~62-day cap
+function wixPeriodWindow(days) {
   const f = d => d.toISOString().slice(0, 10);
-  return { curStart: f(curStart), curEnd: f(curEnd), prevStart: f(prevStart), prevEnd: f(prevEnd) };
+  const today = new Date();
+  const maxPast = new Date(today); maxPast.setDate(maxPast.getDate() - WIX_RETENTION_SAFE_DAYS);
+
+  const desiredCurStart = new Date(today); desiredCurStart.setDate(desiredCurStart.getDate() - days);
+  const capped = desiredCurStart < maxPast;
+  const curStart = capped ? maxPast : desiredCurStart;
+
+  const prevEnd = new Date(curStart); prevEnd.setDate(prevEnd.getDate() - 1);
+  const desiredPrevStart = new Date(prevEnd); desiredPrevStart.setDate(desiredPrevStart.getDate() - days);
+  const hasComparison = desiredPrevStart >= maxPast;
+
+  return {
+    curStart: f(curStart), curEnd: f(today), capped,
+    hasComparison,
+    prevStart: hasComparison ? f(desiredPrevStart) : null,
+    prevEnd: hasComparison ? f(prevEnd) : null,
+  };
 }
 
 async function fetchWixAnalytics(wixSiteId, startDate, endDate) {
@@ -47,14 +65,102 @@ async function fetchWixAnalytics(wixSiteId, startDate, endDate) {
   return byType;
 }
 
-async function getWixSiteAnalytics(site) {
-  if (!process.env.WIX_API_KEY) return null; // optional -- skip cleanly if not configured
-  const period = wixAnalyticsPeriods();
-  const [current, previous] = await Promise.all([
-    fetchWixAnalytics(site.wixSiteId, period.curStart, period.curEnd),
-    fetchWixAnalytics(site.wixSiteId, period.prevStart, period.prevEnd),
+const TRAFFIC_MODEL_ID = 'cad7fd34-2c8b-4dda-8296-3f9d47fb484d'; // "traffic" semantic model
+const BLOG_MODEL_ID = 'd9f2bc14-0c13-48ba-b349-df4af9bfc9f2'; // "blog" semantic model
+
+function extractField(fields, name) {
+  const f = fields[name];
+  if (!f) return null;
+  return 'stringValue' in f ? f.stringValue : (f.numericValue ?? null);
+}
+
+// NOTE: `sort` param on this endpoint 400s with a shape we couldn't get
+// right (tried {fieldName,order}) -- results come back unsorted instead;
+// sorting/slicing happens client-side (Node) after the fetch, on the
+// full (small, <100 row) result set. Not worth more guessing for a
+// couple hundred rows of country/referrer data.
+async function queryModel(wixSiteId, semanticModelId, fields, startDate, endDate) {
+  const res = await fetch('https://www.wixapis.com/analytics/semantic-model/v3/semantic-models/query-data', {
+    method: 'POST',
+    headers: { Authorization: process.env.WIX_API_KEY, 'wix-site-id': wixSiteId, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      semanticModelId,
+      interval: { start: `${startDate}T00:00:00.000Z`, end: `${endDate}T23:59:59.000Z` },
+      fields,
+    }),
+  });
+  if (!res.ok) throw new Error(`Wix semantic model ${res.status}: ${await res.text()}`);
+  const rows = (await res.json()).results || [];
+  return rows.map(r => {
+    const out = {};
+    for (const name of fields) out[name] = extractField(r.fields, name);
+    return out;
+  });
+}
+
+async function getWixTrafficBreakdown(wixSiteId, startDate, endDate) {
+  const [device, country, referrer, visitorType, referrerDetail] = await Promise.all([
+    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.device_type', 'traffic.sessions_count'], startDate, endDate),
+    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.country_name', 'traffic.sessions_count'], startDate, endDate),
+    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.referrer_category_name', 'traffic.sessions_count'], startDate, endDate),
+    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.visitor_type', 'traffic.visitors_count'], startDate, endDate),
+    // per-source breakdown within each category -- this is what surfaces
+    // individual AI platforms (ChatGPT/Claude/Gemini/Perplexity) rather than
+    // just the umbrella "ai_platform" category total.
+    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.referrer_category_name', 'traffic.referrer_source_name', 'traffic.sessions_count'], startDate, endDate),
   ]);
-  return { period, current, previous };
+  const byCount = (rows, countField) => rows
+    .map(r => ({ label: Object.values(r)[0], count: r[countField] || 0 }))
+    .sort((a, b) => b.count - a.count);
+
+  const aiPlatforms = referrerDetail
+    .filter(r => r['traffic.referrer_category_name'] === 'ai_platform')
+    .map(r => ({ label: r['traffic.referrer_source_name'] || 'Unknown', count: r['traffic.sessions_count'] || 0 }))
+    .sort((a, b) => b.count - a.count);
+
+  return {
+    device: byCount(device, 'traffic.sessions_count'),
+    country: byCount(country, 'traffic.sessions_count').slice(0, 6),
+    referrer: byCount(referrer, 'traffic.sessions_count'),
+    visitorType: byCount(visitorType, 'traffic.visitors_count'),
+    aiPlatforms,
+  };
+}
+
+async function getWixBlogAnalytics(wixSiteId, startDate, endDate) {
+  const rows = await queryModel(wixSiteId, BLOG_MODEL_ID, [
+    'posts.post_title_name', 'posts.post_url',
+    'reactions.post_views_count', 'reactions.visitors_count',
+    'reactions.reading_time_seconds_avg', 'reactions.post_engagements_count',
+  ], startDate, endDate);
+
+  return rows
+    .map(r => ({
+      title: r['posts.post_title_name'],
+      url: r['posts.post_url'],
+      views: r['reactions.post_views_count'] || 0,
+      visitors: r['reactions.visitors_count'] || 0,
+      avgReadSeconds: r['reactions.reading_time_seconds_avg'] || 0,
+      engagements: r['reactions.post_engagements_count'] || 0,
+    }))
+    .sort((a, b) => b.views - a.views)
+    .slice(0, 25);
+}
+
+const EMPTY_METRICS = () => Object.fromEntries(WIX_ANALYTICS_TYPES.map(t => [t, { total: 0, trend: [] }]));
+
+// One block per GSC period filter (7/30/90/180/240), so switching the
+// existing period selector also updates Wix data -- capped to Wix's real
+// retention window per period (see wixPeriodWindow), not silently wrong.
+async function getWixAnalyticsForPeriod(site, days) {
+  const period = wixPeriodWindow(days);
+  const [current, previous, traffic, blogPosts] = await Promise.all([
+    fetchWixAnalytics(site.wixSiteId, period.curStart, period.curEnd),
+    period.hasComparison ? fetchWixAnalytics(site.wixSiteId, period.prevStart, period.prevEnd) : Promise.resolve(EMPTY_METRICS()),
+    getWixTrafficBreakdown(site.wixSiteId, period.curStart, period.curEnd),
+    getWixBlogAnalytics(site.wixSiteId, period.curStart, period.curEnd),
+  ]);
+  return { period, current, previous, traffic, blogPosts };
 }
 
 async function getClient() {
@@ -115,12 +221,14 @@ async function processSite(client, site) {
       appearanceCur, appearancePrev,
       period: { ...period, label: def.label },
     });
+
+    if (process.env.WIX_API_KEY) {
+      console.log(`[${site.label}] ${def.label}: fetching Wix analytics...`);
+      periods[def.key].wixAnalytics = await getWixAnalyticsForPeriod(site, def.days);
+    }
   }
 
-  console.log(`[${site.label}] fetching Wix site analytics...`);
-  const wixAnalytics = await getWixSiteAnalytics(site);
-
-  return { label: site.label, trend, periods, wixAnalytics };
+  return { label: site.label, trend, periods };
 }
 
 async function main() {

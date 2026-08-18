@@ -64,9 +64,43 @@
 
   <section class="card" id="wix-analytics-section" hidden>
     <h2>🧑‍🤝‍🧑 Wix Site Analytics</h2>
-    <p class="card-sub" id="wix-analytics-sub">Actual site traffic from Wix (not just organic search) -- last 28 days vs the 28 days before. Wix only retains 62 days of this data, independent of the period filter above.</p>
+    <p class="card-sub" id="wix-analytics-sub">Actual site traffic from Wix (not just organic search), for the period selected above.</p>
+    <div id="wix-capped-note" class="history-warning" hidden></div>
     <div class="kpi-row" id="wix-kpi-row"></div>
     <div class="chart-wrap" style="margin-top:1rem"><canvas id="wix-trend-chart"></canvas></div>
+
+    <div class="grid-2" style="margin-top:1.5rem">
+      <div>
+        <h3>Sessions by device</h3>
+        <div id="wix-device-list"></div>
+      </div>
+      <div>
+        <h3>New vs returning visitors</h3>
+        <div id="wix-visitor-type-list"></div>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-top:1rem">
+      <div>
+        <h3>Sessions by country</h3>
+        <div id="wix-country-list"></div>
+      </div>
+      <div>
+        <h3>Traffic sources</h3>
+        <div id="wix-referrer-list"></div>
+      </div>
+    </div>
+
+    <div style="margin-top:1.5rem">
+      <h3>🤖 AI &amp; LLM traffic</h3>
+      <p class="card-sub">Visitors arriving from AI platforms (ChatGPT, Claude, Gemini, Perplexity, etc.) -- the GEO signal Wix tracks directly</p>
+      <div id="wix-ai-platforms"></div>
+    </div>
+  </section>
+
+  <section class="card" id="wix-blog-section" hidden>
+    <h2>📰 Blog Post Analytics</h2>
+    <p class="card-sub">Per-post views, visitors, and engagement from Wix -- for the period selected above</p>
+    <div id="wix-blog-table"></div>
   </section>
 
   <section class="card">
