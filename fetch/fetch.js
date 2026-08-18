@@ -67,6 +67,22 @@ async function fetchWixAnalytics(wixSiteId, startDate, endDate) {
 
 const TRAFFIC_MODEL_ID = 'cad7fd34-2c8b-4dda-8296-3f9d47fb484d'; // "traffic" semantic model
 const BLOG_MODEL_ID = 'd9f2bc14-0c13-48ba-b349-df4af9bfc9f2'; // "blog" semantic model
+const BOTS_MODEL_ID = '75148a55-77ce-472f-b2d2-ff31346f14b2'; // "bots" semantic model (crawler hits)
+
+// Real bot_platform_name values seen in the wild for AI crawlers/assistants
+// (there's no dimension that separates "AI" from "search engine" bots, so
+// this list is what makes the AI-vs-other split possible).
+const AI_BOT_PLATFORMS = new Set([
+  'bot_platform_chatgpt', 'bot_platform_perplexity', 'bot_platform_gemini', 'bot_platform_claude',
+  'bot_type_openai_search_bot', 'bot_type_metaai_training_bot', 'bot_type_amazonai_training_bot',
+]);
+function prettifyBotName(name) {
+  const known = {
+    bot_platform_chatgpt: 'ChatGPT', bot_platform_perplexity: 'Perplexity', bot_platform_gemini: 'Gemini', bot_platform_claude: 'Claude',
+    bot_type_openai_search_bot: 'OpenAI Search Bot', bot_type_metaai_training_bot: 'Meta AI (training)', bot_type_amazonai_training_bot: 'Amazon AI (training)',
+  };
+  return known[name] || name;
+}
 
 function extractField(fields, name) {
   const f = fields[name];
@@ -98,53 +114,95 @@ async function queryModel(wixSiteId, semanticModelId, fields, startDate, endDate
   });
 }
 
-async function getWixTrafficBreakdown(wixSiteId, startDate, endDate) {
-  const [device, country, referrer, visitorType, referrerDetail] = await Promise.all([
-    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.device_type', 'traffic.sessions_count'], startDate, endDate),
-    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.country_name', 'traffic.sessions_count'], startDate, endDate),
-    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.referrer_category_name', 'traffic.sessions_count'], startDate, endDate),
-    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.visitor_type', 'traffic.visitors_count'], startDate, endDate),
-    // per-source breakdown within each category -- this is what surfaces
-    // individual AI platforms (ChatGPT/Claude/Gemini/Perplexity) rather than
-    // just the umbrella "ai_platform" category total.
-    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.referrer_category_name', 'traffic.referrer_source_name', 'traffic.sessions_count'], startDate, endDate),
+// Fetches a (label, count) breakdown for current + (if available) previous
+// period, joins them by label so the frontend can show a %-change badge per
+// row, same as every other comparison in this tool.
+async function queryBreakdownWithDelta(wixSiteId, modelId, labelField, countField, period) {
+  const [curRows, prevRows] = await Promise.all([
+    queryModel(wixSiteId, modelId, [labelField, countField], period.curStart, period.curEnd),
+    period.hasComparison ? queryModel(wixSiteId, modelId, [labelField, countField], period.prevStart, period.prevEnd) : Promise.resolve([]),
   ]);
-  const byCount = (rows, countField) => rows
-    .map(r => ({ label: Object.values(r)[0], count: r[countField] || 0 }))
+  const prevByLabel = new Map(prevRows.map(r => [r[labelField], r[countField] || 0]));
+  return curRows
+    .map(r => ({ label: r[labelField] || 'Unknown', count: r[countField] || 0, countPrev: prevByLabel.get(r[labelField]) || 0 }))
     .sort((a, b) => b.count - a.count);
+}
 
-  const aiPlatforms = referrerDetail
-    .filter(r => r['traffic.referrer_category_name'] === 'ai_platform')
-    .map(r => ({ label: r['traffic.referrer_source_name'] || 'Unknown', count: r['traffic.sessions_count'] || 0 }))
-    .sort((a, b) => b.count - a.count);
+async function getWixTrafficBreakdown(wixSiteId, period) {
+  const [device, country, visitorType, referrerAllCur, referrerAllPrev] = await Promise.all([
+    queryBreakdownWithDelta(wixSiteId, TRAFFIC_MODEL_ID, 'traffic.device_type', 'traffic.sessions_count', period),
+    queryBreakdownWithDelta(wixSiteId, TRAFFIC_MODEL_ID, 'traffic.country_name', 'traffic.sessions_count', period),
+    queryBreakdownWithDelta(wixSiteId, TRAFFIC_MODEL_ID, 'traffic.visitor_type', 'traffic.visitors_count', period),
+    // individual sources (Google, Bing, DuckDuckGo, ChatGPT, specific
+    // referring domains, ...), not just the 5 umbrella categories -- "take
+    // all the sources", matches Wix's own Top Traffic Sources report.
+    queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.referrer_source_name', 'traffic.referrer_category_name', 'traffic.sessions_count', 'traffic.visitors_count'], period.curStart, period.curEnd),
+    period.hasComparison
+      ? queryModel(wixSiteId, TRAFFIC_MODEL_ID, ['traffic.referrer_source_name', 'traffic.sessions_count'], period.prevStart, period.prevEnd)
+      : Promise.resolve([]),
+  ]);
+
+  const prevSessionsBySource = new Map(referrerAllPrev.map(r => [r['traffic.referrer_source_name'], r['traffic.sessions_count'] || 0]));
+  const referrerAll = referrerAllCur
+    .map(r => ({
+      source: r['traffic.referrer_source_name'] || 'Unknown',
+      category: r['traffic.referrer_category_name'] || 'other',
+      sessions: r['traffic.sessions_count'] || 0,
+      sessionsPrev: prevSessionsBySource.get(r['traffic.referrer_source_name']) || 0,
+      visitors: r['traffic.visitors_count'] || 0,
+    }))
+    .sort((a, b) => b.sessions - a.sessions);
+
+  const aiPlatforms = referrerAll
+    .filter(r => r.category === 'ai_platform')
+    .map(r => ({ label: r.source, count: r.sessions, countPrev: r.sessionsPrev }));
 
   return {
-    device: byCount(device, 'traffic.sessions_count'),
-    country: byCount(country, 'traffic.sessions_count').slice(0, 6),
-    referrer: byCount(referrer, 'traffic.sessions_count'),
-    visitorType: byCount(visitorType, 'traffic.visitors_count'),
+    device,
+    country: country.slice(0, 8),
+    visitorType,
+    referrerAll: referrerAll.slice(0, 30),
     aiPlatforms,
   };
 }
 
-async function getWixBlogAnalytics(wixSiteId, startDate, endDate) {
-  const rows = await queryModel(wixSiteId, BLOG_MODEL_ID, [
-    'posts.post_title_name', 'posts.post_url',
-    'reactions.post_views_count', 'reactions.visitors_count',
-    'reactions.reading_time_seconds_avg', 'reactions.post_engagements_count',
-  ], startDate, endDate);
+async function getWixBotActivity(wixSiteId, period) {
+  const rows = await queryBreakdownWithDelta(wixSiteId, BOTS_MODEL_ID, 'bots.bot_platform_name', 'bots.hits_count', period);
+  const named = rows.filter(r => r.label && r.label !== 'Unknown');
+  const aiBots = named.filter(r => AI_BOT_PLATFORMS.has(r.label)).map(r => ({ ...r, label: prettifyBotName(r.label) }));
+  const otherBots = named.filter(r => !AI_BOT_PLATFORMS.has(r.label)).map(r => ({ ...r, label: prettifyBotName(r.label) }));
+  return { aiBots, otherBots };
+}
 
-  return rows
-    .map(r => ({
-      title: r['posts.post_title_name'],
-      url: r['posts.post_url'],
-      views: r['reactions.post_views_count'] || 0,
-      visitors: r['reactions.visitors_count'] || 0,
-      avgReadSeconds: r['reactions.reading_time_seconds_avg'] || 0,
-      engagements: r['reactions.post_engagements_count'] || 0,
-    }))
+async function getWixBlogAnalytics(wixSiteId, period) {
+  const fields = [
+    'posts.post_title_name', 'posts.post_url',
+    'reactions.post_views_count', 'reactions.visitors_count', 'reactions.clicks_count',
+    'reactions.reading_time_seconds_avg', 'reactions.post_engagements_count',
+  ];
+  const [curRows, prevRows] = await Promise.all([
+    queryModel(wixSiteId, BLOG_MODEL_ID, fields, period.curStart, period.curEnd),
+    period.hasComparison ? queryModel(wixSiteId, BLOG_MODEL_ID, fields, period.prevStart, period.prevEnd) : Promise.resolve([]),
+  ]);
+  const prevByUrl = new Map(prevRows.map(r => [r['posts.post_url'], r]));
+
+  return curRows
+    .map(r => {
+      const prev = prevByUrl.get(r['posts.post_url']);
+      return {
+        title: r['posts.post_title_name'],
+        url: r['posts.post_url'],
+        views: r['reactions.post_views_count'] || 0,
+        viewsPrev: prev?.['reactions.post_views_count'] || 0,
+        visitors: r['reactions.visitors_count'] || 0,
+        clicks: r['reactions.clicks_count'] || 0,
+        clicksPrev: prev?.['reactions.clicks_count'] || 0,
+        avgReadSeconds: r['reactions.reading_time_seconds_avg'] || 0,
+        engagements: r['reactions.post_engagements_count'] || 0,
+      };
+    })
     .sort((a, b) => b.views - a.views)
-    .slice(0, 25);
+    .slice(0, 50);
 }
 
 const EMPTY_METRICS = () => Object.fromEntries(WIX_ANALYTICS_TYPES.map(t => [t, { total: 0, trend: [] }]));
@@ -154,13 +212,14 @@ const EMPTY_METRICS = () => Object.fromEntries(WIX_ANALYTICS_TYPES.map(t => [t, 
 // retention window per period (see wixPeriodWindow), not silently wrong.
 async function getWixAnalyticsForPeriod(site, days) {
   const period = wixPeriodWindow(days);
-  const [current, previous, traffic, blogPosts] = await Promise.all([
+  const [current, previous, traffic, bots, blogPosts] = await Promise.all([
     fetchWixAnalytics(site.wixSiteId, period.curStart, period.curEnd),
     period.hasComparison ? fetchWixAnalytics(site.wixSiteId, period.prevStart, period.prevEnd) : Promise.resolve(EMPTY_METRICS()),
-    getWixTrafficBreakdown(site.wixSiteId, period.curStart, period.curEnd),
-    getWixBlogAnalytics(site.wixSiteId, period.curStart, period.curEnd),
+    getWixTrafficBreakdown(site.wixSiteId, period),
+    getWixBotActivity(site.wixSiteId, period),
+    getWixBlogAnalytics(site.wixSiteId, period),
   ]);
-  return { period, current, previous, traffic, blogPosts };
+  return { period, current, previous, traffic, bots, blogPosts };
 }
 
 async function getClient() {

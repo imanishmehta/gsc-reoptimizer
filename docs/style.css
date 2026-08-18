@@ -138,8 +138,16 @@ body {
 
 main {
   max-width: 1240px;
-  margin: -1.4rem auto 3rem;
+  margin: 0 auto 3rem;
   padding: 0 2rem;
+}
+
+/* Reoptimizer's white KPI cards intentionally overlap the page-level
+   gradient header above it. Content Audit / Wix Analytics tabs have their
+   OWN gradient header as main's first child instead -- pulling main up
+   there would shove that header over the tabbar (the bug this fixes). */
+#tab-panel-reoptimizer {
+  margin-top: -1.4rem;
 }
 
 .kpi-row {
@@ -348,6 +356,7 @@ tr.ai-row { background: var(--purple-soft); }
 .breakdown-row .breakdown-bar-wrap { flex: 1; background: var(--border); border-radius: 999px; height: 8px; overflow: hidden; }
 .breakdown-row .breakdown-bar { height: 100%; background: var(--blue); border-radius: 999px; }
 .breakdown-row .breakdown-count { flex: 0 0 auto; color: var(--ink-soft); font-variant-numeric: tabular-nums; min-width: 3.5rem; text-align: right; }
+.breakdown-row .breakdown-delta { flex: 0 0 auto; min-width: 4rem; text-align: right; }
 
 .ai-platform-row .breakdown-bar { background: var(--purple); }
 

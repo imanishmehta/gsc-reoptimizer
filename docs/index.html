@@ -187,27 +187,32 @@
         <div id="wix-visitor-type-list"></div>
       </div>
     </div>
-    <div class="grid-2" style="margin-top:1rem">
-      <div>
-        <h3>Sessions by country</h3>
-        <div id="wix-country-list"></div>
-      </div>
-      <div>
-        <h3>Traffic sources</h3>
-        <div id="wix-referrer-list"></div>
-      </div>
+    <div style="margin-top:1rem">
+      <h3>Sessions by country</h3>
+      <div id="wix-country-list"></div>
     </div>
+  </section>
 
-    <div style="margin-top:1.5rem">
-      <h3>🤖 AI &amp; LLM traffic</h3>
-      <p class="card-sub">Visitors arriving from AI platforms (ChatGPT, Claude, Gemini, Perplexity, etc.) -- the GEO signal Wix tracks directly</p>
-      <div id="wix-ai-platforms"></div>
-    </div>
+  <section class="card">
+    <h2>🌐 Traffic Sources</h2>
+    <p class="card-sub">Every individual source Wix tracks (search engines, referring domains, AI platforms, social) -- not just the umbrella categories</p>
+    <div id="wix-referrer-table"></div>
+  </section>
+
+  <section class="card">
+    <h2>🤖 AI &amp; LLM Traffic + Crawl Activity</h2>
+    <p class="card-sub">Two different GEO signals: visitors <em>arriving from</em> AI platforms (referral clicks) vs AI bots <em>crawling</em> the site (indexing for future answers) -- both matter, they're not the same thing.</p>
+    <h3 style="margin-top:1rem">Visitor traffic from AI platforms</h3>
+    <div id="wix-ai-platforms"></div>
+    <h3 style="margin-top:1.5rem">AI bot crawl hits</h3>
+    <div id="wix-ai-bots"></div>
+    <h3 style="margin-top:1.5rem">Other crawlers (search engines, SEO tools, training bots)</h3>
+    <div id="wix-other-bots"></div>
   </section>
 
   <section class="card" id="wix-blog-section" hidden>
     <h2>📰 Blog Post Analytics</h2>
-    <p class="card-sub">Per-post views, visitors, and engagement from Wix -- for the period selected above</p>
+    <p class="card-sub">Per-post views, clicks, visitors, and engagement from Wix -- for the period selected above</p>
     <div id="wix-blog-table"></div>
   </section>
 </main>

@@ -28,7 +28,9 @@ const WIX_METRIC_LABELS = {
   CLICKS_TO_CONTACT: 'Clicks to contact',
 };
 
-function waRenderBreakdown(elId, rows, className) {
+// rows: [{label, count, countPrev}]. Shows a %-change badge per row
+// whenever the period has a real previous-period comparison.
+function waRenderBreakdown(elId, rows, hasComparison, className) {
   if (!rows.length) { document.getElementById(elId).innerHTML = '<p class="empty">No data.</p>'; return; }
   const max = Math.max(...rows.map(r => r.count));
   document.getElementById(elId).innerHTML = rows.map(r => `
@@ -36,18 +38,53 @@ function waRenderBreakdown(elId, rows, className) {
       <div class="breakdown-label">${waEsc(r.label)}</div>
       <div class="breakdown-bar-wrap"><div class="breakdown-bar" style="width:${max > 0 ? (r.count / max * 100) : 0}%"></div></div>
       <div class="breakdown-count">${r.count.toLocaleString()}</div>
+      ${hasComparison ? `<div class="breakdown-delta">${waDeltaBadge(r.count, r.countPrev)}</div>` : ''}
     </div>
   `).join('');
 }
 
 function waFmtReferrerLabel(label) {
-  const names = { direct: 'Direct', organic_search: 'Google/search (organic)', referral: 'Referral', social: 'Social', ai_platform: 'AI platforms', paid_search: 'Paid search' };
+  const names = { direct: 'Direct', organic_search: 'Google/search (organic)', referral: 'Referral', social: 'Social', ai_platform: 'AI platforms', paid_search: 'Paid search', other: 'Other' };
   return names[label] || label;
 }
 
 function waFmtSeconds(s) {
   if (!s) return '0s';
   return s < 60 ? `${Math.round(s)}s` : `${Math.floor(s / 60)}m ${Math.round(s % 60)}s`;
+}
+
+function waRenderReferrerTable(rows, hasComparison) {
+  const el = document.getElementById('wix-referrer-table');
+  if (!rows.length) { el.innerHTML = '<p class="empty">No traffic source data.</p>'; return; }
+  el.innerHTML = `
+    <table>
+      <tr><th>Source</th><th>Category</th><th>Sessions</th><th>Unique visitors</th></tr>
+      ${rows.map(r => `
+        <tr>
+          <td>${waEsc(r.source)}</td>
+          <td>${waEsc(waFmtReferrerLabel(r.category))}</td>
+          <td>${r.sessions.toLocaleString()} ${hasComparison ? waDeltaBadge(r.sessions, r.sessionsPrev) : ''}</td>
+          <td>${r.visitors.toLocaleString()}</td>
+        </tr>
+      `).join('')}
+    </table>
+  `;
+}
+
+function waRenderBotTable(elId, rows, hasComparison) {
+  const el = document.getElementById(elId);
+  if (!rows.length) { el.innerHTML = '<p class="empty">No crawl activity detected this period.</p>'; return; }
+  el.innerHTML = `
+    <table>
+      <tr><th>Bot</th><th>Hits</th></tr>
+      ${rows.map(r => `
+        <tr>
+          <td>${waEsc(r.label)}</td>
+          <td>${r.count.toLocaleString()} ${hasComparison ? waDeltaBadge(r.count, r.countPrev) : ''}</td>
+        </tr>
+      `).join('')}
+    </table>
+  `;
 }
 
 function waRenderPeriod() {
@@ -59,8 +96,9 @@ function waRenderPeriod() {
 
   if (!wa) { section.hidden = true; blogSection.hidden = true; return; }
   section.hidden = false;
+  const hasComparison = wa.period.hasComparison;
 
-  document.getElementById('wix-analytics-sub').textContent = wa.period.hasComparison
+  document.getElementById('wix-analytics-sub').textContent = hasComparison
     ? `Actual site traffic from Wix -- ${wa.period.curStart} to ${wa.period.curEnd} vs ${wa.period.prevStart} to ${wa.period.prevEnd}.`
     : `Actual site traffic from Wix -- ${wa.period.curStart} to ${wa.period.curEnd} (no prior-period comparison available for this window).`;
 
@@ -73,7 +111,7 @@ function waRenderPeriod() {
   const rows = Object.entries(WIX_METRIC_LABELS).map(([key, label]) => {
     const cur = wa.current[key]?.total ?? 0;
     const prev = wa.previous[key]?.total ?? 0;
-    return [label, cur.toLocaleString(), wa.period.hasComparison ? waDeltaBadge(cur, prev) : ''];
+    return [label, cur.toLocaleString(), hasComparison ? waDeltaBadge(cur, prev) : ''];
   });
   document.getElementById('wix-kpi-row').innerHTML = rows.map(([label, value, badge]) => `
     <div class="kpi">
@@ -104,26 +142,31 @@ function waRenderPeriod() {
     },
   });
 
-  waRenderBreakdown('wix-device-list', wa.traffic.device);
-  waRenderBreakdown('wix-country-list', wa.traffic.country);
-  waRenderBreakdown('wix-visitor-type-list', wa.traffic.visitorType.map(r => ({ ...r, label: r.label === 'first_time_visitor' ? 'New' : 'Returning' })));
-  waRenderBreakdown('wix-referrer-list', wa.traffic.referrer.map(r => ({ ...r, label: waFmtReferrerLabel(r.label) })));
+  waRenderBreakdown('wix-device-list', wa.traffic.device, hasComparison);
+  waRenderBreakdown('wix-country-list', wa.traffic.country, hasComparison);
+  waRenderBreakdown('wix-visitor-type-list', wa.traffic.visitorType.map(r => ({ ...r, label: r.label === 'first_time_visitor' ? 'New' : 'Returning' })), hasComparison);
+
+  waRenderReferrerTable(wa.traffic.referrerAll, hasComparison);
 
   if (wa.traffic.aiPlatforms.length) {
-    waRenderBreakdown('wix-ai-platforms', wa.traffic.aiPlatforms, 'ai-platform-row');
+    waRenderBreakdown('wix-ai-platforms', wa.traffic.aiPlatforms, hasComparison, 'ai-platform-row');
   } else {
-    document.getElementById('wix-ai-platforms').innerHTML = '<p class="empty">No AI-platform-attributed traffic (ChatGPT, Claude, Gemini, Perplexity, etc.) detected this period.</p>';
+    document.getElementById('wix-ai-platforms').innerHTML = '<p class="empty">No AI-platform-attributed referral traffic (ChatGPT, Claude, Gemini, Perplexity, etc.) detected this period.</p>';
   }
+
+  waRenderBotTable('wix-ai-bots', wa.bots.aiBots, hasComparison);
+  waRenderBotTable('wix-other-bots', wa.bots.otherBots, hasComparison);
 
   blogSection.hidden = !wa.blogPosts.length;
   if (wa.blogPosts.length) {
     document.getElementById('wix-blog-table').innerHTML = `
       <table>
-        <tr><th>Post</th><th>Views</th><th>Visitors</th><th>Avg read time</th><th>Engagements</th></tr>
+        <tr><th>Post</th><th>Views</th><th>Clicks</th><th>Visitors</th><th>Avg read time</th><th>Engagements</th></tr>
         ${wa.blogPosts.map(p => `
           <tr>
             <td><a href="${waEsc(p.url)}" target="_blank">${waEsc(p.title)}</a></td>
-            <td>${p.views.toLocaleString()}</td>
+            <td>${p.views.toLocaleString()} ${hasComparison ? waDeltaBadge(p.views, p.viewsPrev) : ''}</td>
+            <td>${p.clicks.toLocaleString()} ${hasComparison ? waDeltaBadge(p.clicks, p.clicksPrev) : ''}</td>
             <td>${p.visitors.toLocaleString()}</td>
             <td>${waFmtSeconds(p.avgReadSeconds)}</td>
             <td>${p.engagements.toLocaleString()}</td>
