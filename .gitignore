@@ -3,3 +3,4 @@
 /worker/node_modules/
 /worker/.wrangler/
 .gstack/
+.DS_Store

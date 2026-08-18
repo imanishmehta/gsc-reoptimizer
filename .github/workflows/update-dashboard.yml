@@ -26,12 +26,14 @@ jobs:
         working-directory: fetch
         env:
           GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+          WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
         run: node fetch.js
 
       - name: Commit updated data
         run: |
           git config user.name "gsc-reoptimizer-bot"
           git config user.email "actions@users.noreply.github.com"
+          git pull --no-rebase --no-edit
           git add docs/data
           git diff --cached --quiet || git commit -m "Update GSC data $(date -u +%Y-%m-%d)"
           git push

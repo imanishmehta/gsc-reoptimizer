@@ -58,6 +58,59 @@ function renderImageKpis(data) {
   renderKpiRow('image-kpi-row', data.images.current, data.images.previous);
 }
 
+const WIX_METRIC_LABELS = {
+  TOTAL_SESSIONS: 'Sessions',
+  TOTAL_UNIQUE_VISITORS: 'Unique visitors',
+  TOTAL_ORDERS: 'Orders',
+  TOTAL_SALES: 'Sales',
+  TOTAL_FORMS_SUBMITTED: 'Forms submitted',
+  CLICKS_TO_CONTACT: 'Clicks to contact',
+};
+
+function renderWixAnalytics(siteData) {
+  const section = document.getElementById('wix-analytics-section');
+  const wa = siteData.wixAnalytics;
+  if (!wa) { section.hidden = true; return; }
+  section.hidden = false;
+
+  document.getElementById('wix-analytics-sub').textContent =
+    `Actual site traffic from Wix (not just organic search) -- ${wa.period.curStart} to ${wa.period.curEnd} vs ${wa.period.prevStart} to ${wa.period.prevEnd}. Wix retains 62 days of this data, independent of the period filter above.`;
+
+  const rows = Object.entries(WIX_METRIC_LABELS).map(([key, label]) => {
+    const cur = wa.current[key]?.total ?? 0;
+    const prev = wa.previous[key]?.total ?? 0;
+    return [label, cur.toLocaleString(), deltaBadge(cur, prev)];
+  });
+  document.getElementById('wix-kpi-row').innerHTML = rows.map(([label, value, badge]) => `
+    <div class="kpi">
+      <div class="label">${label}</div>
+      <div class="value">${value}</div>
+      ${badge}
+    </div>
+  `).join('');
+
+  const sessionsTrend = wa.current.TOTAL_SESSIONS?.trend || [];
+  const visitorsTrend = wa.current.TOTAL_UNIQUE_VISITORS?.trend || [];
+  const ctx = document.getElementById('wix-trend-chart');
+  if (charts.wixTrend) charts.wixTrend.destroy();
+  charts.wixTrend = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: sessionsTrend.map(d => d.date.slice(5)),
+      datasets: [
+        { label: 'Sessions', data: sessionsTrend.map(d => d.value), borderColor: '#18C1A5', backgroundColor: 'rgba(24,193,165,.12)', fill: true, tension: .3, pointRadius: 0, borderWidth: 2 },
+        { label: 'Unique visitors', data: visitorsTrend.map(d => d.value), borderColor: '#7A61FD', backgroundColor: 'rgba(122,97,253,.08)', fill: true, tension: .3, pointRadius: 0, borderWidth: 2 },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, usePointStyle: true } } },
+      scales: { y: { grid: { color: '#eef0f7' } }, x: { grid: { display: false } } },
+    },
+  });
+}
+
 function renderSearchAppearance(data) {
   const { rows, aiOverview } = data.searchAppearance;
 
@@ -355,6 +408,7 @@ function renderPeriod() {
 async function loadSite(slug) {
   siteData = await fetch(`data/${slug}.json?v=${Date.now()}`).then(r => r.json());
   renderPeriod();
+  renderWixAnalytics(siteData);
 }
 
 async function init() {
