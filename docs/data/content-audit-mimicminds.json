@@ -20,52 +20,52 @@
       "primary": {
         "query": "conversational ai in banking",
         "clicks": 0,
-        "impressions": 367,
+        "impressions": 371,
         "ctr": 0,
-        "position": 60.14441416893733
+        "position": 59.905660377358494
       },
       "secondary": [
         {
           "query": "conversational banking",
           "clicks": 0,
-          "impressions": 320,
+          "impressions": 319,
           "ctr": 0,
-          "position": 59.921875
+          "position": 59.75235109717868
         },
         {
           "query": "conversational ai in financial services",
           "clicks": 0,
-          "impressions": 253,
+          "impressions": 256,
           "ctr": 0,
-          "position": 57.30434782608695
+          "position": 56.71484375
         },
         {
           "query": "conversational ai banking",
           "clicks": 0,
           "impressions": 236,
           "ctr": 0,
-          "position": 54.92372881355932
+          "position": 55.13135593220339
         },
         {
           "query": "conversational ai for banking",
           "clicks": 0,
-          "impressions": 215,
+          "impressions": 217,
           "ctr": 0,
-          "position": 56.06046511627907
+          "position": 56.27188940092166
         },
         {
           "query": "conversational ai for banks",
           "clicks": 0,
-          "impressions": 186,
+          "impressions": 185,
           "ctr": 0,
-          "position": 59.10215053763441
+          "position": 59.027027027027025
         }
       ],
       "issues": [
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.00% is well below the ~0.3% typical for position 60.1 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.00% is well below the ~0.3% typical for position 59.9 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         }
@@ -94,9 +94,9 @@
       "primary": {
         "query": "future of ai in entertainment",
         "clicks": 1,
-        "impressions": 6,
-        "ctr": 0.16666666666666666,
-        "position": 23.166666666666668
+        "impressions": 7,
+        "ctr": 0.14285714285714285,
+        "position": 22.428571428571427
       },
       "secondary": [
         {
@@ -107,39 +107,39 @@
           "position": 5.320574162679426
         },
         {
-          "query": "ai in entertainment",
+          "query": "ai in media and entertainment",
           "clicks": 0,
           "impressions": 154,
           "ctr": 0,
-          "position": 18.75974025974026
+          "position": 66.6038961038961
         },
         {
-          "query": "ai in media and entertainment",
+          "query": "ai in entertainment",
           "clicks": 0,
-          "impressions": 123,
+          "impressions": 148,
           "ctr": 0,
-          "position": 67.45528455284553
+          "position": 19.7972972972973
         },
         {
           "query": "ai/ml in media and entertainment market",
           "clicks": 0,
-          "impressions": 113,
+          "impressions": 108,
           "ctr": 0,
-          "position": 54.690265486725664
+          "position": 55.166666666666664
         },
         {
-          "query": "ai in entertainment industry",
+          "query": "entertainment ai",
           "clicks": 0,
-          "impressions": 75,
+          "impressions": 78,
           "ctr": 0,
-          "position": 33.93333333333333
+          "position": 22.487179487179485
         }
       ],
       "issues": [
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"future of ai in entertainment\" (6 impr, pos 23.2).",
+          "message": "Title doesn't contain the top query \"future of ai in entertainment\" (7 impr, pos 22.4).",
           "current": "AI in Entertainment: Trends, Tools and Examples",
           "suggested": null
         },
@@ -170,7 +170,7 @@
               "isMain": false
             },
             {
-              "term": "ai in entertainment",
+              "term": "ai in media and entertainment",
               "isMain": false
             }
           ]
@@ -203,52 +203,52 @@
       "primary": {
         "query": "sales avatar",
         "clicks": 0,
-        "impressions": 669,
+        "impressions": 677,
         "ctr": 0,
-        "position": 5.895366218236173
+        "position": 6.255539143279173
       },
       "secondary": [
         {
           "query": "ai sales avatar",
           "clicks": 0,
-          "impressions": 541,
+          "impressions": 526,
           "ctr": 0,
-          "position": 7.735674676524954
+          "position": 8.024714828897338
         },
         {
           "query": "nsfw conversion funnel for massive day 1 sales ai avatar",
           "clicks": 0,
-          "impressions": 281,
+          "impressions": 274,
           "ctr": 0,
-          "position": 8.665480427046264
+          "position": 8.675182481751825
         },
         {
           "query": "interactive avatars for sales support",
           "clicks": 0,
-          "impressions": 84,
+          "impressions": 80,
           "ctr": 0,
-          "position": 10.369047619047619
+          "position": 10.75
         },
         {
           "query": "avatar sgents for inbound leads",
           "clicks": 0,
-          "impressions": 43,
+          "impressions": 40,
           "ctr": 0,
-          "position": 10.116279069767442
+          "position": 10.375
         },
         {
           "query": "ways to use ai avatars in sales and marketing",
           "clicks": 0,
-          "impressions": 42,
+          "impressions": 40,
           "ctr": 0,
-          "position": 20.833333333333332
+          "position": 20.925
         }
       ],
       "issues": [
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.00% is well below the ~5.1% typical for position 5.9 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.00% is well below the ~4.7% typical for position 6.3 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         },
@@ -280,28 +280,28 @@
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"nsfw conversion funnel for massive day 1 sales ai avatar\" (281 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"nsfw conversion funnel for massive day 1 sales ai avatar\" (274 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "nsfw conversion funnel for massive day 1 sales ai avatar"
         },
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"avatar sgents for inbound leads\" (43 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"avatar sgents for inbound leads\" (40 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "avatar sgents for inbound leads"
         },
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"ways to use ai avatars in sales and marketing\" (42 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"ways to use ai avatars in sales and marketing\" (40 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "ways to use ai avatars in sales and marketing"
         }
       ],
       "internalLinkSuggestion": [
-        "https://www.mimicminds.com/post/ai-host-avatar-for-events",
         "https://www.mimicminds.com/industries/ai-avatar-for-business",
+        "https://www.mimicminds.com/post/ai-host-avatar-for-events",
         "https://www.mimicminds.com/ai-avatar-for-robotic"
       ]
     },
@@ -323,52 +323,52 @@
       "primary": {
         "query": "generative ai vs agentic ai",
         "clicks": 1,
-        "impressions": 196,
-        "ctr": 0.00510204081632653,
-        "position": 67.10714285714286
+        "impressions": 203,
+        "ctr": 0.0049261083743842365,
+        "position": 68.35960591133005
       },
       "secondary": [
         {
           "query": "agentic ai vs generative ai",
           "clicks": 0,
-          "impressions": 691,
+          "impressions": 708,
           "ctr": 0,
-          "position": 71.26628075253257
+          "position": 71.72033898305085
         },
         {
           "query": "agentic vs generative ai",
           "clicks": 0,
-          "impressions": 110,
+          "impressions": 117,
           "ctr": 0,
-          "position": 71.00909090909092
+          "position": 71.2051282051282
         },
         {
           "query": "what is agentic ai vs generative ai",
           "clicks": 0,
-          "impressions": 88,
+          "impressions": 90,
           "ctr": 0,
-          "position": 67.06818181818181
+          "position": 67.45555555555555
         },
         {
           "query": "agentic ai vs gen ai",
           "clicks": 0,
-          "impressions": 54,
+          "impressions": 57,
           "ctr": 0,
-          "position": 73.03703703703704
+          "position": 73.14035087719299
         },
         {
           "query": "generative vs agentic ai",
           "clicks": 0,
-          "impressions": 48,
+          "impressions": 50,
           "ctr": 0,
-          "position": 66.97916666666667
+          "position": 67.26
         }
       ],
       "issues": [
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"generative ai vs agentic ai\" (196 impr, pos 67.1).",
+          "message": "Title doesn't contain the top query \"generative ai vs agentic ai\" (203 impr, pos 68.4).",
           "current": "Agentic AI vs Generative AI: Key Differences",
           "suggested": null
         },
@@ -407,12 +407,124 @@
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"agentic ai vs gen ai\" (54 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"agentic ai vs gen ai\" (57 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "agentic ai vs gen ai"
         }
       ],
       "internalLinkSuggestion": []
+    },
+    {
+      "url": "https://www.mimicminds.com/post/what-are-embodied-ai-agents",
+      "itemType": "BLOG_POST",
+      "itemId": "45924ad6-f428-411f-b969-3f4b949f5951",
+      "matched": true,
+      "current": {
+        "title": "What Are Embodied AI Agents? Benefits and How They Work",
+        "metaDescription": "Learn what Embodied AI Agents are, how they work, key benefits, challenges, and real world use cases for digital humans, robots, and interactive avatars.",
+        "focusKeywords": [
+          {
+            "term": "Embodied AI Agents",
+            "isMain": true
+          }
+        ]
+      },
+      "primary": {
+        "query": "embodied agent",
+        "clicks": 1,
+        "impressions": 118,
+        "ctr": 0.00847457627118644,
+        "position": 9.415254237288135
+      },
+      "secondary": [
+        {
+          "query": "embodied ai agents",
+          "clicks": 1,
+          "impressions": 89,
+          "ctr": 0.011235955056179775,
+          "position": 7.46067415730337
+        },
+        {
+          "query": "embodied agents",
+          "clicks": 0,
+          "impressions": 1053,
+          "ctr": 0,
+          "position": 9.417853751187085
+        },
+        {
+          "query": "embodied ai agent",
+          "clicks": 0,
+          "impressions": 92,
+          "ctr": 0,
+          "position": 8.173913043478262
+        },
+        {
+          "query": "what are embodied agents",
+          "clicks": 0,
+          "impressions": 71,
+          "ctr": 0,
+          "position": 6.845070422535211
+        },
+        {
+          "query": "embodied ai",
+          "clicks": 0,
+          "impressions": 48,
+          "ctr": 0,
+          "position": 52.479166666666664
+        }
+      ],
+      "issues": [
+        {
+          "type": "title",
+          "field": "title",
+          "message": "Title doesn't contain the top query \"embodied agent\" (118 impr, pos 9.4).",
+          "current": "What Are Embodied AI Agents? Benefits and How They Work",
+          "suggested": null
+        },
+        {
+          "type": "meta",
+          "field": "metaDescription",
+          "message": "Meta description doesn't mention the top query \"embodied agent\".",
+          "current": "Learn what Embodied AI Agents are, how they work, key benefits, challenges, and real world use cases for digital humans, robots, and interactive avatars.",
+          "suggested": null
+        },
+        {
+          "type": "ctr",
+          "field": null,
+          "message": "CTR 0.85% is well below the ~2.8% typical for position 9.4 -- title/meta likely isn't matching search intent.",
+          "current": null,
+          "suggested": null
+        },
+        {
+          "type": "focus-keyword",
+          "field": "focusKeywords",
+          "message": "Focus keyword doesn't include the top GSC query \"embodied agent\".",
+          "current": [
+            {
+              "term": "Embodied AI Agents",
+              "isMain": true
+            }
+          ],
+          "suggested": [
+            {
+              "term": "embodied agent",
+              "isMain": true
+            },
+            {
+              "term": "embodied ai agents",
+              "isMain": false
+            },
+            {
+              "term": "embodied agents",
+              "isMain": false
+            }
+          ]
+        }
+      ],
+      "internalLinkSuggestion": [
+        "https://www.mimicminds.com/post/what-is-an-ai-agent",
+        "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars"
+      ]
     },
     {
       "url": "https://www.mimicminds.com/mimic-ai-studio",
@@ -431,46 +543,46 @@
       },
       "primary": {
         "query": "mimic ai",
-        "clicks": 56,
-        "impressions": 760,
-        "ctr": 0.07368421052631578,
-        "position": 3.261842105263158
+        "clicks": 59,
+        "impressions": 774,
+        "ctr": 0.07622739018087855,
+        "position": 3.2454780361757107
       },
       "secondary": [
         {
           "query": "mimic studio",
           "clicks": 4,
-          "impressions": 61,
-          "ctr": 0.06557377049180328,
-          "position": 5.60655737704918
+          "impressions": 63,
+          "ctr": 0.06349206349206349,
+          "position": 5.492063492063492
         },
         {
           "query": "mimic ai voice studio",
           "clicks": 3,
-          "impressions": 13,
-          "ctr": 0.23076923076923078,
+          "impressions": 11,
+          "ctr": 0.2727272727272727,
           "position": 2
         },
         {
           "query": "studio mimic",
           "clicks": 1,
-          "impressions": 65,
-          "ctr": 0.015384615384615385,
-          "position": 3.9846153846153847
+          "impressions": 59,
+          "ctr": 0.01694915254237288,
+          "position": 4.033898305084746
         },
         {
-          "query": "ai mimic",
+          "query": "mimic - ai voice studio",
           "clicks": 1,
-          "impressions": 50,
-          "ctr": 0.02,
-          "position": 8.4
+          "impressions": 4,
+          "ctr": 0.25,
+          "position": 1.75
         },
         {
-          "query": "mimic.ai",
+          "query": "mime ai",
           "clicks": 1,
-          "impressions": 14,
-          "ctr": 0.07142857142857142,
-          "position": 3.142857142857143
+          "impressions": 1,
+          "ctr": 1,
+          "position": 3
         }
       ],
       "issues": [
@@ -527,24 +639,24 @@
       "primary": {
         "query": "ai agent",
         "clicks": 0,
-        "impressions": 414,
+        "impressions": 407,
         "ctr": 0,
-        "position": 72.43719806763285
+        "position": 72.38574938574939
       },
       "secondary": [
         {
           "query": "ai agents",
           "clicks": 0,
-          "impressions": 202,
+          "impressions": 195,
           "ctr": 0,
-          "position": 75.92079207920793
+          "position": 75.8974358974359
         },
         {
           "query": "what are ai agents",
           "clicks": 0,
-          "impressions": 104,
+          "impressions": 103,
           "ctr": 0,
-          "position": 62.32692307692308
+          "position": 62.349514563106794
         },
         {
           "query": "what is an ai agent",
@@ -608,227 +720,6 @@
       ]
     },
     {
-      "url": "https://www.mimicminds.com/post/what-are-embodied-ai-agents",
-      "itemType": "BLOG_POST",
-      "itemId": "45924ad6-f428-411f-b969-3f4b949f5951",
-      "matched": true,
-      "current": {
-        "title": "What Are Embodied AI Agents? Benefits and How They Work",
-        "metaDescription": "Learn what Embodied AI Agents are, how they work, key benefits, challenges, and real world use cases for digital humans, robots, and interactive avatars.",
-        "focusKeywords": [
-          {
-            "term": "Embodied AI Agents",
-            "isMain": true
-          }
-        ]
-      },
-      "primary": {
-        "query": "embodied agent",
-        "clicks": 1,
-        "impressions": 109,
-        "ctr": 0.009174311926605505,
-        "position": 9.743119266055047
-      },
-      "secondary": [
-        {
-          "query": "embodied agents",
-          "clicks": 0,
-          "impressions": 752,
-          "ctr": 0,
-          "position": 9.82313829787234
-        },
-        {
-          "query": "embodied ai agent",
-          "clicks": 0,
-          "impressions": 100,
-          "ctr": 0,
-          "position": 8.26
-        },
-        {
-          "query": "embodied ai agents",
-          "clicks": 0,
-          "impressions": 77,
-          "ctr": 0,
-          "position": 7.8441558441558445
-        },
-        {
-          "query": "what are embodied agents",
-          "clicks": 0,
-          "impressions": 57,
-          "ctr": 0,
-          "position": 6.807017543859649
-        },
-        {
-          "query": "embodied ai",
-          "clicks": 0,
-          "impressions": 53,
-          "ctr": 0,
-          "position": 52.867924528301884
-        }
-      ],
-      "issues": [
-        {
-          "type": "title",
-          "field": "title",
-          "message": "Title doesn't contain the top query \"embodied agent\" (109 impr, pos 9.7).",
-          "current": "What Are Embodied AI Agents? Benefits and How They Work",
-          "suggested": null
-        },
-        {
-          "type": "meta",
-          "field": "metaDescription",
-          "message": "Meta description doesn't mention the top query \"embodied agent\".",
-          "current": "Learn what Embodied AI Agents are, how they work, key benefits, challenges, and real world use cases for digital humans, robots, and interactive avatars.",
-          "suggested": null
-        },
-        {
-          "type": "ctr",
-          "field": null,
-          "message": "CTR 0.92% is well below the ~2.6% typical for position 9.7 -- title/meta likely isn't matching search intent.",
-          "current": null,
-          "suggested": null
-        },
-        {
-          "type": "focus-keyword",
-          "field": "focusKeywords",
-          "message": "Focus keyword doesn't include the top GSC query \"embodied agent\".",
-          "current": [
-            {
-              "term": "Embodied AI Agents",
-              "isMain": true
-            }
-          ],
-          "suggested": [
-            {
-              "term": "embodied agent",
-              "isMain": true
-            },
-            {
-              "term": "embodied agents",
-              "isMain": false
-            },
-            {
-              "term": "embodied ai agent",
-              "isMain": false
-            }
-          ]
-        }
-      ],
-      "internalLinkSuggestion": [
-        "https://www.mimicminds.com/post/what-is-an-ai-agent",
-        "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars"
-      ]
-    },
-    {
-      "url": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
-      "itemType": "BLOG_POST",
-      "itemId": "ac2844da-ee0d-4499-93f0-517b6194ae3c",
-      "matched": true,
-      "current": {
-        "title": "AI NPCs in Gaming: Uses and Examples | Mimic Minds",
-        "metaDescription": "Learn how AI NPCs use memory, conversation and adaptive behavior to create more responsive game worlds, player interactions and character experiences.",
-        "focusKeywords": [
-          {
-            "term": "AI NPCs in gaming",
-            "isMain": true
-          }
-        ]
-      },
-      "primary": {
-        "query": "npc ai",
-        "clicks": 1,
-        "impressions": 221,
-        "ctr": 0.004524886877828055,
-        "position": 9.09049773755656
-      },
-      "secondary": [
-        {
-          "query": "ai npcs",
-          "clicks": 1,
-          "impressions": 67,
-          "ctr": 0.014925373134328358,
-          "position": 26.34328358208955
-        },
-        {
-          "query": "ai npc",
-          "clicks": 0,
-          "impressions": 192,
-          "ctr": 0,
-          "position": 10.432291666666666
-        },
-        {
-          "query": "ai npcs in games",
-          "clicks": 0,
-          "impressions": 84,
-          "ctr": 0,
-          "position": 16.654761904761905
-        },
-        {
-          "query": "ai npc in games",
-          "clicks": 0,
-          "impressions": 75,
-          "ctr": 0,
-          "position": 16.46666666666667
-        },
-        {
-          "query": "ai/npc",
-          "clicks": 0,
-          "impressions": 55,
-          "ctr": 0,
-          "position": 12.8
-        }
-      ],
-      "issues": [
-        {
-          "type": "title",
-          "field": "title",
-          "message": "Title doesn't contain the top query \"npc ai\" (221 impr, pos 9.1).",
-          "current": "AI NPCs in Gaming: Uses and Examples | Mimic Minds",
-          "suggested": "AI NPCs in Gaming: Uses and Examples | Mimic Minds | Npc Ai"
-        },
-        {
-          "type": "meta",
-          "field": "metaDescription",
-          "message": "Meta description doesn't mention the top query \"npc ai\".",
-          "current": "Learn how AI NPCs use memory, conversation and adaptive behavior to create more responsive game worlds, player interactions and character experiences.",
-          "suggested": null
-        },
-        {
-          "type": "ctr",
-          "field": null,
-          "message": "CTR 0.45% is well below the ~3.0% typical for position 9.1 -- title/meta likely isn't matching search intent.",
-          "current": null,
-          "suggested": null
-        },
-        {
-          "type": "focus-keyword",
-          "field": "focusKeywords",
-          "message": "Focus keyword doesn't include the top GSC query \"npc ai\".",
-          "current": [
-            {
-              "term": "AI NPCs in gaming",
-              "isMain": true
-            }
-          ],
-          "suggested": [
-            {
-              "term": "npc ai",
-              "isMain": true
-            },
-            {
-              "term": "ai npcs",
-              "isMain": false
-            },
-            {
-              "term": "ai npc",
-              "isMain": false
-            }
-          ]
-        }
-      ],
-      "internalLinkSuggestion": []
-    },
-    {
       "url": "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
       "itemType": "BLOG_POST",
       "itemId": "dbc82343-392d-4ecd-9d40-2b4733c45c9c",
@@ -846,9 +737,9 @@
       "primary": {
         "query": "conversational ai avatars",
         "clicks": 1,
-        "impressions": 323,
-        "ctr": 0.0030959752321981426,
-        "position": 8.541795665634675
+        "impressions": 328,
+        "ctr": 0.003048780487804878,
+        "position": 8.591463414634147
       },
       "secondary": [
         {
@@ -861,37 +752,37 @@
         {
           "query": "conversational ai avatar",
           "clicks": 0,
-          "impressions": 606,
+          "impressions": 647,
           "ctr": 0,
-          "position": 9.01980198019802
+          "position": 9.165378670788254
+        },
+        {
+          "query": "ai chat avatar",
+          "clicks": 0,
+          "impressions": 43,
+          "ctr": 0,
+          "position": 27.325581395348838
         },
         {
           "query": "face-to-face conversations with avatar",
           "clicks": 0,
           "impressions": 43,
           "ctr": 0,
-          "position": 22.46511627906977
-        },
-        {
-          "query": "ai chat avatar",
-          "clicks": 0,
-          "impressions": 40,
-          "ctr": 0,
-          "position": 27.225
+          "position": 22.813953488372093
         },
         {
           "query": "conversational avatar",
           "clicks": 0,
-          "impressions": 37,
+          "impressions": 41,
           "ctr": 0,
-          "position": 10.72972972972973
+          "position": 10.658536585365853
         }
       ],
       "issues": [
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.31% is well below the ~3.2% typical for position 8.5 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.30% is well below the ~3.2% typical for position 8.6 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         },
@@ -923,7 +814,7 @@
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"ai chat avatar\" (40 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"ai chat avatar\" (43 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "ai chat avatar"
         }
@@ -931,7 +822,118 @@
       "internalLinkSuggestion": [
         "https://www.mimicminds.com/post/conversational-ai-in-banking-and-finance",
         "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars",
-        "https://www.mimicminds.com/post/conversational-ai-agent-how-it-works-and-why-businesses-need-it"
+        "https://www.mimicminds.com/post/ai-avatars-vs-traditional-chatbots"
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+      "itemType": "BLOG_POST",
+      "itemId": "ac2844da-ee0d-4499-93f0-517b6194ae3c",
+      "matched": true,
+      "current": {
+        "title": "AI NPCs in Gaming: Uses and Examples | Mimic Minds",
+        "metaDescription": "Learn how AI NPCs use memory, conversation and adaptive behavior to create more responsive game worlds, player interactions and character experiences.",
+        "focusKeywords": [
+          {
+            "term": "AI NPCs in gaming",
+            "isMain": true
+          }
+        ]
+      },
+      "primary": {
+        "query": "npc ai",
+        "clicks": 1,
+        "impressions": 218,
+        "ctr": 0.0045871559633027525,
+        "position": 8.922018348623853
+      },
+      "secondary": [
+        {
+          "query": "ai npcs",
+          "clicks": 1,
+          "impressions": 69,
+          "ctr": 0.014492753623188406,
+          "position": 27.08695652173913
+        },
+        {
+          "query": "ai npc",
+          "clicks": 0,
+          "impressions": 187,
+          "ctr": 0,
+          "position": 10.807486631016042
+        },
+        {
+          "query": "ai npcs in games",
+          "clicks": 0,
+          "impressions": 88,
+          "ctr": 0,
+          "position": 17.125
+        },
+        {
+          "query": "ai npc in games",
+          "clicks": 0,
+          "impressions": 77,
+          "ctr": 0,
+          "position": 16.805194805194805
+        },
+        {
+          "query": "npc",
+          "clicks": 0,
+          "impressions": 50,
+          "ctr": 0,
+          "position": 3.88
+        }
+      ],
+      "issues": [
+        {
+          "type": "title",
+          "field": "title",
+          "message": "Title doesn't contain the top query \"npc ai\" (218 impr, pos 8.9).",
+          "current": "AI NPCs in Gaming: Uses and Examples | Mimic Minds",
+          "suggested": "AI NPCs in Gaming: Uses and Examples | Mimic Minds | Npc Ai"
+        },
+        {
+          "type": "meta",
+          "field": "metaDescription",
+          "message": "Meta description doesn't mention the top query \"npc ai\".",
+          "current": "Learn how AI NPCs use memory, conversation and adaptive behavior to create more responsive game worlds, player interactions and character experiences.",
+          "suggested": null
+        },
+        {
+          "type": "ctr",
+          "field": null,
+          "message": "CTR 0.46% is well below the ~3.0% typical for position 8.9 -- title/meta likely isn't matching search intent.",
+          "current": null,
+          "suggested": null
+        },
+        {
+          "type": "focus-keyword",
+          "field": "focusKeywords",
+          "message": "Focus keyword doesn't include the top GSC query \"npc ai\".",
+          "current": [
+            {
+              "term": "AI NPCs in gaming",
+              "isMain": true
+            }
+          ],
+          "suggested": [
+            {
+              "term": "npc ai",
+              "isMain": true
+            },
+            {
+              "term": "ai npcs",
+              "isMain": false
+            },
+            {
+              "term": "ai npc",
+              "isMain": false
+            }
+          ]
+        }
+      ],
+      "internalLinkSuggestion": [
+        "https://www.mimicminds.com/ai-avatar-for-gaming"
       ]
     },
     {
@@ -1029,24 +1031,24 @@
       "primary": {
         "query": "ai agent avatar",
         "clicks": 0,
-        "impressions": 550,
+        "impressions": 561,
         "ctr": 0,
-        "position": 9.530909090909091
+        "position": 9.527629233511586
       },
       "secondary": [
         {
           "query": "avatar ai agent",
           "clicks": 0,
-          "impressions": 192,
+          "impressions": 184,
           "ctr": 0,
-          "position": 9.760416666666666
+          "position": 9.75
         },
         {
           "query": "ai agent avatars",
           "clicks": 0,
-          "impressions": 50,
+          "impressions": 53,
           "ctr": 0,
-          "position": 6.38
+          "position": 6.339622641509434
         },
         {
           "query": "ai avatar agent",
@@ -1060,7 +1062,7 @@
           "clicks": 0,
           "impressions": 32,
           "ctr": 0,
-          "position": 36.09375
+          "position": 37.21875
         },
         {
           "query": "agent ai avatar",
@@ -1074,7 +1076,7 @@
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"ai agent avatar\" (550 impr, pos 9.5).",
+          "message": "Title doesn't contain the top query \"ai agent avatar\" (561 impr, pos 9.5).",
           "current": "AI Agents vs AI Avatars: Action Layer vs Human Interface",
           "suggested": null
         },
@@ -1132,182 +1134,6 @@
       ]
     },
     {
-      "url": "https://www.mimicminds.com/post/ai-host-avatar-for-events",
-      "itemType": "BLOG_POST",
-      "itemId": "077ef84b-8480-4578-91a0-043184dff050",
-      "matched": true,
-      "current": {
-        "title": "Real-Time AI Avatars for Virtual Events | Mimic Minds",
-        "metaDescription": "Discover how AI host avatars transform conferences and summits — from greetings to real-time engagement. A guide for event planners ready for the future.",
-        "focusKeywords": [
-          {
-            "term": "real-time avatars for virtual events",
-            "isMain": true
-          }
-        ]
-      },
-      "primary": {
-        "query": "real-time avatars for virtual events",
-        "clicks": 0,
-        "impressions": 220,
-        "ctr": 0,
-        "position": 6.109090909090909
-      },
-      "secondary": [
-        {
-          "query": "ai avatars for events",
-          "clicks": 0,
-          "impressions": 106,
-          "ctr": 0,
-          "position": 5.462264150943396
-        },
-        {
-          "query": "best ai avatar platforms for webinar hosting.",
-          "clicks": 0,
-          "impressions": 57,
-          "ctr": 0,
-          "position": 11.596491228070175
-        },
-        {
-          "query": "avatar host",
-          "clicks": 0,
-          "impressions": 55,
-          "ctr": 0,
-          "position": 6.890909090909091
-        },
-        {
-          "query": "top ai avatar tools for virtual event hosting.",
-          "clicks": 0,
-          "impressions": 52,
-          "ctr": 0,
-          "position": 10.288461538461538
-        },
-        {
-          "query": "affordable ai avatar solutions for event promotion.",
-          "clicks": 0,
-          "impressions": 39,
-          "ctr": 0,
-          "position": 35.30769230769231
-        }
-      ],
-      "issues": [
-        {
-          "type": "title",
-          "field": "title",
-          "message": "Title doesn't contain the top query \"real-time avatars for virtual events\" (220 impr, pos 6.1).",
-          "current": "Real-Time AI Avatars for Virtual Events | Mimic Minds",
-          "suggested": null
-        },
-        {
-          "type": "meta",
-          "field": "metaDescription",
-          "message": "Meta description doesn't mention the top query \"real-time avatars for virtual events\".",
-          "current": "Discover how AI host avatars transform conferences and summits — from greetings to real-time engagement. A guide for event planners ready for the future.",
-          "suggested": null
-        },
-        {
-          "type": "ctr",
-          "field": null,
-          "message": "CTR 0.00% is well below the ~4.9% typical for position 6.1 -- title/meta likely isn't matching search intent.",
-          "current": null,
-          "suggested": null
-        },
-        {
-          "type": "content-gap",
-          "field": null,
-          "message": "Secondary keyword \"top ai avatar tools for virtual event hosting.\" (52 impr) doesn't appear in the page content.",
-          "current": null,
-          "suggested": "top ai avatar tools for virtual event hosting."
-        },
-        {
-          "type": "content-gap",
-          "field": null,
-          "message": "Secondary keyword \"affordable ai avatar solutions for event promotion.\" (39 impr) doesn't appear in the page content.",
-          "current": null,
-          "suggested": "affordable ai avatar solutions for event promotion."
-        }
-      ],
-      "internalLinkSuggestion": [
-        "https://www.mimicminds.com/post/ai-sales-avatar",
-        "https://www.mimicminds.com/industries/ai-avatar-for-business",
-        "https://www.mimicminds.com/ai-avatar-for-robotic"
-      ]
-    },
-    {
-      "url": "https://www.mimicminds.com/post/conversational-ai-agent-how-it-works-and-why-businesses-need-it",
-      "itemType": "BLOG_POST",
-      "itemId": "f0e1f2f9-7c9e-4612-9dd3-e4cecdc20376",
-      "matched": true,
-      "current": {
-        "title": "Conversational AI Agent for Business: Use Cases and Setup",
-        "metaDescription": "Conversational AI Agent technology explained—how it works, key benefits, industry use cases, and why modern businesses rely on intelligent AI agents for automation and customer engagement.",
-        "focusKeywords": [
-          {
-            "term": "Conversational AI Agent",
-            "isMain": true
-          }
-        ]
-      },
-      "primary": {
-        "query": "conversational ai agent",
-        "clicks": 0,
-        "impressions": 323,
-        "ctr": 0,
-        "position": 54.87616099071207
-      },
-      "secondary": [
-        {
-          "query": "conversational ai agents",
-          "clicks": 0,
-          "impressions": 203,
-          "ctr": 0,
-          "position": 57.926108374384235
-        },
-        {
-          "query": "conversational ai agents for businesses",
-          "clicks": 0,
-          "impressions": 75,
-          "ctr": 0,
-          "position": 40.16
-        },
-        {
-          "query": "ai conversational agent",
-          "clicks": 0,
-          "impressions": 33,
-          "ctr": 0,
-          "position": 59.84848484848485
-        },
-        {
-          "query": "implementing conversational ai in business",
-          "clicks": 0,
-          "impressions": 13,
-          "ctr": 0,
-          "position": 82.92307692307692
-        },
-        {
-          "query": "conversational agent",
-          "clicks": 0,
-          "impressions": 11,
-          "ctr": 0,
-          "position": 66.36363636363636
-        }
-      ],
-      "issues": [
-        {
-          "type": "ctr",
-          "field": null,
-          "message": "CTR 0.00% is well below the ~0.3% typical for position 54.9 -- title/meta likely isn't matching search intent.",
-          "current": null,
-          "suggested": null
-        }
-      ],
-      "internalLinkSuggestion": [
-        "https://www.mimicminds.com/post/conversational-ai-in-banking-and-finance",
-        "https://www.mimicminds.com/post/what-is-an-ai-agent",
-        "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars"
-      ]
-    },
-    {
       "url": "https://www.mimicminds.com/post/ai-avatars-vs-traditional-chatbots",
       "itemType": "BLOG_POST",
       "itemId": "c2e63bc7-140b-4db1-beb8-3fb44f7e863e",
@@ -1325,9 +1151,9 @@
       "primary": {
         "query": "ai chatbot avatar",
         "clicks": 0,
-        "impressions": 140,
+        "impressions": 147,
         "ctr": 0,
-        "position": 16.142857142857142
+        "position": 16.122448979591837
       },
       "secondary": [
         {
@@ -1335,42 +1161,42 @@
           "clicks": 0,
           "impressions": 91,
           "ctr": 0,
-          "position": 14.923076923076923
+          "position": 14.945054945054945
         },
         {
           "query": "chatbot avatar",
           "clicks": 0,
+          "impressions": 72,
+          "ctr": 0,
+          "position": 24.208333333333332
+        },
+        {
+          "query": "avatar ai vs chatbot differenze",
+          "clicks": 0,
           "impressions": 68,
           "ctr": 0,
-          "position": 24.558823529411764
+          "position": 3.0588235294117645
         },
         {
           "query": "ai avatar chatbot",
           "clicks": 0,
           "impressions": 64,
           "ctr": 0,
-          "position": 13.53125
-        },
-        {
-          "query": "avatar ai vs chatbot differenze",
-          "clicks": 0,
-          "impressions": 60,
-          "ctr": 0,
-          "position": 3.066666666666667
+          "position": 13.375
         },
         {
           "query": "chat bot avatar",
           "clicks": 0,
-          "impressions": 42,
+          "impressions": 41,
           "ctr": 0,
-          "position": 24.5
+          "position": 24.414634146341463
         }
       ],
       "issues": [
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"ai chatbot avatar\" (140 impr, pos 16.1).",
+          "message": "Title doesn't contain the top query \"ai chatbot avatar\" (147 impr, pos 16.1).",
           "current": "AI Avatars vs Chatbots: Differences and Use Cases",
           "suggested": null
         },
@@ -1416,14 +1242,14 @@
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"avatar ai vs chatbot differenze\" (60 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"avatar ai vs chatbot differenze\" (68 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "avatar ai vs chatbot differenze"
         },
         {
           "type": "content-gap",
           "field": null,
-          "message": "Secondary keyword \"chat bot avatar\" (42 impr) doesn't appear in the page content.",
+          "message": "Secondary keyword \"chat bot avatar\" (41 impr) doesn't appear in the page content.",
           "current": null,
           "suggested": "chat bot avatar"
         }
@@ -1432,6 +1258,80 @@
         "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
         "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars",
         "https://www.mimicminds.com/post/3d-avatars-in-the-metaverse"
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/post/conversational-ai-agent-how-it-works-and-why-businesses-need-it",
+      "itemType": "BLOG_POST",
+      "itemId": "f0e1f2f9-7c9e-4612-9dd3-e4cecdc20376",
+      "matched": true,
+      "current": {
+        "title": "Conversational AI Agent for Business: Use Cases and Setup",
+        "metaDescription": "Conversational AI Agent technology explained—how it works, key benefits, industry use cases, and why modern businesses rely on intelligent AI agents for automation and customer engagement.",
+        "focusKeywords": [
+          {
+            "term": "Conversational AI Agent",
+            "isMain": true
+          }
+        ]
+      },
+      "primary": {
+        "query": "conversational ai agent",
+        "clicks": 0,
+        "impressions": 318,
+        "ctr": 0,
+        "position": 56.71383647798742
+      },
+      "secondary": [
+        {
+          "query": "conversational ai agents",
+          "clicks": 0,
+          "impressions": 208,
+          "ctr": 0,
+          "position": 59.94230769230769
+        },
+        {
+          "query": "conversational ai agents for businesses",
+          "clicks": 0,
+          "impressions": 72,
+          "ctr": 0,
+          "position": 43.5
+        },
+        {
+          "query": "ai conversational agent",
+          "clicks": 0,
+          "impressions": 27,
+          "ctr": 0,
+          "position": 63.148148148148145
+        },
+        {
+          "query": "implementing conversational ai in business",
+          "clicks": 0,
+          "impressions": 13,
+          "ctr": 0,
+          "position": 82.92307692307692
+        },
+        {
+          "query": "conversational agent",
+          "clicks": 0,
+          "impressions": 12,
+          "ctr": 0,
+          "position": 66.5
+        }
+      ],
+      "issues": [
+        {
+          "type": "ctr",
+          "field": null,
+          "message": "CTR 0.00% is well below the ~0.3% typical for position 56.7 -- title/meta likely isn't matching search intent.",
+          "current": null,
+          "suggested": null
+        }
+      ],
+      "internalLinkSuggestion": [
+        "https://www.mimicminds.com/post/conversational-ai-in-banking-and-finance",
+        "https://www.mimicminds.com/post/what-is-an-ai-agent",
+        "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars"
       ]
     },
     {
@@ -1452,9 +1352,9 @@
       "primary": {
         "query": "ai avatar business solutions",
         "clicks": 1,
-        "impressions": 10,
-        "ctr": 0.1,
-        "position": 6.9
+        "impressions": 12,
+        "ctr": 0.08333333333333333,
+        "position": 6.833333333333333
       },
       "secondary": [
         {
@@ -1467,16 +1367,16 @@
         {
           "query": "avatar for business",
           "clicks": 0,
-          "impressions": 52,
+          "impressions": 60,
           "ctr": 0,
-          "position": 12.288461538461538
+          "position": 12.783333333333333
         },
         {
           "query": "digital avatar customer service training",
           "clicks": 0,
-          "impressions": 18,
+          "impressions": 19,
           "ctr": 0,
-          "position": 11.944444444444445
+          "position": 11.947368421052632
         },
         {
           "query": "site:mimicminds.com",
@@ -1497,7 +1397,7 @@
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"ai avatar business solutions\" (10 impr, pos 6.9).",
+          "message": "Title doesn't contain the top query \"ai avatar business solutions\" (12 impr, pos 6.8).",
           "current": "AI Avatars for Business & Training | Mimic Minds",
           "suggested": null
         },
@@ -1541,6 +1441,108 @@
       ]
     },
     {
+      "url": "https://www.mimicminds.com/post/ai-host-avatar-for-events",
+      "itemType": "BLOG_POST",
+      "itemId": "077ef84b-8480-4578-91a0-043184dff050",
+      "matched": true,
+      "current": {
+        "title": "Real-Time AI Avatars for Virtual Events | Mimic Minds",
+        "metaDescription": "Discover how AI host avatars transform conferences and summits — from greetings to real-time engagement. A guide for event planners ready for the future.",
+        "focusKeywords": [
+          {
+            "term": "real-time avatars for virtual events",
+            "isMain": true
+          }
+        ]
+      },
+      "primary": {
+        "query": "real-time avatars for virtual events",
+        "clicks": 0,
+        "impressions": 160,
+        "ctr": 0,
+        "position": 5.85
+      },
+      "secondary": [
+        {
+          "query": "ai avatars for events",
+          "clicks": 0,
+          "impressions": 96,
+          "ctr": 0,
+          "position": 5.5
+        },
+        {
+          "query": "avatar host",
+          "clicks": 0,
+          "impressions": 59,
+          "ctr": 0,
+          "position": 6.627118644067797
+        },
+        {
+          "query": "best ai avatar platforms for webinar hosting.",
+          "clicks": 0,
+          "impressions": 53,
+          "ctr": 0,
+          "position": 12.056603773584905
+        },
+        {
+          "query": "top ai avatar tools for virtual event hosting.",
+          "clicks": 0,
+          "impressions": 50,
+          "ctr": 0,
+          "position": 10.82
+        },
+        {
+          "query": "affordable ai avatar solutions for event promotion.",
+          "clicks": 0,
+          "impressions": 35,
+          "ctr": 0,
+          "position": 35.57142857142857
+        }
+      ],
+      "issues": [
+        {
+          "type": "title",
+          "field": "title",
+          "message": "Title doesn't contain the top query \"real-time avatars for virtual events\" (160 impr, pos 5.8).",
+          "current": "Real-Time AI Avatars for Virtual Events | Mimic Minds",
+          "suggested": null
+        },
+        {
+          "type": "meta",
+          "field": "metaDescription",
+          "message": "Meta description doesn't mention the top query \"real-time avatars for virtual events\".",
+          "current": "Discover how AI host avatars transform conferences and summits — from greetings to real-time engagement. A guide for event planners ready for the future.",
+          "suggested": null
+        },
+        {
+          "type": "ctr",
+          "field": null,
+          "message": "CTR 0.00% is well below the ~5.2% typical for position 5.8 -- title/meta likely isn't matching search intent.",
+          "current": null,
+          "suggested": null
+        },
+        {
+          "type": "content-gap",
+          "field": null,
+          "message": "Secondary keyword \"top ai avatar tools for virtual event hosting.\" (50 impr) doesn't appear in the page content.",
+          "current": null,
+          "suggested": "top ai avatar tools for virtual event hosting."
+        },
+        {
+          "type": "content-gap",
+          "field": null,
+          "message": "Secondary keyword \"affordable ai avatar solutions for event promotion.\" (35 impr) doesn't appear in the page content.",
+          "current": null,
+          "suggested": "affordable ai avatar solutions for event promotion."
+        }
+      ],
+      "internalLinkSuggestion": [
+        "https://www.mimicminds.com/post/ai-sales-avatar",
+        "https://www.mimicminds.com/industries/ai-avatar-for-business",
+        "https://www.mimicminds.com/ai-avatar-for-robotic"
+      ]
+    },
+    {
       "url": "https://www.mimicminds.com/post/conversational-ai-in-education",
       "itemType": "BLOG_POST",
       "itemId": "d19f9e7a-66a3-4e26-9001-3ef909a26239",
@@ -1558,17 +1560,17 @@
       "primary": {
         "query": "conversational ai for education",
         "clicks": 0,
-        "impressions": 228,
+        "impressions": 224,
         "ctr": 0,
-        "position": 36.01315789473684
+        "position": 37.4375
       },
       "secondary": [
         {
           "query": "conversational ai in education",
           "clicks": 0,
-          "impressions": 215,
+          "impressions": 224,
           "ctr": 0,
-          "position": 41.027906976744184
+          "position": 40.700892857142854
         },
         {
           "query": "site:mimicminds.com",
@@ -1582,28 +1584,28 @@
           "clicks": 0,
           "impressions": 14,
           "ctr": 0,
-          "position": 83.35714285714286
+          "position": 79.21428571428571
         },
         {
           "query": "ai teaching avatar",
           "clicks": 0,
-          "impressions": 10,
+          "impressions": 13,
           "ctr": 0,
-          "position": 72.3
+          "position": 70.53846153846153
         },
         {
           "query": "ai avatars for education",
           "clicks": 0,
-          "impressions": 8,
+          "impressions": 10,
           "ctr": 0,
-          "position": 66.125
+          "position": 66.6
         }
       ],
       "issues": [
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"conversational ai for education\" (228 impr, pos 36.0).",
+          "message": "Title doesn't contain the top query \"conversational ai for education\" (224 impr, pos 37.4).",
           "current": "Conversational AI in Education: Shaping Modern Learning",
           "suggested": null
         },
@@ -1617,7 +1619,7 @@
         {
           "type": "ctr",
           "field": null,
-          "message": "CTR 0.00% is well below the ~0.5% typical for position 36.0 -- title/meta likely isn't matching search intent.",
+          "message": "CTR 0.00% is well below the ~0.5% typical for position 37.4 -- title/meta likely isn't matching search intent.",
           "current": null,
           "suggested": null
         },
@@ -1678,31 +1680,31 @@
       "primary": {
         "query": "ai robot avatar",
         "clicks": 1,
-        "impressions": 21,
-        "ctr": 0.047619047619047616,
-        "position": 1.9047619047619047
+        "impressions": 20,
+        "ctr": 0.05,
+        "position": 1.75
       },
       "secondary": [
         {
           "query": "real avatar robot",
           "clicks": 1,
-          "impressions": 20,
-          "ctr": 0.05,
-          "position": 8.35
+          "impressions": 18,
+          "ctr": 0.05555555555555555,
+          "position": 8.444444444444445
         },
         {
           "query": "robot avatar",
           "clicks": 0,
-          "impressions": 247,
+          "impressions": 228,
           "ctr": 0,
-          "position": 8.578947368421051
+          "position": 8.62719298245614
         },
         {
           "query": "avatar robot",
           "clicks": 0,
-          "impressions": 59,
+          "impressions": 52,
           "ctr": 0,
-          "position": 15.610169491525424
+          "position": 16.51923076923077
         },
         {
           "query": "ai bot avatar",
@@ -1714,9 +1716,9 @@
         {
           "query": "robotic avatar",
           "clicks": 0,
-          "impressions": 27,
+          "impressions": 25,
           "ctr": 0,
-          "position": 9.814814814814815
+          "position": 9.88
         }
       ],
       "issues": [
@@ -1730,202 +1732,8 @@
       ],
       "internalLinkSuggestion": [
         "https://www.mimicminds.com/post/ai-sales-avatar",
-        "https://www.mimicminds.com/post/ai-host-avatar-for-events",
-        "https://www.mimicminds.com/industries/ai-avatar-for-business"
-      ]
-    },
-    {
-      "url": "https://www.mimicminds.com/post/how-to-create-an-ai-avatar",
-      "itemType": "BLOG_POST",
-      "itemId": "c9265a24-8ee9-42eb-8dd6-e34f95913d29",
-      "matched": true,
-      "current": {
-        "title": "How to Create an AI Avatar (Step-by-Step)",
-        "metaDescription": "Learn how to create an AI avatar step by step with real screenshots from Mimic AI Studio. Build a custom avatar with your own voice, personality, and backstory.",
-        "focusKeywords": [
-          {
-            "term": " Create an AI Avatar",
-            "isMain": true
-          }
-        ]
-      },
-      "primary": {
-        "query": "how to create ai avatar",
-        "clicks": 0,
-        "impressions": 108,
-        "ctr": 0,
-        "position": 28.296296296296298
-      },
-      "secondary": [
-        {
-          "query": "create ai avatar",
-          "clicks": 0,
-          "impressions": 39,
-          "ctr": 0,
-          "position": 41.94871794871795
-        },
-        {
-          "query": "cloud ai avatar",
-          "clicks": 0,
-          "impressions": 32,
-          "ctr": 0,
-          "position": 44.40625
-        },
-        {
-          "query": "site:mimicminds.com",
-          "clicks": 0,
-          "impressions": 19,
-          "ctr": 0,
-          "position": 51.1578947368421
-        },
-        {
-          "query": "avatar ai",
-          "clicks": 0,
-          "impressions": 17,
-          "ctr": 0,
-          "position": 28.764705882352942
-        },
-        {
-          "query": "how to create avatar",
-          "clicks": 0,
-          "impressions": 15,
-          "ctr": 0,
-          "position": 40.6
-        }
-      ],
-      "issues": [
-        {
-          "type": "title",
-          "field": "title",
-          "message": "Title doesn't contain the top query \"how to create ai avatar\" (108 impr, pos 28.3).",
-          "current": "How to Create an AI Avatar (Step-by-Step)",
-          "suggested": null
-        },
-        {
-          "type": "meta",
-          "field": "metaDescription",
-          "message": "Meta description doesn't mention the top query \"how to create ai avatar\".",
-          "current": "Learn how to create an AI avatar step by step with real screenshots from Mimic AI Studio. Build a custom avatar with your own voice, personality, and backstory.",
-          "suggested": null
-        },
-        {
-          "type": "ctr",
-          "field": null,
-          "message": "CTR 0.00% is well below the ~0.7% typical for position 28.3 -- title/meta likely isn't matching search intent.",
-          "current": null,
-          "suggested": null
-        },
-        {
-          "type": "focus-keyword",
-          "field": "focusKeywords",
-          "message": "Focus keyword doesn't include the top GSC query \"how to create ai avatar\".",
-          "current": [
-            {
-              "term": " Create an AI Avatar",
-              "isMain": true
-            }
-          ],
-          "suggested": [
-            {
-              "term": "how to create ai avatar",
-              "isMain": true
-            },
-            {
-              "term": "create ai avatar",
-              "isMain": false
-            },
-            {
-              "term": "cloud ai avatar",
-              "isMain": false
-            }
-          ]
-        },
-        {
-          "type": "content-gap",
-          "field": null,
-          "message": "Secondary keyword \"cloud ai avatar\" (32 impr) doesn't appear in the page content.",
-          "current": null,
-          "suggested": "cloud ai avatar"
-        }
-      ],
-      "internalLinkSuggestion": [
-        "https://www.mimicminds.com/post/ai-sales-avatar",
-        "https://www.mimicminds.com/post/ai-host-avatar-for-events",
-        "https://www.mimicminds.com/post/conversational-ai-agent-how-it-works-and-why-businesses-need-it"
-      ]
-    },
-    {
-      "url": "https://www.mimicminds.com/post/3d-avatars-in-the-metaverse",
-      "itemType": "BLOG_POST",
-      "itemId": "521166f8-3339-4ff5-a4bb-eb1b44fde06c",
-      "matched": true,
-      "current": {
-        "title": "Metaverse Avatar: 3D Avatars in the Metaverse",
-        "metaDescription": "Discover how Metaverse Avatars are transforming digital branding. Learn how 3D AI avatars help brands engage audiences, enhance interaction, and shape the future of the Metaverse.",
-        "focusKeywords": [
-          {
-            "term": "Metaverse Avatar",
-            "isMain": true
-          }
-        ]
-      },
-      "primary": {
-        "query": "metaverse avatar",
-        "clicks": 1,
-        "impressions": 165,
-        "ctr": 0.006060606060606061,
-        "position": 12.115151515151515
-      },
-      "secondary": [
-        {
-          "query": "metaverse avatars",
-          "clicks": 0,
-          "impressions": 121,
-          "ctr": 0,
-          "position": 9.47107438016529
-        },
-        {
-          "query": "avatar metaverse",
-          "clicks": 0,
-          "impressions": 28,
-          "ctr": 0,
-          "position": 14.178571428571429
-        },
-        {
-          "query": "3d avatar metaverse",
-          "clicks": 0,
-          "impressions": 17,
-          "ctr": 0,
-          "position": 14.352941176470589
-        },
-        {
-          "query": "how to make metaverse avatar",
-          "clicks": 0,
-          "impressions": 16,
-          "ctr": 0,
-          "position": 38.8125
-        },
-        {
-          "query": "3d avatar creator market",
-          "clicks": 0,
-          "impressions": 13,
-          "ctr": 0,
-          "position": 58.76923076923077
-        }
-      ],
-      "issues": [
-        {
-          "type": "ctr",
-          "field": null,
-          "message": "CTR 0.61% is well below the ~2.1% typical for position 12.1 -- title/meta likely isn't matching search intent.",
-          "current": null,
-          "suggested": null
-        }
-      ],
-      "internalLinkSuggestion": [
-        "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
-        "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars",
-        "https://www.mimicminds.com/post/ai-avatars-vs-traditional-chatbots"
+        "https://www.mimicminds.com/industries/ai-avatar-for-business",
+        "https://www.mimicminds.com/post/ai-host-avatar-for-events"
       ]
     },
     {
@@ -1946,9 +1754,9 @@
       "primary": {
         "query": "virtual self for health",
         "clicks": 0,
-        "impressions": 429,
+        "impressions": 451,
         "ctr": 0,
-        "position": 10.585081585081586
+        "position": 10.62971175166297
       },
       "secondary": [
         {
@@ -1961,9 +1769,9 @@
         {
           "query": "health avatar",
           "clicks": 0,
-          "impressions": 6,
+          "impressions": 7,
           "ctr": 0,
-          "position": 48.5
+          "position": 47.714285714285715
         },
         {
           "query": "site:mimicminds.com",
@@ -1980,18 +1788,18 @@
           "position": 69.6
         },
         {
-          "query": "ai wellness coach",
+          "query": "coach avatar",
           "clicks": 0,
-          "impressions": 3,
+          "impressions": 4,
           "ctr": 0,
-          "position": 29.666666666666668
+          "position": 61
         }
       ],
       "issues": [
         {
           "type": "title",
           "field": "title",
-          "message": "Title doesn't contain the top query \"virtual self for health\" (429 impr, pos 10.6).",
+          "message": "Title doesn't contain the top query \"virtual self for health\" (451 impr, pos 10.6).",
           "current": "AI Wellness Avatar & Virtual Health Coach | Mimic Minds",
           "suggested": null
         },
@@ -2039,6 +1847,186 @@
         "https://www.mimicminds.com/industries/ai-avatar-for-business",
         "https://www.mimicminds.com/post/ai-sales-avatar",
         "https://www.mimicminds.com/post/ai-host-avatar-for-events"
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/post/3d-avatars-in-the-metaverse",
+      "itemType": "BLOG_POST",
+      "itemId": "521166f8-3339-4ff5-a4bb-eb1b44fde06c",
+      "matched": true,
+      "current": {
+        "title": "Metaverse Avatar: 3D Avatars in the Metaverse",
+        "metaDescription": "Discover how Metaverse Avatars are transforming digital branding. Learn how 3D AI avatars help brands engage audiences, enhance interaction, and shape the future of the Metaverse.",
+        "focusKeywords": [
+          {
+            "term": "Metaverse Avatar",
+            "isMain": true
+          }
+        ]
+      },
+      "primary": {
+        "query": "metaverse avatar",
+        "clicks": 1,
+        "impressions": 172,
+        "ctr": 0.005813953488372093,
+        "position": 11.843023255813954
+      },
+      "secondary": [
+        {
+          "query": "metaverse avatars",
+          "clicks": 0,
+          "impressions": 122,
+          "ctr": 0,
+          "position": 9.040983606557377
+        },
+        {
+          "query": "avatar metaverse",
+          "clicks": 0,
+          "impressions": 29,
+          "ctr": 0,
+          "position": 13.724137931034482
+        },
+        {
+          "query": "3d avatar metaverse",
+          "clicks": 0,
+          "impressions": 16,
+          "ctr": 0,
+          "position": 14.4375
+        },
+        {
+          "query": "how to make metaverse avatar",
+          "clicks": 0,
+          "impressions": 15,
+          "ctr": 0,
+          "position": 39.06666666666667
+        },
+        {
+          "query": "3d avatar creator market",
+          "clicks": 0,
+          "impressions": 13,
+          "ctr": 0,
+          "position": 58.76923076923077
+        }
+      ],
+      "issues": [
+        {
+          "type": "ctr",
+          "field": null,
+          "message": "CTR 0.58% is well below the ~2.1% typical for position 11.8 -- title/meta likely isn't matching search intent.",
+          "current": null,
+          "suggested": null
+        }
+      ],
+      "internalLinkSuggestion": [
+        "https://www.mimicminds.com/post/the-future-of-digital-interaction-conversational-ai-avatars",
+        "https://www.mimicminds.com/post/ai-agents-vs-ai-avatars",
+        "https://www.mimicminds.com/post/ai-avatars-vs-traditional-chatbots"
+      ]
+    },
+    {
+      "url": "https://www.mimicminds.com/ai-avatar-for-gaming",
+      "itemType": "STATIC_PAGE",
+      "itemId": "tfy63",
+      "matched": true,
+      "current": {
+        "title": "AI Gaming Avatars & Conversational NPCs | Mimic Minds",
+        "metaDescription": "",
+        "focusKeywords": [
+          {
+            "term": "AI gaming avatar",
+            "isMain": true
+          }
+        ]
+      },
+      "primary": {
+        "query": "gaming avatar",
+        "clicks": 0,
+        "impressions": 94,
+        "ctr": 0,
+        "position": 12.106382978723405
+      },
+      "secondary": [
+        {
+          "query": "how to use avatars for gaming?",
+          "clicks": 0,
+          "impressions": 55,
+          "ctr": 0,
+          "position": 4.8
+        },
+        {
+          "query": "avatar for games",
+          "clicks": 0,
+          "impressions": 51,
+          "ctr": 0,
+          "position": 8.529411764705882
+        },
+        {
+          "query": "avatar gaming",
+          "clicks": 0,
+          "impressions": 46,
+          "ctr": 0,
+          "position": 11.108695652173912
+        },
+        {
+          "query": "game avatars",
+          "clicks": 0,
+          "impressions": 33,
+          "ctr": 0,
+          "position": 10.484848484848484
+        },
+        {
+          "query": "where to find gaming avatars?",
+          "clicks": 0,
+          "impressions": 28,
+          "ctr": 0,
+          "position": 9.071428571428571
+        }
+      ],
+      "issues": [
+        {
+          "type": "meta-missing",
+          "field": "metaDescription",
+          "message": "No meta description set.",
+          "current": null,
+          "suggested": "Learn about gaming avatar -- how to use avatars for gaming?, avatar for games."
+        },
+        {
+          "type": "ctr",
+          "field": null,
+          "message": "CTR 0.00% is well below the ~2.1% typical for position 12.1 -- title/meta likely isn't matching search intent.",
+          "current": null,
+          "suggested": null
+        },
+        {
+          "type": "focus-keyword",
+          "field": "focusKeywords",
+          "message": "Focus keyword doesn't include the top GSC query \"gaming avatar\".",
+          "current": [
+            {
+              "term": "AI gaming avatar",
+              "isMain": true
+            }
+          ],
+          "suggested": [
+            {
+              "term": "gaming avatar",
+              "isMain": true
+            },
+            {
+              "term": "how to use avatars for gaming?",
+              "isMain": false
+            },
+            {
+              "term": "avatar for games",
+              "isMain": false
+            }
+          ]
+        }
+      ],
+      "internalLinkSuggestion": [
+        "https://www.mimicminds.com/post/ai-sales-avatar",
+        "https://www.mimicminds.com/post/ai-npcs-in-gaming",
+        "https://www.mimicminds.com/industries/ai-avatar-for-business"
       ]
     }
   ]
