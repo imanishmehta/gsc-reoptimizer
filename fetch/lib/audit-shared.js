@@ -4,8 +4,16 @@
 // lives once here instead of twice.
 
 import { google } from 'googleapis';
+import { PERIODS, datePeriods, classify, expectedCtr } from '../analysis.js';
+
+export { PERIODS };
 
 export const TOP_N_PAGES = 20;
+// How many candidate pages (by current-period impressions) to classify per
+// period before filtering down to underperformers -- generous enough that a
+// real decliner outside the top 20 doesn't get missed, small enough that the
+// per-page Wix-matching + live-crawl work stays bounded.
+const CANDIDATE_POOL_SIZE = 40;
 
 const STOPWORDS = new Set(['post', 'the', 'for', 'with', 'and', 'ai', 'vs', 'a', 'an', 'to', 'in', 'of', 'on']);
 export function tokenize(text) {
@@ -33,12 +41,12 @@ async function gscQuery(client, siteUrl, startDate, endDate, dimensions, rowLimi
   return res.data.rows || [];
 }
 
-function fmtDate(d) { return d.toISOString().slice(0, 10); }
-
-export async function getGscData(client, gscSiteUrl, topN = TOP_N_PAGES) {
-  const end = new Date(); end.setDate(end.getDate() - 3);
-  const start = new Date(end); start.setDate(start.getDate() - 30);
-  const rows = await gscQuery(client, gscSiteUrl, fmtDate(start), fmtDate(end), ['page', 'query']);
+// One GSC pull for an arbitrary date range, dims ['page','query']. Returns
+// per-page query breakdown (sorted by clicks) and per-page totals -- the
+// building block getPeriodTargets uses for both the current and previous
+// window of every period.
+export async function gscPageQueryData(client, siteUrl, startDate, endDate) {
+  const rows = await gscQuery(client, siteUrl, startDate, endDate, ['page', 'query']);
 
   // Strip URL fragments (#viewer-xxx) -- these are duplicate-content deep-link
   // variants of the same underlying page/post, not separate content. Without
@@ -70,13 +78,71 @@ export async function getGscData(client, gscSiteUrl, topN = TOP_N_PAGES) {
   }
   for (const queries of byPage.values()) queries.sort((a, b) => b.clicks - a.clicks || b.impressions - a.impressions);
 
-  const pageTotals = [...byPage.entries()].map(([page, queries]) => ({
-    page,
-    impressions: queries.reduce((s, q) => s + q.impressions, 0),
-    clicks: queries.reduce((s, q) => s + q.clicks, 0),
-  })).sort((a, b) => b.impressions - a.impressions);
+  const pageTotals = new Map();
+  for (const [page, queries] of byPage) {
+    const impressions = queries.reduce((s, q) => s + q.impressions, 0);
+    const clicks = queries.reduce((s, q) => s + q.clicks, 0);
+    const posWeighted = queries.reduce((s, q) => s + q.position * q.impressions, 0);
+    pageTotals.set(page, {
+      impressions, clicks,
+      ctr: impressions > 0 ? clicks / impressions : 0,
+      position: impressions > 0 ? posWeighted / impressions : 0,
+    });
+  }
 
-  return { byPage, topPages: pageTotals.slice(0, topN).map(p => p.page) };
+  return { byPage, pageTotals };
+}
+
+// Same "is this page actually declining" signal Reoptimizer's own
+// decliners/quick-wins already use (classify() + the CTR-vs-expected-
+// benchmark check) -- reused rather than reinvented so a page flagged here
+// matches what the Reoptimizer tab already calls declining.
+//
+// Returns an underperformer-specific cause ('ranking-drop' | 'ctr-drop' |
+// 'low-ctr'), or null if the page doesn't qualify. Deliberately does NOT
+// just pass through classify()'s raw label: a page can classify as
+// 'ranking-rise' (its trend is fine) while still having objectively low CTR
+// for its position -- surfacing "ranking rise" as the reason it needs
+// optimizing would be actively misleading, so the low-CTR path always
+// reports 'low-ctr' regardless of what classify() said about the trend.
+export function underperformerCause(cause, cur) {
+  if (cause === 'ranking-drop' || cause === 'ctr-drop') return cause;
+  if (cur.impressions >= 30 && cur.ctr < expectedCtr(cur.position) * 0.5) return 'low-ctr';
+  return null;
+}
+
+// Per-period underperformer detection, shared by content-audit.js,
+// content-reoptimize.js, and content-links.js -- same list everywhere for a
+// given site+period, computed once per script run (each script still pulls
+// its own GSC data independently; this just makes sure they agree on which
+// pages qualify).
+export async function getPeriodTargets(gscClient, site, days) {
+  const period = datePeriods(days);
+  const [cur, prev] = await Promise.all([
+    gscPageQueryData(gscClient, site.gscSiteUrl, period.curStart, period.curEnd),
+    gscPageQueryData(gscClient, site.gscSiteUrl, period.prevStart, period.prevEnd),
+  ]);
+
+  const candidatePages = [...cur.pageTotals.entries()]
+    .sort((a, b) => b[1].impressions - a[1].impressions)
+    .slice(0, CANDIDATE_POOL_SIZE)
+    .map(([page]) => page);
+
+  const targets = [];
+  for (const page of candidatePages) {
+    const curTotals = cur.pageTotals.get(page);
+    const prevTotals = prev.pageTotals.get(page) || { impressions: 0, clicks: 0, ctr: 0, position: 0 };
+    const cause = underperformerCause(classify(curTotals, prevTotals), curTotals);
+    if (!cause) continue;
+    const queries = cur.byPage.get(page) || [];
+    targets.push({
+      url: page, cause,
+      primary: queries[0] || null,
+      secondary: queries.slice(1, 6),
+      curTotals, prevTotals,
+    });
+  }
+  return { period, targets };
 }
 
 // ---------- Wix ----------
@@ -139,15 +205,74 @@ export function decodeEntities(text) {
   return text.replace(/&(#39|amp|lt|gt|quot|apos|nbsp);/g, (_, e) => HTML_ENTITIES[e]);
 }
 
-export async function fetchLiveTitle(url) {
-  try {
-    const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (content-audit-bot)' } });
-    const html = await res.text();
-    const m = html.match(/<title[^>]*>([^<]*)<\/title>/i);
-    return m ? decodeEntities(m[1].trim()) : null;
-  } catch {
-    return null;
+function extractInternalLinks(html, pageUrl) {
+  let origin;
+  try { origin = new URL(pageUrl).origin; } catch { return []; }
+  const links = [];
+  const seen = new Set();
+  const re = /<a\s+[^>]*href=["']([^"'#][^"']*)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  let m;
+  while ((m = re.exec(html)) && links.length < 60) {
+    const text = decodeEntities(m[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+    if (!text) continue;
+    let abs;
+    try { abs = new URL(m[1], pageUrl).href; } catch { continue; }
+    if (!abs.startsWith(origin)) continue; // internal links only
+    const key = `${abs}|${text}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    links.push({ anchorText: text, href: abs });
   }
+  return links;
+}
+
+function collectSchemaTypes(node, types) {
+  if (Array.isArray(node)) { node.forEach(n => collectSchemaTypes(n, types)); return; }
+  if (!node || typeof node !== 'object') return;
+  if (node['@type']) (Array.isArray(node['@type']) ? node['@type'] : [node['@type']]).forEach(t => types.add(t));
+  if (node['@graph']) collectSchemaTypes(node['@graph'], types);
+}
+
+function extractSchemaTypes(html) {
+  const types = new Set();
+  const re = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    try { collectSchemaTypes(JSON.parse(m[1]), types); } catch { /* malformed JSON-LD -- skip, don't crash the run */ }
+  }
+  return [...types];
+}
+
+const liveCrawlCache = new Map();
+
+// Fetches a page's live HTML once and extracts everything downstream needs
+// from it: title (for static-page Wix-item matching), internal links (the
+// Internal Linking tab's "before" state), meta keywords, and JSON-LD schema
+// types (Meta Optimization's schema check). Cached by URL for the life of
+// the process -- a page can qualify as an underperformer in multiple
+// periods within one script run, and its live content doesn't change based
+// on which GSC window is being analyzed, so re-fetching per period would be
+// pure waste.
+export async function crawlLivePage(url) {
+  if (liveCrawlCache.has(url)) return liveCrawlCache.get(url);
+  const promise = (async () => {
+    try {
+      const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (content-audit-bot)' } });
+      const html = await res.text();
+      const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+      const keywordsMatch = html.match(/<meta[^>]+name=["']keywords["'][^>]+content=["']([^"']*)["']/i);
+      return {
+        title: titleMatch ? decodeEntities(titleMatch[1].trim()) : null,
+        internalLinks: extractInternalLinks(html, url),
+        metaKeywords: keywordsMatch ? decodeEntities(keywordsMatch[1].trim()) : null,
+        schemaTypes: extractSchemaTypes(html),
+      };
+    } catch {
+      return { title: null, internalLinks: [], metaKeywords: null, schemaTypes: [] };
+    }
+  })();
+  liveCrawlCache.set(url, promise);
+  return promise;
 }
 
 export function internalLinkSuggestions(pageUrl, allPageUrls) {
@@ -191,6 +316,7 @@ export function buildWixIndexes(staticTags, blogTags, posts) {
 export async function resolvePageWixItem(pageUrl, indexes) {
   const { postByUrl, blogTagsByItemId, staticTagsByTitle } = indexes;
   const post = postByUrl.get(pageUrl);
+  const liveCrawl = await crawlLivePage(pageUrl); // schema/links/keywords, and title for static-page matching -- always fetched once, cached
 
   if (post) {
     const tagsEntry = blogTagsByItemId.get(post.id);
@@ -202,26 +328,28 @@ export async function resolvePageWixItem(pageUrl, indexes) {
       currentMeta: extractTag(tagsEntry?.tags || [], 'meta', 'description') || post.excerpt,
       currentFocusKeywords: tagsEntry?.focusKeywords || [],
       bodyText: post.contentText || '',
+      liveCrawl,
     };
   }
 
-  const liveTitle = await fetchLiveTitle(pageUrl);
-  const tagsEntry = liveTitle ? staticTagsByTitle.get(liveTitle) : null;
+  const tagsEntry = liveCrawl.title ? staticTagsByTitle.get(liveCrawl.title) : null;
   if (tagsEntry) {
     const resolvedFlat = (tagsEntry.resolvedTags || []).map(rt => rt.tag);
     return {
       itemType: 'STATIC_PAGE',
       itemId: tagsEntry.itemId,
       matched: true,
-      currentTitle: extractTag(tagsEntry.tags || [], 'title') || extractTag(resolvedFlat, 'title') || liveTitle,
+      currentTitle: extractTag(tagsEntry.tags || [], 'title') || extractTag(resolvedFlat, 'title') || liveCrawl.title,
       currentMeta: extractTag(tagsEntry.tags || [], 'meta', 'description') || extractTag(resolvedFlat, 'meta', 'description'),
       currentFocusKeywords: tagsEntry.focusKeywords || [],
       bodyText: null, // no generic body-text API for classic static pages
+      liveCrawl,
     };
   }
 
   return {
     itemType: null, itemId: null, matched: false,
-    currentTitle: liveTitle, currentMeta: null, currentFocusKeywords: [], bodyText: null,
+    currentTitle: liveCrawl.title, currentMeta: null, currentFocusKeywords: [], bodyText: null,
+    liveCrawl,
   };
 }

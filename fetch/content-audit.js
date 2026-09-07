@@ -1,13 +1,16 @@
-// Meta Optimization: cross-references live Wix SEO data (title/meta/focus
-// keywords) against fresh GSC query data, and generates AI-written
-// reoptimization suggestions -- with a stated reason -- with apply-live
-// buttons (via the Cloudflare Worker in ../worker). Fully independent of
-// fetch.js/analysis.js and the main Reoptimizer dashboard by design --
-// separate pipeline, separate output files, separate tab.
+// Meta Optimization: for pages that are actually underperforming in each
+// GSC period (ranking-drop, ctr-drop, or CTR well below the position-
+// expected benchmark -- same signal Reoptimizer's decliners already use,
+// see getPeriodTargets in lib/audit-shared.js), cross-references live Wix
+// SEO data (title/meta description/meta keywords/focus keywords) and a
+// live-HTML schema check, flags issues with a stated reason, and leaves the
+// AI-written suggestion for the browser to generate on demand. Fully
+// independent of fetch.js/analysis.js's own output by design -- separate
+// pipeline, separate output files, separate tab (but reuses analysis.js's
+// period/classification logic via audit-shared.js rather than reinventing).
 //
 // Auth: GSC via GOOGLE_APPLICATION_CREDENTIALS or GSC_SERVICE_ACCOUNT_JSON
-// (same as fetch.js). Wix via WIX_API_KEY (raw Admin API Key). Suggestion
-// copy via GEMINI_API_KEY.
+// (same as fetch.js). Wix via WIX_API_KEY (raw Admin API Key).
 //
 // Usage: node content-audit.js
 
@@ -15,8 +18,8 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import {
-  getGscClient, getGscData, listItemSeoTags, listBlogPosts,
-  buildWixIndexes, resolvePageWixItem, tokenize, internalLinkSuggestions,
+  PERIODS, getGscClient, getPeriodTargets, listItemSeoTags, listBlogPosts,
+  buildWixIndexes, resolvePageWixItem, tokenize,
 } from './lib/audit-shared.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -35,41 +38,31 @@ const SITES = [
   },
 ];
 
-const CTR_BENCHMARK = [
-  [1, 0.28], [2, 0.15], [3, 0.10], [4, 0.07], [5, 0.06],
-  [6, 0.05], [7, 0.04], [8, 0.035], [9, 0.03], [10, 0.025],
-  [15, 0.015], [20, 0.01], [30, 0.006], [50, 0.003],
-];
-function expectedCtr(position) {
-  if (position <= CTR_BENCHMARK[0][0]) return CTR_BENCHMARK[0][1];
-  for (let i = 1; i < CTR_BENCHMARK.length; i++) {
-    const [p0, c0] = CTR_BENCHMARK[i - 1];
-    const [p1, c1] = CTR_BENCHMARK[i];
-    if (position <= p1) return c0 + (c1 - c0) * (position - p0) / (p1 - p0);
-  }
-  return CTR_BENCHMARK.at(-1)[1];
-}
+const BLOG_SCHEMA_TYPES = new Set(['Article', 'BlogPosting', 'NewsArticle']);
+
+const CAUSE_TEXT = {
+  'ranking-drop': "Position got worse this period -- a competitor outranked it, or a content/relevance signal weakened.",
+  'ctr-drop': 'Clicks fell without a matching drop in position/demand -- the title/snippet is likely not matching what searchers expect.',
+  'low-ctr': 'CTR is well below what pages at this position typically earn -- the title/snippet is likely under-selling the page.',
+};
 
 // ---------- Suggestions ----------
 
-// Rule-based issue detection -- same signal set as before. Title/meta
-// suggested text and every issue's `reason` are filled in afterwards, either
-// by a Gemini call (title/meta) or synchronously from the same numbers that
-// triggered the flag (everything else -- no AI needed to explain a CTR gap).
-function detectIssues(gscQueries, currentTitle, currentMeta, currentFocusKeywords, bodyText) {
-  const primary = gscQueries[0] || null;
-  const secondary = gscQueries.slice(1, 6);
+// Rule-based issue detection. Title/meta/meta-keywords `suggested` are left
+// null here (needsAi: true) -- filled on demand in the browser via the
+// Worker's /generate-suggestion, never at fetch time. Everything else's
+// `reason` is filled synchronously from the same numbers that triggered it.
+function detectIssues({ primary, secondary, cause }, currentTitle, currentMeta, currentFocusKeywords, bodyText, liveCrawl, itemType) {
   const issues = [];
+  if (!primary) return issues;
 
-  if (!primary) {
-    return { primary: null, secondary: [], issues: [] };
-  }
+  const causeReason = CAUSE_TEXT[cause] || CAUSE_TEXT[primary.ctr < 0.01 ? 'low-ctr' : 'ranking-drop'];
 
   const titleHasQuery = currentTitle && currentTitle.toLowerCase().includes(primary.query.toLowerCase());
   if (!titleHasQuery) {
     issues.push({
       type: 'title', field: 'title', needsAi: true,
-      message: `Title doesn't contain the top query "${primary.query}" (${primary.impressions} impr, pos ${primary.position.toFixed(1)}).`,
+      message: `Title doesn't contain the top query "${primary.query}" (${primary.impressions} impr, pos ${primary.position.toFixed(1)}) -- this page is ${cause.replace('-', ' ')} this period.`,
       current: currentTitle, suggested: null, reason: null,
     });
   }
@@ -86,28 +79,22 @@ function detectIssues(gscQueries, currentTitle, currentMeta, currentFocusKeyword
 
   const metaHasQuery = currentMeta && currentMeta.toLowerCase().includes(primary.query.toLowerCase());
   if (!currentMeta) {
-    issues.push({
-      type: 'meta-missing', field: 'metaDescription', needsAi: true,
-      message: 'No meta description set.',
-      current: null, suggested: null, reason: null,
-    });
+    issues.push({ type: 'meta-missing', field: 'metaDescription', needsAi: true, message: 'No meta description set.', current: null, suggested: null, reason: null });
   } else if (!metaHasQuery) {
-    issues.push({
-      type: 'meta', field: 'metaDescription', needsAi: true,
-      message: `Meta description doesn't mention the top query "${primary.query}".`,
-      current: currentMeta, suggested: null, reason: null,
-    });
+    issues.push({ type: 'meta', field: 'metaDescription', needsAi: true, message: `Meta description doesn't mention the top query "${primary.query}".`, current: currentMeta, suggested: null, reason: null });
   }
 
-  const expected = expectedCtr(primary.position);
-  if (primary.impressions >= 30 && primary.ctr < expected * 0.5) {
-    issues.push({
-      type: 'ctr', field: null, needsAi: false,
-      message: `CTR ${(primary.ctr * 100).toFixed(2)}% is well below the ~${(expected * 100).toFixed(1)}% typical for position ${primary.position.toFixed(1)} -- title/meta likely isn't matching search intent.`,
-      current: null, suggested: null,
-      reason: `At position ${primary.position.toFixed(1)}, pages typically earn about ${(expected * 100).toFixed(1)}% CTR; this page is getting under half that, which points at the title/snippet not matching what searchers expect to find.`,
-    });
+  if (!liveCrawl.metaKeywords) {
+    issues.push({ type: 'meta-keywords', field: 'metaKeywords', needsAi: true, message: 'No meta keywords set.', current: null, suggested: null, reason: null });
   }
+
+  issues.push({
+    type: cause === 'ranking-drop' ? 'ranking' : 'ctr', field: null, needsAi: false,
+    message: cause === 'ranking-drop'
+      ? `Position moved from ${primary.position.toFixed(1)} to worse this period.`
+      : `CTR ${(primary.ctr * 100).toFixed(2)}% is underperforming for position ${primary.position.toFixed(1)}.`,
+    current: null, suggested: null, reason: causeReason,
+  });
 
   const currentFocus = (currentFocusKeywords || []).map(k => (k.term || '').toLowerCase());
   if (!currentFocus.includes(primary.query.toLowerCase())) {
@@ -115,10 +102,7 @@ function detectIssues(gscQueries, currentTitle, currentMeta, currentFocusKeyword
       type: 'focus-keyword', field: 'focusKeywords', needsAi: false,
       message: `Focus keyword doesn't include the top GSC query "${primary.query}".`,
       current: currentFocusKeywords || [],
-      suggested: [
-        { term: primary.query, isMain: true },
-        ...secondary.slice(0, 2).map(q => ({ term: q.query, isMain: false })),
-      ],
+      suggested: [{ term: primary.query, isMain: true }, ...secondary.slice(0, 2).map(q => ({ term: q.query, isMain: false }))],
       reason: `"${primary.query}" is this page's #1 query by clicks in GSC but isn't set as a focus keyword -- Wix's own SEO tooling (and the page's internal search relevance) works off this field.`,
     });
   }
@@ -127,37 +111,38 @@ function detectIssues(gscQueries, currentTitle, currentMeta, currentFocusKeyword
     const bodyTokens = tokenize(bodyText);
     for (const q of secondary) {
       const qTokens = [...tokenize(q.query)];
-      const covered = qTokens.every(t => bodyTokens.has(t));
-      if (!covered && q.impressions >= 20) {
-        issues.push({
-          type: 'content-gap', field: null, needsAi: false,
-          message: `Secondary keyword "${q.query}" (${q.impressions} impr) doesn't appear in the page content.`,
-          current: null, suggested: q.query,
-          reason: `Google is already showing this page for "${q.query}" (${q.impressions} impressions in the last 30 days) but the term never appears in the body -- working it in naturally reinforces relevance for a query you're already getting some visibility on.`,
-        });
-      }
+      if (qTokens.every(t => bodyTokens.has(t)) || q.impressions < 20) continue;
+      issues.push({
+        type: 'content-gap', field: null, needsAi: false,
+        message: `Secondary keyword "${q.query}" (${q.impressions} impr) doesn't appear in the page content.`,
+        current: null, suggested: q.query,
+        reason: `Google is already showing this page for "${q.query}" (${q.impressions} impressions this period) but the term never appears in the body -- working it in naturally reinforces relevance for a query you're already getting some visibility on.`,
+      });
     }
   }
 
-  return { primary, secondary, issues };
+  if (!liveCrawl.schemaTypes.length) {
+    issues.push({
+      type: 'schema-missing', field: null, needsAi: false,
+      message: 'No structured data (schema.org JSON-LD) found on this page.',
+      current: null, suggested: null,
+      reason: 'Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically.',
+    });
+  } else if (itemType === 'BLOG_POST' && !liveCrawl.schemaTypes.some(t => BLOG_SCHEMA_TYPES.has(t))) {
+    issues.push({
+      type: 'schema-wrong-type', field: null, needsAi: false,
+      message: `Schema present (${liveCrawl.schemaTypes.join(', ')}) but no Article/BlogPosting type found for this blog post.`,
+      current: null, suggested: null,
+      reason: 'Blog posts without Article/BlogPosting schema are less likely to qualify for article-specific rich results and AI Overview citations.',
+    });
+  }
+
+  return issues;
 }
 
 // ---------- Main per-site ----------
-//
-// Title/meta AI suggestions (issue.needsAi === true) are NOT generated here.
-// This pipeline only detects issues from GSC/Wix data on a nightly cron; the
-// actual AI call happens on-demand in the browser (a "Generate suggestion"
-// button), via the Worker's /generate-suggestion endpoint, using whichever
-// provider + API key the user configured in Settings -- see
-// docs/content-audit-app.js and worker/src/index.js. That keeps the
-// suggestion current (built from live primary/secondary GSC numbers already
-// computed below) and means nothing calls out to an AI provider, or spends
-// any quota, until the user actually asks for a suggestion on a given page.
 
 async function processSite(gscClient, site) {
-  console.log(`[${site.label}] pulling GSC data...`);
-  const { byPage, topPages } = await getGscData(gscClient, site.gscSiteUrl);
-
   console.log(`[${site.label}] pulling Wix SEO tags + blog posts...`);
   // Sequential, not Promise.all -- concurrent requests to this Wix endpoint
   // intermittently return a 499 (connection-closed) edge error; one at a
@@ -167,34 +152,33 @@ async function processSite(gscClient, site) {
   const posts = await listBlogPosts(site.wixSiteId);
   const indexes = buildWixIndexes(staticTags, blogTags, posts);
 
-  const pages = [];
-  for (const pageUrl of topPages) {
-    const gscQueries = byPage.get(pageUrl) || [];
-    const item = await resolvePageWixItem(pageUrl, indexes);
-    const { primary, secondary, issues } = detectIssues(
-      gscQueries, item.currentTitle, item.currentMeta, item.currentFocusKeywords, item.bodyText
-    );
+  const periods = {};
+  for (const def of PERIODS) {
+    console.log(`[${site.label}] ${def.label}: finding underperforming pages...`);
+    const { targets } = await getPeriodTargets(gscClient, site, def.days);
 
-    if (!primary) {
-      issues.push({ type: 'no-data', field: null, message: 'No GSC query data for this page in the last 30 days.', current: null, suggested: null, reason: null });
+    const pages = [];
+    for (const target of targets) {
+      const item = await resolvePageWixItem(target.url, indexes);
+      const issues = detectIssues(target, item.currentTitle, item.currentMeta, item.currentFocusKeywords, item.bodyText, item.liveCrawl, item.itemType);
+      if (!issues.length) continue;
+
+      pages.push({
+        url: target.url,
+        cause: target.cause,
+        itemType: item.matched ? item.itemType : null,
+        itemId: item.matched ? item.itemId : null,
+        matched: item.matched,
+        current: { title: item.currentTitle, metaDescription: item.currentMeta, metaKeywords: item.liveCrawl.metaKeywords, focusKeywords: item.currentFocusKeywords },
+        primary: target.primary, secondary: target.secondary, issues,
+        bodyExcerpt: item.bodyText ? item.bodyText.slice(0, 600) : null, // passed back to /generate-suggestion on demand
+      });
     }
-
-    pages.push({
-      url: pageUrl,
-      itemType: item.matched ? item.itemType : null,
-      itemId: item.matched ? item.itemId : null,
-      matched: item.matched,
-      current: { title: item.currentTitle, metaDescription: item.currentMeta, focusKeywords: item.currentFocusKeywords },
-      primary, secondary, issues,
-      bodyExcerpt: item.bodyText ? item.bodyText.slice(0, 600) : null, // passed back to /generate-suggestion on demand
-      internalLinkSuggestion: [], // filled after all pages processed, needs full URL list
-    });
+    console.log(`[${site.label}] ${def.label}: ${pages.length} underperforming page(s) with issues`);
+    periods[def.key] = { pages };
   }
 
-  const allUrls = pages.map(p => p.url);
-  for (const p of pages) p.internalLinkSuggestion = internalLinkSuggestions(p.url, allUrls);
-
-  return { label: site.label, slug: site.slug, pages };
+  return { label: site.label, slug: site.slug, periods };
 }
 
 async function main() {
@@ -206,7 +190,7 @@ async function main() {
     const data = await processSite(gscClient, site);
     await writeFile(path.join(OUT_DIR, `content-audit-${site.slug}.json`), JSON.stringify(data, null, 2));
     meta.sites.push({ slug: site.slug, label: site.label });
-    console.log(`[${site.label}] wrote content-audit-${site.slug}.json (${data.pages.length} pages)`);
+    console.log(`[${site.label}] wrote content-audit-${site.slug}.json`);
   }
   await writeFile(path.join(OUT_DIR, 'content-audit-meta.json'), JSON.stringify(meta, null, 2));
 }

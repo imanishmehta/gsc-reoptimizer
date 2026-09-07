@@ -1,0 +1,39 @@
+name: Update content links
+
+on:
+  schedule:
+    - cron: '57 6 * * *'  # daily, 06:57 UTC -- offset from the other data-fetch workflows so they don't collide on the same commit
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install fetch script deps
+        working-directory: fetch
+        run: npm ci
+
+      - name: Fetch content links data
+        working-directory: fetch
+        env:
+          GSC_SERVICE_ACCOUNT_JSON: ${{ secrets.GSC_SERVICE_ACCOUNT_JSON }}
+          WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
+        run: node content-links.js
+
+      - name: Commit updated data
+        run: |
+          git config user.name "gsc-reoptimizer-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --no-rebase --no-edit
+          git add docs/data/content-links-*.json
+          git diff --cached --quiet || git commit -m "Update content links data $(date -u +%Y-%m-%d)"
+          git push

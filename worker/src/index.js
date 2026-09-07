@@ -45,15 +45,19 @@ function extractTag(tags, type, propsName) {
   return tag ? (tag.children ?? tag.props?.content ?? null) : null;
 }
 
-function mergeTags(existingTags, { title, metaDescription }) {
+function mergeTags(existingTags, { title, metaDescription, metaKeywords }) {
   const tags = existingTags.filter(t => {
     if (title !== undefined && t.type === 'title') return false;
     if (metaDescription !== undefined && t.type === 'meta' && t.props?.name === 'description') return false;
+    if (metaKeywords !== undefined && t.type === 'meta' && t.props?.name === 'keywords') return false;
     return true;
   });
   if (title !== undefined) tags.push({ type: 'title', children: title });
   if (metaDescription !== undefined) {
     tags.push({ type: 'meta', props: { name: 'description', content: metaDescription } });
+  }
+  if (metaKeywords !== undefined) {
+    tags.push({ type: 'meta', props: { name: 'keywords', content: metaKeywords } });
   }
   return tags;
 }
@@ -280,12 +284,12 @@ async function callProvider(provider, apiKey, prompt) {
 }
 
 function buildMetaPrompt(d) {
-  return `You are an SEO copywriter. Write a better <title> tag and meta description for one web page, using only the real data below -- do not invent facts about the page.
+  return `You are an SEO copywriter. Write a better <title> tag, meta description, and meta keywords for one web page, using only the real data below -- do not invent facts about the page.
 
 Page URL: ${d.pageUrl}
 Current title: ${d.currentTitle || '(none)'}
 Current meta description: ${d.currentMeta || '(none)'}
-Top Google Search Console query (30 days): "${d.primary.query}" -- ${d.primary.impressions} impressions, position ${d.primary.position.toFixed(1)}, CTR ${(d.primary.ctr * 100).toFixed(2)}%
+Top Google Search Console query (this period): "${d.primary.query}" -- ${d.primary.impressions} impressions, position ${d.primary.position.toFixed(1)}, CTR ${(d.primary.ctr * 100).toFixed(2)}%
 Other queries this page ranks for: ${(d.secondary || []).map(q => `"${q.query}"`).join(', ') || '(none)'}
 ${d.bodyExcerpt ? `Page content excerpt: ${d.bodyExcerpt.slice(0, 600)}` : ''}
 
@@ -293,17 +297,39 @@ Rules:
 - Title: natural, specific to this page, includes the top query, <=60 characters, not keyword-stuffed, not a generic template.
 - Meta description: <=155 characters, reads like real ad copy (a reason to click), includes the top query naturally, not a list of keywords.
 - Do not just append "| query" to the existing title -- rewrite it to actually read well.
-- titleReason / metaReason: one sentence each, explaining what in the GSC data above drove this specific suggestion.
+- Meta keywords: 5-8 comma-separated terms drawn from the actual queries above (primary + secondary), not invented ones.
+- titleReason / metaReason / metaKeywordsReason: one sentence each, explaining what in the GSC data above drove this specific suggestion.
 
-Respond with this exact JSON shape only: {"title": "...", "titleReason": "...", "metaDescription": "...", "metaReason": "..."}`;
+Respond with this exact JSON shape only: {"title": "...", "titleReason": "...", "metaDescription": "...", "metaReason": "...", "metaKeywords": "...", "metaKeywordsReason": "..."}`;
+}
+
+function buildLinksPrompt(d) {
+  return `You are an SEO strategist. Suggest new internal links FROM one underperforming page, using only the real data below -- do not invent facts about the page or business.
+
+Page: ${d.pageUrl}
+Title: ${d.currentTitle || '(none)'}
+Why this page needs help: ${d.cause === 'ranking-drop' ? 'its ranking position got worse this period' : d.cause === 'ctr-drop' ? 'its clicks fell without a matching drop in position' : 'its CTR is well below what pages at its position typically earn'}.
+
+Internal links already on this page (do not suggest these again):
+${(d.currentInternalLinks || []).slice(0, 30).map(l => `- "${l.anchorText}" -> ${l.href}`).join('\n') || '(none found)'}
+
+Candidate target pages on this site (pick from this list only, do not invent URLs):
+${(d.linkCandidates || []).map(u => `- ${u}`).join('\n')}
+
+${d.bodyExcerpt ? `This page's body text (for picking a verbatim anchor phrase): ${d.bodyExcerpt.slice(0, 2000)}` : "This page's body text isn't available via API -- pick a natural short anchor phrase; it won't be auto-verified against the live page."}
+
+Produce 1-3 suggestions, each: targetUrl (must be exactly one of the candidate URLs above), anchorText (a short natural phrase, 3-8 words${d.bodyExcerpt ? ' -- prefer one that appears verbatim in the body text above' : ''}), and reason (one sentence: why this link helps traffic/crawling/relevance for this specific underperforming page, grounded in the cause above).
+
+Respond with this exact JSON shape only: {"suggestions": [{"targetUrl": "...", "anchorText": "...", "reason": "..."}]}`;
 }
 
 function buildContentPrompt(d) {
   const gaps = d.gscGaps || [];
-  return `You are an SEO content strategist. Suggest a content improvement for one blog post, using only the real data below -- do not invent facts about the page or business.
+  return `You are an SEO content strategist. Suggest a content improvement for one underperforming blog post, using only the real data below -- do not invent facts about the page or business.
 
 Post title: ${d.currentTitle}
 Post URL: ${d.pageUrl}
+Why this post needs help: ${d.cause === 'ranking-drop' ? 'its ranking position got worse this period' : d.cause === 'ctr-drop' ? 'its clicks fell without a matching drop in position' : 'its CTR is well below what pages at its position typically earn'}.
 Existing body text (do not repeat any of these sentences): ${(d.bodyExcerpt || '').slice(0, 3000)}
 
 Google Search Console queries this post already gets impressions for but the body text doesn't cover:
@@ -311,14 +337,11 @@ ${gaps.map(q => `- "${q.query}" (${q.impressions} impressions, position ${q.posi
 
 All queries this post ranks for (for context): ${(d.gscQueries || []).slice(0, 8).map(q => `"${q.query}"`).join(', ')}
 
-${d.linkCandidates?.length ? `Other pages on this site that are topically related (candidates for an internal link):\n${d.linkCandidates.map(u => `- ${u}`).join('\n')}` : ''}
-
 Produce:
 1. lsiKeywords: 3-5 secondary/LSI keyword phrases worth working into this post, each with a one-sentence reason grounded in the GSC data above.
 2. suggestedParagraph: ONE new paragraph (2-4 sentences) that could be added to this post. It must naturally work in 2-3 of the LSI keywords, match the post's existing tone/topic, and contain NO sentence that duplicates or closely paraphrases the existing body text.
-${d.linkCandidates?.length ? `3. internalLinkAnchor: a short phrase (3-8 words) that appears VERBATIM in the existing body text above, suitable as anchor text linking to one of the related pages listed. internalLinkReason: one sentence why that page is relevant here. If no good verbatim match exists, leave internalLinkAnchor empty.` : ''}
 
-Respond with this exact JSON shape only: {"lsiKeywords": [{"term": "...", "reason": "..."}], "suggestedParagraph": {"text": "...", "reason": "..."}, "internalLinkAnchor": "...", "internalLinkReason": "..."}`;
+Respond with this exact JSON shape only: {"lsiKeywords": [{"term": "...", "reason": "..."}], "suggestedParagraph": {"text": "...", "reason": "..."}}`;
 }
 
 async function handleGenerateSuggestion(request, env) {
@@ -332,6 +355,7 @@ async function handleGenerateSuggestion(request, env) {
   let prompt;
   if (body.type === 'meta') prompt = buildMetaPrompt(body);
   else if (body.type === 'content') prompt = buildContentPrompt(body);
+  else if (body.type === 'links') prompt = buildLinksPrompt(body);
   else return json({ error: `Unknown suggestion type: ${body.type}` }, 400);
 
   try {
@@ -344,7 +368,7 @@ async function handleGenerateSuggestion(request, env) {
 
 async function handleApply(request, env) {
   const body = await request.json();
-  const { site, itemType, itemId, title, metaDescription, focusKeywords, password, pageUrl } = body;
+  const { site, itemType, itemId, title, metaDescription, metaKeywords, focusKeywords, password, pageUrl } = body;
 
   if (password !== env.ACTION_PASSWORD) {
     return json({ error: 'Wrong password' }, 401);
@@ -352,7 +376,7 @@ async function handleApply(request, env) {
   const siteId = SITES[site];
   if (!siteId) return json({ error: `Unknown site: ${site}` }, 400);
   if (!itemType || !itemId) return json({ error: 'Missing itemType/itemId' }, 400);
-  if (title === undefined && metaDescription === undefined && focusKeywords === undefined) {
+  if (title === undefined && metaDescription === undefined && metaKeywords === undefined && focusKeywords === undefined) {
     return json({ error: 'Nothing to change' }, 400);
   }
 
@@ -374,13 +398,14 @@ async function handleApply(request, env) {
   const previous = {
     title: extractTag(existingTags, 'title') || extractTag(resolvedFlat, 'title'),
     metaDescription: extractTag(existingTags, 'meta', 'description') || extractTag(resolvedFlat, 'meta', 'description'),
+    metaKeywords: extractTag(existingTags, 'meta', 'keywords') || extractTag(resolvedFlat, 'meta', 'keywords'),
     focusKeywords: current.focusKeywords || [],
   };
 
   // 2. Build the full replacement payload.
-  const newTags = mergeTags(existingTags, { title, metaDescription });
+  const newTags = mergeTags(existingTags, { title, metaDescription, metaKeywords });
   const fieldMaskParts = [];
-  if (title !== undefined || metaDescription !== undefined) fieldMaskParts.push('tags');
+  if (title !== undefined || metaDescription !== undefined || metaKeywords !== undefined) fieldMaskParts.push('tags');
   if (focusKeywords !== undefined) fieldMaskParts.push('focusKeywords');
 
   const patchBody = {
@@ -407,6 +432,7 @@ async function handleApply(request, env) {
     current: {
       title: title !== undefined ? title : previous.title,
       metaDescription: metaDescription !== undefined ? metaDescription : previous.metaDescription,
+      metaKeywords: metaKeywords !== undefined ? metaKeywords : previous.metaKeywords,
       focusKeywords: focusKeywords !== undefined ? focusKeywords : previous.focusKeywords,
     },
     pageUrl: pageUrl || null,

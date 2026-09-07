@@ -46,6 +46,7 @@
     <button class="tab-btn active" id="tab-btn-reoptimizer" onclick="switchTab('reoptimizer')">📈 Reoptimizer</button>
     <button class="tab-btn" id="tab-btn-content-audit" onclick="switchTab('content-audit')">🏷️ Meta Optimization</button>
     <button class="tab-btn" id="tab-btn-content-reopt" onclick="switchTab('content-reopt')">✍️ Content Reoptimization</button>
+    <button class="tab-btn" id="tab-btn-content-links" onclick="switchTab('content-links')">🔗 Internal Linking</button>
     <button class="tab-btn" id="tab-btn-wix-analytics" onclick="switchTab('wix-analytics')">🧑‍🤝‍🧑 Wix Analytics</button>
   </div>
 </div>
@@ -141,13 +142,21 @@
       </div>
       <div class="controls">
         <select id="ca-site-select"></select>
+        <select id="ca-period-select">
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="180">Last 6 months</option>
+          <option value="240">Last 8 months</option>
+        </select>
       </div>
     </div>
   </div>
   <p class="card-sub" style="margin-bottom:1.5rem">
-    Live Wix title/meta/focus-keyword data cross-referenced against 30-day GSC performance. Suggestions are
-    AI-written and grounded in the GSC numbers shown for each -- see the "why" line under each fix. Each fix has
-    its own Apply button with a before/after SERP preview -- click one, it writes straight to the live Wix page.
+    Only pages that are actually underperforming in the selected period (ranking drop, CTR drop, or CTR well
+    below the position-expected benchmark -- same signal as Reoptimizer's decliners). Title/meta
+    description/meta keywords suggestions are AI-written on demand with a before/after SERP preview; schema
+    markup issues are flagged for manual fixing (no API to apply those automatically).
   </p>
   <div id="ca-page-list"></div>
 </main>
@@ -161,15 +170,49 @@
       </div>
       <div class="controls">
         <select id="cr-site-select"></select>
+        <select id="cr-period-select">
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="180">Last 6 months</option>
+          <option value="240">Last 8 months</option>
+        </select>
       </div>
     </div>
   </div>
   <p class="card-sub" style="margin-bottom:1.5rem">
-    LSI/secondary-keyword gaps, a suggested new paragraph, and one internal-link suggestion per blog post --
-    grounded in queries GSC already shows impressions for. Blog posts support live Apply (safe, additive edits
-    only); pages with no body-content API show suggestions to copy into the Wix editor yourself.
+    LSI/secondary-keyword gaps and a suggested new paragraph for blog posts that are underperforming in the
+    selected period -- shown as a real before/after of the end of the post. Live Apply is scoped to a safe,
+    additive edit (appending the paragraph); nothing existing gets rewritten in place.
   </p>
   <div id="cr-page-list"></div>
+</main>
+
+<main id="tab-panel-content-links" class="tab-panel" hidden>
+  <div class="topbar" style="margin-bottom:1.5rem">
+    <div class="topbar-inner">
+      <div>
+        <h2 style="color:#fff;margin:0">🔗 Internal Linking</h2>
+        <p class="sub" id="cl-generated-note"></p>
+      </div>
+      <div class="controls">
+        <select id="cl-site-select"></select>
+        <select id="cl-period-select">
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="180">Last 6 months</option>
+          <option value="240">Last 8 months</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <p class="card-sub" style="margin-bottom:1.5rem">
+    For pages underperforming in the selected period (blog posts AND static/project pages): the internal links
+    currently on the page, and suggested new links to add -- target, anchor text, and why it should help traffic
+    and crawling. Live Apply works for blog posts with a verified anchor; everything else is copy-paste.
+  </p>
+  <div id="cl-page-list"></div>
 </main>
 
 <main id="tab-panel-wix-analytics" class="tab-panel" hidden>
@@ -272,19 +315,23 @@
 <script src="apply-shared.js"></script>
 <script src="content-audit-app.js"></script>
 <script src="content-reoptimize-app.js"></script>
+<script src="content-links-app.js"></script>
 <script src="wix-analytics-app.js"></script>
 <script>
 function switchTab(tab) {
   document.getElementById('tab-panel-reoptimizer').hidden = tab !== 'reoptimizer';
   document.getElementById('tab-panel-content-audit').hidden = tab !== 'content-audit';
   document.getElementById('tab-panel-content-reopt').hidden = tab !== 'content-reopt';
+  document.getElementById('tab-panel-content-links').hidden = tab !== 'content-links';
   document.getElementById('tab-panel-wix-analytics').hidden = tab !== 'wix-analytics';
   document.getElementById('tab-btn-reoptimizer').classList.toggle('active', tab === 'reoptimizer');
   document.getElementById('tab-btn-content-audit').classList.toggle('active', tab === 'content-audit');
   document.getElementById('tab-btn-content-reopt').classList.toggle('active', tab === 'content-reopt');
+  document.getElementById('tab-btn-content-links').classList.toggle('active', tab === 'content-links');
   document.getElementById('tab-btn-wix-analytics').classList.toggle('active', tab === 'wix-analytics');
   if (tab === 'content-audit' && window.initContentAudit) window.initContentAudit();
   if (tab === 'content-reopt' && window.initContentReoptimize) window.initContentReoptimize();
+  if (tab === 'content-links' && window.initContentLinks) window.initContentLinks();
   if (tab === 'wix-analytics' && window.initWixAnalyticsTab) window.initWixAnalyticsTab();
 }
 </script>

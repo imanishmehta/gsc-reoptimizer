@@ -1,7 +1,7 @@
 // Meta Optimization tab. Fully independent of app.js -- own data files, own
 // render functions; shares the page's password lock, the site <select>
 // pattern, and the apply-live plumbing (apply-shared.js) with the Content
-// Reoptimization tab for consistency.
+// Reoptimization/Internal Linking tabs for consistency.
 
 let caLoaded = false;
 let caData = null;
@@ -22,6 +22,8 @@ function caFocusKeywordsText(fk) {
   return fk.map(k => (typeof k === 'string' ? k : k.term)).join(', ');
 }
 
+function caPeriodKey() { return document.getElementById('ca-period-select').value; }
+
 async function caApply(siteSlug, page, issue, btn) {
   const password = await applyGetPassword();
   if (!password) return;
@@ -29,6 +31,7 @@ async function caApply(siteSlug, page, issue, btn) {
   const payload = { site: siteSlug, itemType: page.itemType, itemId: page.itemId, password, pageUrl: page.url };
   if (issue.field === 'title') payload.title = issue.suggested;
   if (issue.field === 'metaDescription') payload.metaDescription = issue.suggested;
+  if (issue.field === 'metaKeywords') payload.metaKeywords = issue.suggested;
   if (issue.field === 'focusKeywords') payload.focusKeywords = issue.suggested;
 
   const resultEl = btn.parentElement.querySelector('.ca-result');
@@ -72,7 +75,7 @@ function caRenderIssue(siteSlug, page, issue, idx) {
     <div class="ca-issue">
       <div class="ca-issue-msg">${caEsc(issue.message)}</div>
       ${issue.reason ? `<div class="ca-issue-reason">Why: ${caEsc(issue.reason)}</div>` : ''}
-      ${awaitingAi ? '<p class="ca-unmatched-note">Click "Generate AI suggestions" below to get a title/meta rewrite for this page.</p>' : ''}
+      ${awaitingAi ? '<p class="ca-unmatched-note">Click "Generate AI suggestions" below to get a rewrite for this page.</p>' : ''}
       ${canApply && !isSerpField ? `<div class="ca-issue-suggested">Suggested: ${caEsc(suggestedText)}</div>` : ''}
       ${serpPreview}
       ${canApply ? `<button class="ca-apply-btn" data-page="${caEsc(page.url)}" data-issue="${idx}">Apply live</button>` : ''}
@@ -92,11 +95,12 @@ async function caGenerateSuggestions(siteSlug, page, btn) {
       primary: page.primary,
       secondary: page.secondary,
       bodyExcerpt: page.bodyExcerpt,
-    }, { cacheSuffix: 'page' });
+    }, { cacheSuffix: `${caPeriodKey()}-page` });
 
     for (const issue of page.issues) {
       if (issue.type === 'title' && issue.needsAi) { issue.suggested = result.title; issue.reason = result.titleReason; }
       if ((issue.type === 'meta' || issue.type === 'meta-missing') && issue.needsAi) { issue.suggested = result.metaDescription; issue.reason = result.metaReason; }
+      if (issue.type === 'meta-keywords' && issue.needsAi) { issue.suggested = result.metaKeywords; issue.reason = result.metaKeywordsReason; }
     }
     caRenderSite(siteSlug);
   } catch (err) {
@@ -107,24 +111,22 @@ async function caGenerateSuggestions(siteSlug, page, btn) {
 }
 
 function caRenderPage(siteSlug, page) {
-  const linkSuggestion = page.internalLinkSuggestion?.length
-    ? `<div class="ca-current">Internal link suggestions: ${page.internalLinkSuggestion.map(u => caShortPath(u)).join(', ')}</div>`
-    : '';
   const hasUngenerated = page.issues.some(i => i.needsAi && i.suggested === null);
 
   return `
     <div class="ca-page-card">
       <div class="ca-page-head">
         <a href="${caEsc(page.url)}" target="_blank">${caEsc(caShortPath(page.url))}</a>
+        <span class="pill ${page.cause === 'ranking-drop' ? 'ranking-drop' : 'ctr-drop'}">${caEsc(page.cause.replace('-', ' '))}</span>
         <span class="pill ${page.matched ? 'ranking-rise' : 'fluctuation'}">${page.matched ? page.itemType : 'unmatched'}</span>
       </div>
       <div class="ca-current">
         <strong>Title:</strong> ${caEsc(page.current.title || '(none)')}<br>
         <strong>Meta:</strong> ${caEsc(page.current.metaDescription || '(none)')}<br>
+        <strong>Meta keywords:</strong> ${caEsc(page.current.metaKeywords || '(none)')}<br>
         <strong>Focus keywords:</strong> ${caEsc(caFocusKeywordsText(page.current.focusKeywords))}
       </div>
       ${!page.matched ? '<p class="ca-unmatched-note">Could not match this URL to a Wix SEO item -- apply-live unavailable, audit-only.</p>' : ''}
-      ${linkSuggestion}
       ${page.issues.length ? page.issues.map((iss, i) => caRenderIssue(siteSlug, page, iss, i)).join('') : '<p class="empty">No issues flagged.</p>'}
       ${hasUngenerated ? `<button class="ca-apply-btn cr-generate-btn" data-page="${caEsc(page.url)}">✨ Generate AI suggestions</button>` : ''}
     </div>
@@ -133,18 +135,25 @@ function caRenderPage(siteSlug, page) {
 
 function caRenderSite(siteSlug) {
   const site = caData[siteSlug];
-  document.getElementById('ca-page-list').innerHTML = site.pages.map(p => caRenderPage(siteSlug, p)).join('');
+  const periodData = site.periods[caPeriodKey()];
+  const pages = periodData ? periodData.pages : [];
+
+  if (!pages.length) {
+    document.getElementById('ca-page-list').innerHTML = '<p class="empty">No underperforming pages found for this period -- nothing to optimize.</p>';
+    return;
+  }
+  document.getElementById('ca-page-list').innerHTML = pages.map(p => caRenderPage(siteSlug, p)).join('');
 
   document.querySelectorAll('.ca-apply-btn:not(.cr-generate-btn)').forEach(btn => {
     btn.addEventListener('click', () => {
-      const page = site.pages.find(p => p.url === btn.dataset.page);
+      const page = pages.find(p => p.url === btn.dataset.page);
       const issue = page.issues[Number(btn.dataset.issue)];
       caApply(siteSlug, page, issue, btn);
     });
   });
   document.querySelectorAll('.cr-generate-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      const page = site.pages.find(p => p.url === btn.dataset.page);
+      const page = pages.find(p => p.url === btn.dataset.page);
       caGenerateSuggestions(siteSlug, page, btn);
     });
   });
@@ -160,6 +169,7 @@ async function caLoadAll() {
   const select = document.getElementById('ca-site-select');
   select.innerHTML = meta.sites.map(s => `<option value="${s.slug}">${caEsc(s.label)}</option>`).join('');
   select.addEventListener('change', () => caRenderSite(select.value));
+  document.getElementById('ca-period-select').addEventListener('change', () => caRenderSite(select.value));
 
   document.getElementById('ca-generated-note').textContent = `Data generated ${new Date(meta.generatedAt).toLocaleString()}`;
   caRenderSite(meta.sites[0].slug);
