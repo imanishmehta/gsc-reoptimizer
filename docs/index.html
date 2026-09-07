@@ -44,7 +44,8 @@
 <div class="tabbar">
   <div class="tabbar-inner">
     <button class="tab-btn active" id="tab-btn-reoptimizer" onclick="switchTab('reoptimizer')">📈 Reoptimizer</button>
-    <button class="tab-btn" id="tab-btn-content-audit" onclick="switchTab('content-audit')">📝 Content Audit</button>
+    <button class="tab-btn" id="tab-btn-content-audit" onclick="switchTab('content-audit')">🏷️ Meta Optimization</button>
+    <button class="tab-btn" id="tab-btn-content-reopt" onclick="switchTab('content-reopt')">✍️ Content Reoptimization</button>
     <button class="tab-btn" id="tab-btn-wix-analytics" onclick="switchTab('wix-analytics')">🧑‍🤝‍🧑 Wix Analytics</button>
   </div>
 </div>
@@ -135,7 +136,7 @@
   <div class="topbar" style="margin-bottom:1.5rem">
     <div class="topbar-inner">
       <div>
-        <h2 style="color:#fff;margin:0">📝 Content Audit</h2>
+        <h2 style="color:#fff;margin:0">🏷️ Meta Optimization</h2>
         <p class="sub" id="ca-generated-note"></p>
       </div>
       <div class="controls">
@@ -144,10 +145,31 @@
     </div>
   </div>
   <p class="card-sub" style="margin-bottom:1.5rem">
-    Live Wix title/meta/focus-keyword data cross-referenced against 30-day GSC performance. Each fix has its own
-    Apply button -- click one, it writes straight to the live Wix page and shows you the before/after.
+    Live Wix title/meta/focus-keyword data cross-referenced against 30-day GSC performance. Suggestions are
+    AI-written and grounded in the GSC numbers shown for each -- see the "why" line under each fix. Each fix has
+    its own Apply button with a before/after SERP preview -- click one, it writes straight to the live Wix page.
   </p>
   <div id="ca-page-list"></div>
+</main>
+
+<main id="tab-panel-content-reopt" class="tab-panel" hidden>
+  <div class="topbar" style="margin-bottom:1.5rem">
+    <div class="topbar-inner">
+      <div>
+        <h2 style="color:#fff;margin:0">✍️ Content Reoptimization</h2>
+        <p class="sub" id="cr-generated-note"></p>
+      </div>
+      <div class="controls">
+        <select id="cr-site-select"></select>
+      </div>
+    </div>
+  </div>
+  <p class="card-sub" style="margin-bottom:1.5rem">
+    LSI/secondary-keyword gaps, a suggested new paragraph, and one internal-link suggestion per blog post --
+    grounded in queries GSC already shows impressions for. Blog posts support live Apply (safe, additive edits
+    only); pages with no body-content API show suggestions to copy into the Wix editor yourself.
+  </p>
+  <div id="cr-page-list"></div>
 </main>
 
 <main id="tab-panel-wix-analytics" class="tab-panel" hidden>
@@ -217,20 +239,52 @@
   </section>
 </main>
 
+  <button id="ai-settings-btn" class="ai-settings-fab" title="AI provider settings">⚙️ AI Settings</button>
+
+  <div id="ai-settings-modal" class="modal-overlay" hidden>
+    <div class="modal-box">
+      <h2 style="margin-top:0">⚙️ AI Provider Settings</h2>
+      <p class="card-sub">Used to generate title/meta/content suggestions on demand in Meta Optimization and Content Reoptimization. The key is stored server-side (Cloudflare Worker) -- never in this browser.</p>
+      <p id="ai-settings-status" class="card-sub"></p>
+      <label style="display:block;margin-bottom:.6rem">
+        Provider
+        <select id="ai-settings-provider" style="display:block;width:100%;margin-top:.3rem;padding:.5rem;border-radius:6px;border:1px solid var(--border)">
+          <option value="gemini">Google Gemini</option>
+          <option value="openai">OpenAI</option>
+          <option value="anthropic">Anthropic Claude</option>
+        </select>
+      </label>
+      <label style="display:block;margin-bottom:1rem">
+        API key
+        <input type="password" id="ai-settings-key" placeholder="Paste API key" style="display:block;width:100%;margin-top:.3rem;padding:.5rem;border-radius:6px;border:1px solid var(--border)">
+      </label>
+      <div style="display:flex;gap:.6rem;justify-content:flex-end">
+        <button id="ai-settings-cancel" class="ca-apply-btn" style="background:var(--border);color:var(--ink)">Close</button>
+        <button id="ai-settings-save" class="ca-apply-btn">Save</button>
+      </div>
+      <p id="ai-settings-result" class="ca-result" hidden></p>
+    </div>
+  </div>
+
 </div>
 
 <script src="app.js"></script>
+<script src="apply-shared.js"></script>
 <script src="content-audit-app.js"></script>
+<script src="content-reoptimize-app.js"></script>
 <script src="wix-analytics-app.js"></script>
 <script>
 function switchTab(tab) {
   document.getElementById('tab-panel-reoptimizer').hidden = tab !== 'reoptimizer';
   document.getElementById('tab-panel-content-audit').hidden = tab !== 'content-audit';
+  document.getElementById('tab-panel-content-reopt').hidden = tab !== 'content-reopt';
   document.getElementById('tab-panel-wix-analytics').hidden = tab !== 'wix-analytics';
   document.getElementById('tab-btn-reoptimizer').classList.toggle('active', tab === 'reoptimizer');
   document.getElementById('tab-btn-content-audit').classList.toggle('active', tab === 'content-audit');
+  document.getElementById('tab-btn-content-reopt').classList.toggle('active', tab === 'content-reopt');
   document.getElementById('tab-btn-wix-analytics').classList.toggle('active', tab === 'wix-analytics');
   if (tab === 'content-audit' && window.initContentAudit) window.initContentAudit();
+  if (tab === 'content-reopt' && window.initContentReoptimize) window.initContentReoptimize();
   if (tab === 'wix-analytics' && window.initWixAnalyticsTab) window.initWixAnalyticsTab();
 }
 </script>

@@ -14,7 +14,7 @@ const ALLOWED_ORIGIN = 'https://imanishmehta.github.io';
 function corsHeaders() {
   return {
     'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
 }
@@ -56,6 +56,290 @@ function mergeTags(existingTags, { title, metaDescription }) {
     tags.push({ type: 'meta', props: { name: 'description', content: metaDescription } });
   }
   return tags;
+}
+
+// ---------- Content Reoptimization: body-content live-write ----------
+//
+// Only two Ricos edits are ever attempted, both structurally additive so
+// they can't corrupt existing content: appending a whole new paragraph node,
+// and splitting one existing TEXT node to wrap an exact anchor-text match in
+// a LINK decoration. Anything that would need re-splicing existing text in
+// place (an in-line keyword rewrite) is deliberately NOT supported here --
+// see the Content Reoptimization plan for why.
+
+function newNodeId() {
+  return crypto.randomUUID();
+}
+
+function findTextNodeMatches(nodes, anchorText, matches = []) {
+  for (const node of nodes || []) {
+    if (node.type === 'TEXT' && node.textData?.text?.includes(anchorText)) {
+      matches.push(node);
+    }
+    if (node.nodes?.length) findTextNodeMatches(node.nodes, anchorText, matches);
+  }
+  return matches;
+}
+
+// Replaces `target` (a TEXT node found by findTextNodeMatches) in its parent
+// array with up to 3 TEXT nodes: unlinked-before, linked-anchor, unlinked-
+// after. Only the exact matched substring gets the LINK decoration.
+function splitAndLinkNode(nodesArray, target, anchorText, targetUrl) {
+  const idx = nodesArray.indexOf(target);
+  if (idx === -1) return false;
+  const text = target.textData.text;
+  const start = text.indexOf(anchorText);
+  const before = text.slice(0, start);
+  const match = text.slice(start, start + anchorText.length);
+  const after = text.slice(start + anchorText.length);
+  const baseDecorations = target.textData.decorations || [];
+
+  const replacement = [];
+  if (before) replacement.push({ id: newNodeId(), type: 'TEXT', textData: { text: before, decorations: baseDecorations } });
+  replacement.push({
+    id: newNodeId(),
+    type: 'TEXT',
+    textData: {
+      text: match,
+      decorations: [...baseDecorations, { type: 'LINK', linkData: { link: { url: targetUrl, target: 'SELF' } } }],
+    },
+  });
+  if (after) replacement.push({ id: newNodeId(), type: 'TEXT', textData: { text: after, decorations: baseDecorations } });
+
+  nodesArray.splice(idx, 1, ...replacement);
+  return true;
+}
+
+function buildParagraphNode(text) {
+  return {
+    id: newNodeId(),
+    type: 'PARAGRAPH',
+    nodes: [{ id: newNodeId(), type: 'TEXT', textData: { text, decorations: [] } }],
+    paragraphData: {},
+  };
+}
+
+async function handleApplyContent(request, env) {
+  const body = await request.json();
+  const { site, postId, password, operation, paragraphText, anchorText, targetUrl, pageUrl } = body;
+
+  if (password !== env.ACTION_PASSWORD) {
+    return json({ error: 'Wrong password' }, 401);
+  }
+  const siteId = SITES[site];
+  if (!siteId) return json({ error: `Unknown site: ${site}` }, 400);
+  if (!postId) return json({ error: 'Missing postId' }, 400);
+
+  const getRes = await wixFetch(env, siteId, `/blog/v3/draft-posts/${postId}`);
+  if (!getRes.ok) {
+    return json({ error: `Wix read failed: ${getRes.status} ${await getRes.text()}` }, 502);
+  }
+  const draft = (await getRes.json()).draftPost;
+  const richContent = draft.richContent || { nodes: [] };
+
+  let previous, current;
+
+  if (operation === 'append_paragraph') {
+    if (!paragraphText) return json({ error: 'Missing paragraphText' }, 400);
+    previous = { paragraphCount: richContent.nodes.length };
+    richContent.nodes.push(buildParagraphNode(paragraphText));
+    current = { addedParagraph: paragraphText };
+  } else if (operation === 'add_internal_link') {
+    if (!anchorText || !targetUrl) return json({ error: 'Missing anchorText/targetUrl' }, 400);
+    const matches = findTextNodeMatches(richContent.nodes, anchorText);
+    if (matches.length !== 1) {
+      return json({
+        error: matches.length === 0
+          ? 'Anchor text not found -- the post content changed since this suggestion was generated. Refresh Content Reoptimization and retry.'
+          : 'Anchor text appears more than once -- ambiguous, refusing to guess which one to link.',
+      }, 409);
+    }
+    // Re-find the parent array holding this node (could be top-level or
+    // nested inside e.g. a paragraph's own nodes array).
+    function replaceInTree(nodes) {
+      if (nodes.includes(matches[0])) return splitAndLinkNode(nodes, matches[0], anchorText, targetUrl);
+      for (const n of nodes) {
+        if (n.nodes?.length && replaceInTree(n.nodes)) return true;
+      }
+      return false;
+    }
+    const linked = replaceInTree(richContent.nodes);
+    if (!linked) return json({ error: 'Could not locate anchor text node in document tree' }, 500);
+    previous = { anchorText, linked: false };
+    current = { anchorText, targetUrl, linked: true };
+  } else {
+    return json({ error: `Unknown operation: ${operation}` }, 400);
+  }
+
+  const patchRes = await wixFetch(env, siteId, `/blog/v3/draft-posts/${postId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ draftPost: { id: postId, richContent } }),
+  });
+  if (!patchRes.ok) {
+    return json({ error: `Wix write failed: ${patchRes.status} ${await patchRes.text()}` }, 502);
+  }
+
+  const publishRes = await wixFetch(env, siteId, `/blog/v3/draft-posts/${postId}/publish`, { method: 'POST' });
+  if (!publishRes.ok) {
+    return json({ error: `Wix publish failed: ${publishRes.status} ${await publishRes.text()}` }, 502);
+  }
+
+  return json({ ok: true, previous, current, pageUrl: pageUrl || null, appliedAt: new Date().toISOString() });
+}
+
+// ---------- AI suggestion settings + generation ----------
+//
+// The API key for whichever text-generation provider the user picks (Gemini,
+// OpenAI, or Claude) is stored server-side in Workers KV -- never in
+// localStorage or a client-visible request -- and every suggestion call is
+// made from here, with the key attached server-side. The frontend only ever
+// sends the raw page/GSC data needed to build the prompt; it never sees or
+// handles the key itself.
+
+const SETTINGS_KEY = 'ai-settings'; // single global settings doc -- one-user tool, gated by ACTION_PASSWORD like everything else here
+
+async function handleGetSettingsStatus(env) {
+  const raw = await env.SETTINGS_KV.get(SETTINGS_KEY);
+  if (!raw) return json({ configured: false, provider: null });
+  const { provider } = JSON.parse(raw);
+  return json({ configured: true, provider });
+}
+
+async function handleSaveSettings(request, env) {
+  const { password, provider, apiKey } = await request.json();
+  if (password !== env.ACTION_PASSWORD) return json({ error: 'Wrong password' }, 401);
+  if (!['gemini', 'openai', 'anthropic'].includes(provider)) return json({ error: `Unknown provider: ${provider}` }, 400);
+  if (!apiKey) return json({ error: 'Missing apiKey' }, 400);
+  await env.SETTINGS_KV.put(SETTINGS_KEY, JSON.stringify({ provider, apiKey }));
+  return json({ ok: true, provider });
+}
+
+// Strips markdown code fences if a model ignores the "JSON only" instruction
+// and wraps its answer in ```json ... ``` anyway.
+function parseJsonLoose(text) {
+  const stripped = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/, '');
+  return JSON.parse(stripped);
+}
+
+async function callGemini(apiKey, prompt) {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { responseMimeType: 'application/json', temperature: 0.4 },
+    }),
+  });
+  if (!res.ok) throw new Error(`Gemini ${res.status}: ${await res.text()}`);
+  const data = await res.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('Gemini returned no content');
+  return parseJsonLoose(text);
+}
+
+async function callOpenAI(apiKey, prompt) {
+  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: prompt }],
+      response_format: { type: 'json_object' },
+      temperature: 0.4,
+    }),
+  });
+  if (!res.ok) throw new Error(`OpenAI ${res.status}: ${await res.text()}`);
+  const data = await res.json();
+  const text = data.choices?.[0]?.message?.content;
+  if (!text) throw new Error('OpenAI returned no content');
+  return parseJsonLoose(text);
+}
+
+async function callAnthropic(apiKey, prompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-5',
+      max_tokens: 1024,
+      messages: [{ role: 'user', content: `${prompt}\n\nRespond with JSON only, no markdown code fences.` }],
+    }),
+  });
+  if (!res.ok) throw new Error(`Anthropic ${res.status}: ${await res.text()}`);
+  const data = await res.json();
+  const text = data.content?.[0]?.text;
+  if (!text) throw new Error('Anthropic returned no content');
+  return parseJsonLoose(text);
+}
+
+async function callProvider(provider, apiKey, prompt) {
+  if (provider === 'gemini') return callGemini(apiKey, prompt);
+  if (provider === 'openai') return callOpenAI(apiKey, prompt);
+  if (provider === 'anthropic') return callAnthropic(apiKey, prompt);
+  throw new Error(`Unknown provider: ${provider}`);
+}
+
+function buildMetaPrompt(d) {
+  return `You are an SEO copywriter. Write a better <title> tag and meta description for one web page, using only the real data below -- do not invent facts about the page.
+
+Page URL: ${d.pageUrl}
+Current title: ${d.currentTitle || '(none)'}
+Current meta description: ${d.currentMeta || '(none)'}
+Top Google Search Console query (30 days): "${d.primary.query}" -- ${d.primary.impressions} impressions, position ${d.primary.position.toFixed(1)}, CTR ${(d.primary.ctr * 100).toFixed(2)}%
+Other queries this page ranks for: ${(d.secondary || []).map(q => `"${q.query}"`).join(', ') || '(none)'}
+${d.bodyExcerpt ? `Page content excerpt: ${d.bodyExcerpt.slice(0, 600)}` : ''}
+
+Rules:
+- Title: natural, specific to this page, includes the top query, <=60 characters, not keyword-stuffed, not a generic template.
+- Meta description: <=155 characters, reads like real ad copy (a reason to click), includes the top query naturally, not a list of keywords.
+- Do not just append "| query" to the existing title -- rewrite it to actually read well.
+- titleReason / metaReason: one sentence each, explaining what in the GSC data above drove this specific suggestion.
+
+Respond with this exact JSON shape only: {"title": "...", "titleReason": "...", "metaDescription": "...", "metaReason": "..."}`;
+}
+
+function buildContentPrompt(d) {
+  const gaps = d.gscGaps || [];
+  return `You are an SEO content strategist. Suggest a content improvement for one blog post, using only the real data below -- do not invent facts about the page or business.
+
+Post title: ${d.currentTitle}
+Post URL: ${d.pageUrl}
+Existing body text (do not repeat any of these sentences): ${(d.bodyExcerpt || '').slice(0, 3000)}
+
+Google Search Console queries this post already gets impressions for but the body text doesn't cover:
+${gaps.map(q => `- "${q.query}" (${q.impressions} impressions, position ${q.position.toFixed(1)})`).join('\n') || '(none -- base suggestions on secondary queries only)'}
+
+All queries this post ranks for (for context): ${(d.gscQueries || []).slice(0, 8).map(q => `"${q.query}"`).join(', ')}
+
+${d.linkCandidates?.length ? `Other pages on this site that are topically related (candidates for an internal link):\n${d.linkCandidates.map(u => `- ${u}`).join('\n')}` : ''}
+
+Produce:
+1. lsiKeywords: 3-5 secondary/LSI keyword phrases worth working into this post, each with a one-sentence reason grounded in the GSC data above.
+2. suggestedParagraph: ONE new paragraph (2-4 sentences) that could be added to this post. It must naturally work in 2-3 of the LSI keywords, match the post's existing tone/topic, and contain NO sentence that duplicates or closely paraphrases the existing body text.
+${d.linkCandidates?.length ? `3. internalLinkAnchor: a short phrase (3-8 words) that appears VERBATIM in the existing body text above, suitable as anchor text linking to one of the related pages listed. internalLinkReason: one sentence why that page is relevant here. If no good verbatim match exists, leave internalLinkAnchor empty.` : ''}
+
+Respond with this exact JSON shape only: {"lsiKeywords": [{"term": "...", "reason": "..."}], "suggestedParagraph": {"text": "...", "reason": "..."}, "internalLinkAnchor": "...", "internalLinkReason": "..."}`;
+}
+
+async function handleGenerateSuggestion(request, env) {
+  const body = await request.json();
+  if (body.password !== env.ACTION_PASSWORD) return json({ error: 'Wrong password' }, 401);
+
+  const raw = await env.SETTINGS_KV.get(SETTINGS_KEY);
+  if (!raw) return json({ error: 'No AI provider configured -- add an API key in Settings first.' }, 400);
+  const { provider, apiKey } = JSON.parse(raw);
+
+  let prompt;
+  if (body.type === 'meta') prompt = buildMetaPrompt(body);
+  else if (body.type === 'content') prompt = buildContentPrompt(body);
+  else return json({ error: `Unknown suggestion type: ${body.type}` }, 400);
+
+  try {
+    const result = await callProvider(provider, apiKey, prompt);
+    return json({ ok: true, provider, result });
+  } catch (err) {
+    return json({ error: `${provider} request failed: ${err.message}` }, 502);
+  }
 }
 
 async function handleApply(request, env) {
@@ -143,6 +427,34 @@ export default {
     if (url.pathname === '/apply-seo-tags' && request.method === 'POST') {
       try {
         return await handleApply(request, env);
+      } catch (err) {
+        return json({ error: err.message }, 500);
+      }
+    }
+    if (url.pathname === '/apply-content-change' && request.method === 'POST') {
+      try {
+        return await handleApplyContent(request, env);
+      } catch (err) {
+        return json({ error: err.message }, 500);
+      }
+    }
+    if (url.pathname === '/settings-status' && request.method === 'GET') {
+      try {
+        return await handleGetSettingsStatus(env);
+      } catch (err) {
+        return json({ error: err.message }, 500);
+      }
+    }
+    if (url.pathname === '/settings' && request.method === 'POST') {
+      try {
+        return await handleSaveSettings(request, env);
+      } catch (err) {
+        return json({ error: err.message }, 500);
+      }
+    }
+    if (url.pathname === '/generate-suggestion' && request.method === 'POST') {
+      try {
+        return await handleGenerateSuggestion(request, env);
       } catch (err) {
         return json({ error: err.message }, 500);
       }
