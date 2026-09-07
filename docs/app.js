@@ -369,7 +369,7 @@ async function init() {
   await loadSite(meta.sites[0].slug);
 }
 
-const LOCK_HASH = '69ab739ea2587fb65c8de3f9c2a581779dd8e0c603085830fd6074c5372b588a';
+const LOCK_HASH = 'b311938b04067ee30780fa202072c4e779849729db5d094563e2daccff8bef30';
 const LOCK_KEY = 'gsc-reoptimizer-unlocked';
 
 async function sha256Hex(text) {
