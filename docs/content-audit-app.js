@@ -41,19 +41,20 @@ async function caApply(siteSlug, page, issue, btn) {
     payload, btn, resultEl, pageUrl: page.url,
     formatBefore: prev => field === 'focusKeywords' ? caFocusKeywordsText(prev.focusKeywords) : (prev[field] || '(empty)'),
     formatAfter: cur => field === 'focusKeywords' ? caFocusKeywordsText(cur.focusKeywords) : cur[field],
-    // Undo = re-apply the full previous snapshot (title/meta/keywords/focus
-    // keywords all captured at apply time) -- correct regardless of which
-    // single field this particular issue touched.
+    // Undo = re-apply ONLY the single field this issue actually touched,
+    // using the previous value captured for THAT apply. Deliberately does
+    // NOT also send back the other 3 fields: Wix's SEO-tags read can lag
+    // slightly right after a write, so a second apply made soon after a
+    // first one can capture a stale "previous" for fields it didn't touch
+    // -- sending those back on undo would silently revert an unrelated,
+    // already-successful fix. Scoping to one field is exactly what the
+    // original Apply already does (see `payload` above), so Undo mirrors it.
     buildUndoPayload: async prevData => {
-      const password = await applyGetPassword();
-      if (!password) return null;
-      return {
-        site: siteSlug, itemType: page.itemType, itemId: page.itemId, password, pageUrl: page.url,
-        title: prevData.previous.title,
-        metaDescription: prevData.previous.metaDescription,
-        metaKeywords: prevData.previous.metaKeywords,
-        focusKeywords: prevData.previous.focusKeywords,
-      };
+      const undoPassword = await applyGetPassword();
+      if (!undoPassword) return null;
+      const undoPayload = { site: siteSlug, itemType: page.itemType, itemId: page.itemId, password: undoPassword, pageUrl: page.url };
+      undoPayload[field] = prevData.previous[field];
+      return undoPayload;
     },
   });
 }
