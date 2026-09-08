@@ -94,26 +94,47 @@ function crRenderLsiKeywords(keywords) {
   `;
 }
 
-// Real before/after of the visible page, not an isolated green box. Two
-// clearly separated boxes -- unchanged text vs. the new paragraph -- so
-// it's unambiguous that nothing existing is touched or replaced; the new
-// text is only ever ADDED as a new paragraph after everything currently in
-// the post (see append_paragraph in worker/src/index.js, which pushes onto
-// the very end of the node list, never splices into the middle).
+// Posts commonly end with a boilerplate contact/signature line (e.g. "For
+// further information ... contact ... info@..."). Landing a new SEO
+// paragraph AFTER that reads as structurally wrong, so the Worker inserts
+// BEFORE it instead when the post ends with one (see append_paragraph /
+// isSignatureParagraph in worker/src/index.js -- keep this regex in sync).
+const CR_SIGNATURE_LINE_RE = /contact|info@|for further information|please reach out|get in touch/i;
+
+function crSplitTail(tail) {
+  const sentences = tail.split(/(?<=[.!?])\s+/);
+  const last = sentences[sentences.length - 1] || '';
+  const hasSignature = sentences.length > 1 && last.length > 0 && last.length < 400 && CR_SIGNATURE_LINE_RE.test(last);
+  return hasSignature
+    ? { body: sentences.slice(0, -1).join(' '), signature: last }
+    : { body: tail, signature: null };
+}
+
+// Real before/after of the visible page, not an isolated green box. Three
+// clearly separated boxes when the post ends with a contact/signature
+// line -- unchanged body text, the new paragraph, then the unchanged
+// closing line staying last -- so it's unambiguous both that nothing
+// existing is touched, and exactly where the new paragraph lands (matches
+// the Worker's actual insertion point, not just "somewhere at the end").
 function crRenderParagraph(siteSlug, page, p) {
   if (!p?.text) return '';
   const canApply = page.itemType === 'BLOG_POST' && page.matched;
+  const { body, signature } = crSplitTail(page.bodyTailExcerpt || '');
+  const box = (label, text) => `
+    <div class="serp-preview-label">${crEsc(label)}</div>
+    <div style="padding:.5rem .7rem;background:var(--card);border:1px solid var(--border);border-radius:6px;margin-bottom:.6rem">${crEsc(text)}</div>
+  `;
 
   return `
     <div class="cr-suggestion-block">
       <h3>Suggested new paragraph</h3>
       <div class="ca-issue-reason">Why: ${crEsc(p.reason || 'Covers a GSC query gap for this post.')}</div>
-      <p class="card-sub" style="margin-bottom:.6rem">Nothing below is changed or removed. The new paragraph is only ever added as a brand-new paragraph at the very end of the post -- after everything currently there, including any closing/contact line.</p>
+      <p class="card-sub" style="margin-bottom:.6rem">Nothing below is changed or removed.${signature ? ' This post ends with a closing/contact line -- the new paragraph is inserted right before it, so the closing line still ends the post.' : ' The new paragraph is added at the very end of the post.'}</p>
       <div class="diff-preview">
-        <div class="serp-preview-label">Existing text (last part of the post -- stays exactly as-is)</div>
-        <div style="padding:.5rem .7rem;background:var(--card);border:1px solid var(--border);border-radius:6px;margin-bottom:.6rem">&hellip;${crEsc(page.bodyTailExcerpt)}</div>
-        <div class="serp-preview-label">New paragraph (added after the above, nothing else changes)</div>
-        <div class="diff-add">${crEsc(p.text)}</div>
+        ${box('Existing text (stays exactly as-is)', `…${body}`)}
+        <div class="serp-preview-label">New paragraph (inserted here)</div>
+        <div class="diff-add" style="margin-bottom:.6rem">${crEsc(p.text)}</div>
+        ${signature ? box('Closing line (stays exactly as-is, still last)', signature) : ''}
       </div>
       ${canApply
         ? `<button class="ca-apply-btn cr-apply-paragraph" data-page="${crEsc(page.url)}">Apply live (append to post)</button>`

@@ -123,6 +123,26 @@ function buildParagraphNode(text) {
   };
 }
 
+// Recursively collects all TEXT node text under a node (a PARAGRAPH's own
+// text lives one level down, inside its TEXT children).
+function flattenNodeText(node) {
+  if (!node) return '';
+  if (node.type === 'TEXT') return node.textData?.text || '';
+  return (node.nodes || []).map(flattenNodeText).join('');
+}
+
+// Posts commonly end with a boilerplate contact/signature line (e.g. "For
+// further information ... contact ... info@..."). Landing a new SEO
+// paragraph AFTER that reads as structurally wrong -- keep in sync with the
+// same heuristic in docs/content-reoptimize-app.js, which uses it to render
+// an accurate before/after preview of where the paragraph actually lands.
+const SIGNATURE_LINE_RE = /contact|info@|for further information|please reach out|get in touch/i;
+
+function isSignatureParagraph(node) {
+  const text = flattenNodeText(node);
+  return text.length > 0 && text.length < 400 && SIGNATURE_LINE_RE.test(text);
+}
+
 async function handleApplyContent(request, env) {
   const body = await request.json();
   const { site, postId, password, operation, paragraphText, anchorText, targetUrl, pageUrl } = body;
@@ -176,8 +196,15 @@ async function handleApplyContent(request, env) {
   if (operation === 'append_paragraph') {
     if (!paragraphText) return json({ error: 'Missing paragraphText' }, 400);
     previous = { paragraphCount: richContent.nodes.length };
-    richContent.nodes.push(buildParagraphNode(paragraphText));
-    current = { addedParagraph: paragraphText };
+    const newNode = buildParagraphNode(paragraphText);
+    const lastNode = richContent.nodes[richContent.nodes.length - 1];
+    const insertedBeforeClosingLine = !!lastNode && isSignatureParagraph(lastNode);
+    if (insertedBeforeClosingLine) {
+      richContent.nodes.splice(richContent.nodes.length - 1, 0, newNode);
+    } else {
+      richContent.nodes.push(newNode);
+    }
+    current = { addedParagraph: paragraphText, insertedBeforeClosingLine };
   } else if (operation === 'add_internal_link') {
     if (!anchorText || !targetUrl) return json({ error: 'Missing anchorText/targetUrl' }, 400);
     const matches = findTextNodeMatches(richContent.nodes, anchorText);
