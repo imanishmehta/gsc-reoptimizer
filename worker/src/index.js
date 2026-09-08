@@ -364,11 +364,29 @@ async function callAnthropic(apiKey, prompt) {
   return parseJsonLoose(text);
 }
 
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Transient overload (503) / rate-limit (429) errors are common and usually
+// resolve within a couple seconds -- retry a couple times with backoff
+// before surfacing it to the user, instead of making every "high demand"
+// blip a manual re-click.
 async function callProvider(provider, apiKey, prompt) {
-  if (provider === 'gemini') return callGemini(apiKey, prompt);
-  if (provider === 'openai') return callOpenAI(apiKey, prompt);
-  if (provider === 'anthropic') return callAnthropic(apiKey, prompt);
-  throw new Error(`Unknown provider: ${provider}`);
+  const call = () => {
+    if (provider === 'gemini') return callGemini(apiKey, prompt);
+    if (provider === 'openai') return callOpenAI(apiKey, prompt);
+    if (provider === 'anthropic') return callAnthropic(apiKey, prompt);
+    throw new Error(`Unknown provider: ${provider}`);
+  };
+  const delays = [800, 2000];
+  for (let attempt = 0; ; attempt++) {
+    try {
+      return await call();
+    } catch (err) {
+      const transient = /\b(429|503)\b/.test(err.message);
+      if (!transient || attempt >= delays.length) throw err;
+      await sleep(delays[attempt]);
+    }
+  }
 }
 
 function buildMetaPrompt(d) {
