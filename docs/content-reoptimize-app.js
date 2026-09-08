@@ -3,14 +3,21 @@
 // <select> pattern, and the apply-live plumbing (apply-shared.js) with the
 // Meta Optimization/Internal Linking tabs for consistency.
 //
-// Suggestions (LSI keywords, a new paragraph) are generated on-demand per
-// page via applyGenerateSuggestion('content', ...) -- nothing is
+// Suggestions (LSI keywords, multiple new paragraphs) are generated on-
+// demand per page via applyGenerateSuggestion('content', ...) -- nothing is
 // precomputed at fetch time, so nothing calls the configured AI provider
 // until you click "Generate" on a specific post.
+//
+// Each suggested paragraph targets a specific existing section (via
+// insertAfterHeading) instead of always landing at the end of the post --
+// the Worker inserts it at the end of that section (see
+// findSectionInsertIndex in worker/src/index.js), falling back to
+// end-of-post (still signature-line-aware) if no section was requested.
+// This is ADD-only: nothing existing is ever edited or removed.
 
 let crLoaded = false;
 let crData = null;
-const crGenerated = {}; // `${periodKey}:${pageUrl}` -> generated suggestion result, kept in memory across re-renders
+const crGenerated = {}; // `${periodKey}:${pageUrl}` -> { lsiKeywords, paragraphs: [{text, reason, insertAfterHeading}] }
 
 function crEsc(s) { return applyEsc(s); }
 
@@ -43,13 +50,14 @@ async function crGenerate(siteSlug, page, btn) {
       currentTitle: page.currentTitle,
       cause: page.cause,
       bodyExcerpt: page.bodyExcerpt,
+      headings: page.headings,
       gscQueries: page.gscQueries,
       gscGaps: page.gscGaps,
     }, { cacheSuffix: `${crPeriodKey()}-page` });
 
     crGenerated[crGenKey(page)] = {
       lsiKeywords: result.lsiKeywords || [],
-      suggestedParagraph: result.suggestedParagraph || null,
+      paragraphs: result.paragraphs || [],
     };
     crRenderSite(siteSlug);
   } catch (err) {
@@ -59,21 +67,20 @@ async function crGenerate(siteSlug, page, btn) {
   }
 }
 
-async function crApplyParagraph(siteSlug, page, btn) {
+async function crApplyParagraph(siteSlug, page, para, btn) {
   const password = await applyGetPassword();
   if (!password) return;
 
-  const gen = crGenerated[crGenKey(page)];
   const payload = {
     site: siteSlug, postId: page.itemId, password,
-    operation: 'append_paragraph', paragraphText: gen.suggestedParagraph.text, pageUrl: page.url,
+    operation: 'append_paragraph', paragraphText: para.text, insertAfterHeading: para.insertAfterHeading || null, pageUrl: page.url,
   };
   const resultEl = btn.parentElement.querySelector('.ca-result');
   await applyRun({
     endpoint: '/apply-content-change',
     payload, btn, resultEl, pageUrl: page.url,
     formatBefore: () => '(post had no added paragraph)',
-    formatAfter: cur => cur.addedParagraph,
+    formatAfter: cur => cur.insertedAfterHeading ? `${cur.addedParagraph} (added at the end of "${cur.insertedAfterHeading}")` : cur.addedParagraph,
     buildUndoPayload: async applyData => {
       const undoPassword = await applyGetPassword();
       if (!undoPassword) return null;
@@ -94,51 +101,28 @@ function crRenderLsiKeywords(keywords) {
   `;
 }
 
-// Posts commonly end with a boilerplate contact/signature line (e.g. "For
-// further information ... contact ... info@..."). Landing a new SEO
-// paragraph AFTER that reads as structurally wrong, so the Worker inserts
-// BEFORE it instead when the post ends with one (see append_paragraph /
-// isSignatureParagraph in worker/src/index.js -- keep this regex in sync).
-const CR_SIGNATURE_LINE_RE = /contact|info@|for further information|please reach out|get in touch/i;
-
-function crSplitTail(tail) {
-  const sentences = tail.split(/(?<=[.!?])\s+/);
-  const last = sentences[sentences.length - 1] || '';
-  const hasSignature = sentences.length > 1 && last.length > 0 && last.length < 400 && CR_SIGNATURE_LINE_RE.test(last);
-  return hasSignature
-    ? { body: sentences.slice(0, -1).join(' '), signature: last }
-    : { body: tail, signature: null };
-}
-
-// Real before/after of the visible page, not an isolated green box. Three
-// clearly separated boxes when the post ends with a contact/signature
-// line -- unchanged body text, the new paragraph, then the unchanged
-// closing line staying last -- so it's unambiguous both that nothing
-// existing is touched, and exactly where the new paragraph lands (matches
-// the Worker's actual insertion point, not just "somewhere at the end").
-function crRenderParagraph(siteSlug, page, p) {
-  if (!p?.text) return '';
+// One block per suggested paragraph. Each is independent: its own target
+// section, its own Apply/Copy button, its own result panel -- applying one
+// doesn't affect the others. Placement is stated up front (what the AI
+// targeted) and confirmed again in the result panel after Apply (what the
+// Worker actually did -- authoritative, since a requested heading can fail
+// to match if the post changed since generation).
+function crRenderParagraph(siteSlug, page, para, idx) {
   const canApply = page.itemType === 'BLOG_POST' && page.matched;
-  const { body, signature } = crSplitTail(page.bodyTailExcerpt || '');
-  const box = (label, text) => `
-    <div class="serp-preview-label">${crEsc(label)}</div>
-    <div style="padding:.5rem .7rem;background:var(--card);border:1px solid var(--border);border-radius:6px;margin-bottom:.6rem">${crEsc(text)}</div>
-  `;
+  const target = para.insertAfterHeading
+    ? `at the end of the "${para.insertAfterHeading}" section`
+    : 'at the end of the post';
 
   return `
     <div class="cr-suggestion-block">
-      <h3>Suggested new paragraph</h3>
-      <div class="ca-issue-reason">Why: ${crEsc(p.reason || 'Covers a GSC query gap for this post.')}</div>
-      <p class="card-sub" style="margin-bottom:.6rem">Nothing below is changed or removed.${signature ? ' This post ends with a closing/contact line -- the new paragraph is inserted right before it, so the closing line still ends the post.' : ' The new paragraph is added at the very end of the post.'}</p>
+      <div class="serp-preview-label">📍 Placement: ${crEsc(target)}</div>
+      <div class="ca-issue-reason">Why: ${crEsc(para.reason || 'Covers a GSC query gap for this post.')}</div>
       <div class="diff-preview">
-        ${box('Existing text (stays exactly as-is)', `…${body}`)}
-        <div class="serp-preview-label">New paragraph (inserted here)</div>
-        <div class="diff-add" style="margin-bottom:.6rem">${crEsc(p.text)}</div>
-        ${signature ? box('Closing line (stays exactly as-is, still last)', signature) : ''}
+        <div class="diff-add">+ ${crEsc(para.text)}</div>
       </div>
       ${canApply
-        ? `<button class="ca-apply-btn cr-apply-paragraph" data-page="${crEsc(page.url)}">Apply live (append to post)</button>`
-        : `<button class="ca-apply-btn cr-copy-btn" data-copy="${crEsc(p.text)}">Copy suggestion</button>`}
+        ? `<button class="ca-apply-btn cr-apply-paragraph" data-page="${crEsc(page.url)}" data-idx="${idx}">Apply live (add paragraph)</button>`
+        : `<button class="ca-apply-btn cr-copy-btn" data-copy="${crEsc(para.text)}">Copy suggestion</button>`}
       <div class="ca-result" hidden></div>
     </div>
   `;
@@ -155,7 +139,8 @@ function crRenderPage(siteSlug, page) {
         <span class="pill ranking-rise">${crEsc(page.itemType)}</span>
       </div>
       ${gen ? crRenderLsiKeywords(gen.lsiKeywords) : ''}
-      ${gen ? crRenderParagraph(siteSlug, page, gen.suggestedParagraph) : ''}
+      ${gen ? gen.paragraphs.map((p, i) => crRenderParagraph(siteSlug, page, p, i)).join('') : ''}
+      ${gen && !gen.paragraphs.length ? '<p class="empty">No paragraph suggestions this time.</p>' : ''}
       ${!gen ? `<button class="ca-apply-btn cr-generate-btn" data-page="${crEsc(page.url)}">✨ Generate content suggestions</button>` : ''}
     </div>
   `;
@@ -181,7 +166,8 @@ function crRenderSite(siteSlug) {
   document.querySelectorAll('.cr-apply-paragraph').forEach(btn => {
     btn.addEventListener('click', () => {
       const page = pages.find(p => p.url === btn.dataset.page);
-      crApplyParagraph(siteSlug, page, btn);
+      const para = crGenerated[crGenKey(page)].paragraphs[Number(btn.dataset.idx)];
+      crApplyParagraph(siteSlug, page, para, btn);
     });
   });
   document.querySelectorAll('.cr-copy-btn').forEach(btn => {

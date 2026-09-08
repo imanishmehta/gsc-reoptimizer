@@ -77,6 +77,7 @@ async function processSite(gscClient, site) {
         currentTitle: item.currentTitle,
         bodyExcerpt: item.bodyText.slice(0, 3000), // full context for the AI prompt
         bodyTailExcerpt: item.bodyText.slice(-400), // "current end of post" for the before/after preview
+        headings: item.liveCrawl.headings, // lets the AI target a specific existing section instead of only the end of the post
         gscQueries: [target.primary, ...target.secondary].filter(Boolean).map(q => ({ query: q.query, impressions: q.impressions, position: q.position })),
         gscGaps: gscGaps.map(q => ({ query: q.query, impressions: q.impressions, position: q.position })),
       });

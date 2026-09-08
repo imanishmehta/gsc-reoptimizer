@@ -143,9 +143,26 @@ function isSignatureParagraph(node) {
   return text.length > 0 && text.length < 400 && SIGNATURE_LINE_RE.test(text);
 }
 
+// Finds the node index just before the NEXT heading after the one matching
+// `headingText` exactly -- i.e. the end of that heading's section, a safe
+// place to add a new paragraph without disturbing anything. Requires an
+// exact, unambiguous match (exactly one HEADING node with this text);
+// returns null otherwise so the caller falls back to end-of-post placement
+// rather than guessing which section was meant.
+function findSectionInsertIndex(nodes, headingText) {
+  const target = headingText.trim();
+  const matches = [];
+  nodes.forEach((n, i) => { if (n.type === 'HEADING' && flattenNodeText(n).trim() === target) matches.push(i); });
+  if (matches.length !== 1) return null;
+  for (let i = matches[0] + 1; i < nodes.length; i++) {
+    if (nodes[i].type === 'HEADING') return i;
+  }
+  return nodes.length;
+}
+
 async function handleApplyContent(request, env) {
   const body = await request.json();
-  const { site, postId, password, operation, paragraphText, anchorText, targetUrl, pageUrl } = body;
+  const { site, postId, password, operation, paragraphText, insertAfterHeading, anchorText, targetUrl, pageUrl } = body;
 
   if (password !== env.ACTION_PASSWORD) {
     return json({ error: 'Wrong password' }, 401);
@@ -197,14 +214,28 @@ async function handleApplyContent(request, env) {
     if (!paragraphText) return json({ error: 'Missing paragraphText' }, 400);
     previous = { paragraphCount: richContent.nodes.length };
     const newNode = buildParagraphNode(paragraphText);
-    const lastNode = richContent.nodes[richContent.nodes.length - 1];
-    const insertedBeforeClosingLine = !!lastNode && isSignatureParagraph(lastNode);
-    if (insertedBeforeClosingLine) {
-      richContent.nodes.splice(richContent.nodes.length - 1, 0, newNode);
-    } else {
-      richContent.nodes.push(newNode);
+
+    // Section-targeted insertion: find the (single, exact-match) HEADING
+    // node and insert at the end of ITS section, i.e. right before the
+    // next heading -- reads as a natural addition to that section instead
+    // of always landing at the end of the whole post. Falls back to the
+    // old end-of-post behavior (still signature-line-aware) if no heading
+    // was requested, or it doesn't match exactly one heading -- never an
+    // error, since the fallback is itself a safe, valid placement.
+    let insertIdx = insertAfterHeading ? findSectionInsertIndex(richContent.nodes, insertAfterHeading) : null;
+    let insertedBeforeClosingLine = false;
+    if (insertIdx === null) insertIdx = richContent.nodes.length;
+    if (insertIdx >= richContent.nodes.length) {
+      const lastNode = richContent.nodes[richContent.nodes.length - 1];
+      if (lastNode && isSignatureParagraph(lastNode)) {
+        insertIdx = richContent.nodes.length - 1;
+        insertedBeforeClosingLine = true;
+      } else {
+        insertIdx = richContent.nodes.length;
+      }
     }
-    current = { addedParagraph: paragraphText, insertedBeforeClosingLine };
+    richContent.nodes.splice(insertIdx, 0, newNode);
+    current = { addedParagraph: paragraphText, insertedBeforeClosingLine, insertedAfterHeading: insertIdx < richContent.nodes.length - 1 ? insertAfterHeading || null : null };
   } else if (operation === 'add_internal_link') {
     if (!anchorText || !targetUrl) return json({ error: 'Missing anchorText/targetUrl' }, 400);
     const matches = findTextNodeMatches(richContent.nodes, anchorText);
@@ -382,12 +413,16 @@ Respond with this exact JSON shape only: {"suggestions": [{"targetUrl": "...", "
 
 function buildContentPrompt(d) {
   const gaps = d.gscGaps || [];
-  return `You are an SEO content strategist. Suggest a content improvement for one underperforming blog post, using only the real data below -- do not invent facts about the page or business.
+  const headings = d.headings || [];
+  return `You are an SEO content strategist. Suggest content improvements for one underperforming blog post, using only the real data below -- do not invent facts about the page or business.
 
 Post title: ${d.currentTitle}
 Post URL: ${d.pageUrl}
 Why this post needs help: ${d.cause === 'ranking-drop' ? 'its ranking position got worse this period' : d.cause === 'ctr-drop' ? 'its clicks fell without a matching drop in position' : 'its CTR is well below what pages at its position typically earn'}.
 Existing body text (do not repeat any of these sentences): ${(d.bodyExcerpt || '').slice(0, 3000)}
+
+Existing section headings, in order (these are the ONLY valid values for insertAfterHeading below):
+${headings.map(h => `- "${h.text}"`).join('\n') || '(no headings detected -- use insertAfterHeading: null for every paragraph)'}
 
 Google Search Console queries this post already gets impressions for but the body text doesn't cover:
 ${gaps.map(q => `- "${q.query}" (${q.impressions} impressions, position ${q.position.toFixed(1)})`).join('\n') || '(none -- base suggestions on secondary queries only)'}
@@ -396,9 +431,9 @@ All queries this post ranks for (for context): ${(d.gscQueries || []).slice(0, 8
 
 Produce:
 1. lsiKeywords: 3-5 secondary/LSI keyword phrases worth working into this post, each with a one-sentence reason grounded in the GSC data above.
-2. suggestedParagraph: ONE new paragraph (2-4 sentences) that could be added to this post. It must naturally work in 2-3 of the LSI keywords, match the post's existing tone/topic, and contain NO sentence that duplicates or closely paraphrases the existing body text.
+2. paragraphs: 1-3 NEW paragraphs (2-4 sentences each) to ADD to this post -- never a rewrite of anything existing, only new additions. Each one should target a different LSI keyword or query gap, and each needs an insertAfterHeading: the exact text of the existing heading (copied character-for-character from the list above) whose section this paragraph best fits at the end of, or null if it belongs at the end of the post instead. Every paragraph must match the post's existing tone/topic and contain NO sentence that duplicates or closely paraphrases the existing body text.
 
-Respond with this exact JSON shape only: {"lsiKeywords": [{"term": "...", "reason": "..."}], "suggestedParagraph": {"text": "...", "reason": "..."}}`;
+Respond with this exact JSON shape only: {"lsiKeywords": [{"term": "...", "reason": "..."}], "paragraphs": [{"text": "...", "reason": "...", "insertAfterHeading": "... or null"}]}`;
 }
 
 async function handleGenerateSuggestion(request, env) {

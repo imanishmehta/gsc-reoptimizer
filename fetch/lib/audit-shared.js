@@ -243,6 +243,21 @@ function extractSchemaTypes(html) {
   return [...types];
 }
 
+// H2/H3 section headings, in document order -- lets the Content
+// Reoptimization AI target a specific existing section for a new paragraph
+// (e.g. "add this after the 'Benefits' section") instead of only ever being
+// able to append at the very end of the post.
+function extractHeadings(html) {
+  const heads = [];
+  const re = /<h([23])[^>]*>([\s\S]*?)<\/h\1>/gi;
+  let m;
+  while ((m = re.exec(html)) && heads.length < 40) {
+    const text = decodeEntities(m[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+    if (text) heads.push({ level: Number(m[1]), text });
+  }
+  return heads;
+}
+
 const liveCrawlCache = new Map();
 
 // Fetches a page's live HTML once and extracts everything downstream needs
@@ -266,9 +281,10 @@ export async function crawlLivePage(url) {
         internalLinks: extractInternalLinks(html, url),
         metaKeywords: keywordsMatch ? decodeEntities(keywordsMatch[1].trim()) : null,
         schemaTypes: extractSchemaTypes(html),
+        headings: extractHeadings(html),
       };
     } catch {
-      return { title: null, internalLinks: [], metaKeywords: null, schemaTypes: [] };
+      return { title: null, internalLinks: [], metaKeywords: null, schemaTypes: [], headings: [] };
     }
   })();
   liveCrawlCache.set(url, promise);
