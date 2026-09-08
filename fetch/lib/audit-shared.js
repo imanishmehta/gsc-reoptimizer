@@ -147,7 +147,13 @@ export async function getPeriodTargets(gscClient, site, days) {
 
 // ---------- Wix ----------
 
-export async function wixFetch(siteId, path, options = {}) {
+function sleepMs(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Wix's API intermittently 499s (connection-closed edge error) on
+// otherwise-valid requests -- confirmed repeatedly in practice, not
+// specific to one endpoint. Retries twice with backoff on 499/502/503/504
+// before giving up, instead of failing the whole script run over a blip.
+export async function wixFetch(siteId, path, options = {}, attempt = 0) {
   const res = await fetch(`https://www.wixapis.com${path}`, {
     ...options,
     headers: {
@@ -157,7 +163,13 @@ export async function wixFetch(siteId, path, options = {}) {
       ...(options.headers || {}),
     },
   });
-  if (!res.ok) throw new Error(`Wix ${path} -> ${res.status}: ${await res.text()}`);
+  if (!res.ok) {
+    if ([499, 502, 503, 504].includes(res.status) && attempt < 2) {
+      await sleepMs(1000 * (attempt + 1));
+      return wixFetch(siteId, path, options, attempt + 1);
+    }
+    throw new Error(`Wix ${path} -> ${res.status}: ${await res.text()}`);
+  }
   return res.json();
 }
 
@@ -197,7 +209,12 @@ export async function listBlogPosts(siteId) {
 
 export function extractTag(tags, type, propsName) {
   const tag = propsName ? tags.find(t => t.type === type && t.props?.name === propsName) : tags.find(t => t.type === type);
-  return tag ? (tag.children ?? tag.props?.content ?? null) : null;
+  if (!tag) return null;
+  // Wix's `meta` tags always carry `children: ""` (empty) alongside the
+  // real text in `props.content` -- `??` only skips null/undefined, not
+  // empty string, so it was silently preferring the always-empty
+  // `children` over the actual content. `||` correctly falls through.
+  return tag.children || tag.props?.content || null;
 }
 
 const HTML_ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", '#39': "'", nbsp: ' ' };
@@ -268,16 +285,33 @@ const liveCrawlCache = new Map();
 // periods within one script run, and its live content doesn't change based
 // on which GSC window is being analyzed, so re-fetching per period would be
 // pure waste.
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// This is cached by URL and reused across all 5 periods (see below) -- a
+// single transient failure on the first crawl of a page would otherwise
+// get cached and silently poison every period for that page for the rest
+// of the run (confirmed live: this is exactly how one page's title
+// extraction came back empty and broke its Wix-item match across an
+// entire regeneration). One retry after a short delay before giving up.
+async function fetchLiveHtml(url, attempt = 0) {
+  const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (content-audit-bot)' } });
+  if (!res.ok) {
+    if (attempt === 0) { await sleep(1000); return fetchLiveHtml(url, attempt + 1); }
+    throw new Error(`${url} -> ${res.status}`);
+  }
+  return res.text();
+}
+
 export async function crawlLivePage(url) {
   if (liveCrawlCache.has(url)) return liveCrawlCache.get(url);
   const promise = (async () => {
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (content-audit-bot)' } });
-      const html = await res.text();
+      const html = await fetchLiveHtml(url);
       const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
       const keywordsMatch = html.match(/<meta[^>]+name=["']keywords["'][^>]+content=["']([^"']*)["']/i);
+      const title = titleMatch ? decodeEntities(titleMatch[1].trim()) : null;
       return {
-        title: titleMatch ? decodeEntities(titleMatch[1].trim()) : null,
+        title: title || null, // an empty <title></title> (e.g. an unrendered error-page template) is as good as no title
         internalLinks: extractInternalLinks(html, url),
         metaKeywords: keywordsMatch ? decodeEntities(keywordsMatch[1].trim()) : null,
         schemaTypes: extractSchemaTypes(html),
@@ -342,6 +376,12 @@ export async function resolvePageWixItem(pageUrl, indexes) {
       matched: true,
       currentTitle: extractTag(tagsEntry?.tags || [], 'title') || post.title,
       currentMeta: extractTag(tagsEntry?.tags || [], 'meta', 'description') || post.excerpt,
+      // Wix stores meta keywords as its own real tag (props.name ===
+      // 'keywords'), same as title/description -- read from there, not
+      // the live-rendered HTML, for the same reason title/description
+      // aren't: it's the authoritative source, live HTML is a secondary
+      // signal only used as a fallback.
+      currentMetaKeywords: extractTag(tagsEntry?.tags || [], 'meta', 'keywords') || liveCrawl.metaKeywords,
       currentFocusKeywords: tagsEntry?.focusKeywords || [],
       bodyText: post.contentText || '',
       liveCrawl,
@@ -357,6 +397,7 @@ export async function resolvePageWixItem(pageUrl, indexes) {
       matched: true,
       currentTitle: extractTag(tagsEntry.tags || [], 'title') || extractTag(resolvedFlat, 'title') || liveCrawl.title,
       currentMeta: extractTag(tagsEntry.tags || [], 'meta', 'description') || extractTag(resolvedFlat, 'meta', 'description'),
+      currentMetaKeywords: extractTag(tagsEntry.tags || [], 'meta', 'keywords') || extractTag(resolvedFlat, 'meta', 'keywords') || liveCrawl.metaKeywords,
       currentFocusKeywords: tagsEntry.focusKeywords || [],
       bodyText: null, // no generic body-text API for classic static pages
       liveCrawl,
@@ -365,7 +406,7 @@ export async function resolvePageWixItem(pageUrl, indexes) {
 
   return {
     itemType: null, itemId: null, matched: false,
-    currentTitle: liveCrawl.title, currentMeta: null, currentFocusKeywords: [], bodyText: null,
+    currentTitle: liveCrawl.title, currentMeta: null, currentMetaKeywords: liveCrawl.metaKeywords, currentFocusKeywords: [], bodyText: null,
     liveCrawl,
   };
 }

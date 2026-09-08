@@ -42,7 +42,12 @@ function extractTag(tags, type, propsName) {
   const tag = propsName
     ? tags.find(t => t.type === type && t.props?.name === propsName)
     : tags.find(t => t.type === type);
-  return tag ? (tag.children ?? tag.props?.content ?? null) : null;
+  if (!tag) return null;
+  // Wix's `meta` tags always carry `children: ""` (empty) alongside the
+  // real text in `props.content` -- `??` only skips null/undefined, not
+  // empty string, so it was silently preferring the always-empty
+  // `children` over the actual content. `||` correctly falls through.
+  return tag.children || tag.props?.content || null;
 }
 
 function mergeTags(existingTags, { title, metaDescription, metaKeywords }) {

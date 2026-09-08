@@ -52,7 +52,7 @@ const CAUSE_TEXT = {
 // null here (needsAi: true) -- filled on demand in the browser via the
 // Worker's /generate-suggestion, never at fetch time. Everything else's
 // `reason` is filled synchronously from the same numbers that triggered it.
-function detectIssues({ primary, secondary, cause }, currentTitle, currentMeta, currentFocusKeywords, bodyText, liveCrawl, itemType) {
+function detectIssues({ primary, secondary, cause }, currentTitle, currentMeta, currentMetaKeywords, currentFocusKeywords, bodyText, liveCrawl, itemType) {
   const issues = [];
   if (!primary) return issues;
 
@@ -84,7 +84,7 @@ function detectIssues({ primary, secondary, cause }, currentTitle, currentMeta, 
     issues.push({ type: 'meta', field: 'metaDescription', needsAi: true, message: `Meta description doesn't mention the top query "${primary.query}".`, current: currentMeta, suggested: null, reason: null });
   }
 
-  if (!liveCrawl.metaKeywords) {
+  if (!currentMetaKeywords) {
     issues.push({ type: 'meta-keywords', field: 'metaKeywords', needsAi: true, message: 'No meta keywords set.', current: null, suggested: null, reason: null });
   }
 
@@ -160,7 +160,7 @@ async function processSite(gscClient, site) {
     const pages = [];
     for (const target of targets) {
       const item = await resolvePageWixItem(target.url, indexes);
-      const issues = detectIssues(target, item.currentTitle, item.currentMeta, item.currentFocusKeywords, item.bodyText, item.liveCrawl, item.itemType);
+      const issues = detectIssues(target, item.currentTitle, item.currentMeta, item.currentMetaKeywords, item.currentFocusKeywords, item.bodyText, item.liveCrawl, item.itemType);
       if (!issues.length) continue;
 
       pages.push({
@@ -169,7 +169,7 @@ async function processSite(gscClient, site) {
         itemType: item.matched ? item.itemType : null,
         itemId: item.matched ? item.itemId : null,
         matched: item.matched,
-        current: { title: item.currentTitle, metaDescription: item.currentMeta, metaKeywords: item.liveCrawl.metaKeywords, focusKeywords: item.currentFocusKeywords },
+        current: { title: item.currentTitle, metaDescription: item.currentMeta, metaKeywords: item.currentMetaKeywords, focusKeywords: item.currentFocusKeywords },
         primary: target.primary, secondary: target.secondary, issues,
         bodyExcerpt: item.bodyText ? item.bodyText.slice(0, 600) : null, // passed back to /generate-suggestion on demand
       });
