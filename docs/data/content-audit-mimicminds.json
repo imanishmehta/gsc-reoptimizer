@@ -3268,14 +3268,19 @@
         {
           "url": "https://www.mimicminds.com/",
           "cause": "ctr-drop",
-          "itemType": null,
-          "itemId": null,
-          "matched": false,
+          "itemType": "STATIC_PAGE",
+          "itemId": "c1dmp",
+          "matched": true,
           "current": {
-            "title": null,
-            "metaDescription": null,
-            "metaKeywords": null,
-            "focusKeywords": []
+            "title": "Mimic Minds | AI Avatars, Digital Humans & AI Studio",
+            "metaDescription": "Create lifelike AI avatars and digital humans for websites, apps and enterprise experiences with real-time conversation, natural voice and expression.",
+            "metaKeywords": "Digital Avatar Solutions, Photorealistic Chatbots, Virtual Assistants, Conversational Avatar, Personalized AI Solutions, 3D Digital Influencers, AI Avatar Services, Digital Avatar Service Company",
+            "focusKeywords": [
+              {
+                "term": "AI avatars",
+                "isMain": true
+              }
+            ]
           },
           "primary": {
             "query": "mimic minds",
@@ -3323,29 +3328,11 @@
           ],
           "issues": [
             {
-              "type": "title",
-              "field": "title",
-              "needsAi": true,
-              "message": "Title doesn't contain the top query \"mimic minds\" (16 impr, pos 1.0) -- this page is ctr drop this period.",
-              "current": null,
-              "suggested": null,
-              "reason": null
-            },
-            {
-              "type": "meta-missing",
+              "type": "meta",
               "field": "metaDescription",
               "needsAi": true,
-              "message": "No meta description set.",
-              "current": null,
-              "suggested": null,
-              "reason": null
-            },
-            {
-              "type": "meta-keywords",
-              "field": "metaKeywords",
-              "needsAi": true,
-              "message": "No meta keywords set.",
-              "current": null,
+              "message": "Meta description doesn't mention the top query \"mimic minds\".",
+              "current": "Create lifelike AI avatars and digital humans for websites, apps and enterprise experiences with real-time conversation, natural voice and expression.",
               "suggested": null,
               "reason": null
             },
@@ -3363,7 +3350,12 @@
               "field": "focusKeywords",
               "needsAi": false,
               "message": "Focus keyword doesn't include the top GSC query \"mimic minds\".",
-              "current": [],
+              "current": [
+                {
+                  "term": "AI avatars",
+                  "isMain": true
+                }
+              ],
               "suggested": [
                 {
                   "term": "mimic minds",
@@ -3379,15 +3371,6 @@
                 }
               ],
               "reason": "\"mimic minds\" is this page's #1 query by clicks in GSC but isn't set as a focus keyword -- Wix's own SEO tooling (and the page's internal search relevance) works off this field."
-            },
-            {
-              "type": "schema-missing",
-              "field": null,
-              "needsAi": false,
-              "message": "No structured data (schema.org JSON-LD) found on this page.",
-              "current": null,
-              "suggested": null,
-              "reason": "Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically."
             }
           ],
           "bodyExcerpt": null
@@ -7065,14 +7048,19 @@
         {
           "url": "https://www.mimicminds.com/",
           "cause": "ranking-drop",
-          "itemType": null,
-          "itemId": null,
-          "matched": false,
+          "itemType": "STATIC_PAGE",
+          "itemId": "c1dmp",
+          "matched": true,
           "current": {
-            "title": null,
-            "metaDescription": null,
-            "metaKeywords": null,
-            "focusKeywords": []
+            "title": "Mimic Minds | AI Avatars, Digital Humans & AI Studio",
+            "metaDescription": "Create lifelike AI avatars and digital humans for websites, apps and enterprise experiences with real-time conversation, natural voice and expression.",
+            "metaKeywords": "Digital Avatar Solutions, Photorealistic Chatbots, Virtual Assistants, Conversational Avatar, Personalized AI Solutions, 3D Digital Influencers, AI Avatar Services, Digital Avatar Service Company",
+            "focusKeywords": [
+              {
+                "term": "AI avatars",
+                "isMain": true
+              }
+            ]
           },
           "primary": {
             "query": "mimic minds",
@@ -7120,29 +7108,11 @@
           ],
           "issues": [
             {
-              "type": "title",
-              "field": "title",
-              "needsAi": true,
-              "message": "Title doesn't contain the top query \"mimic minds\" (74 impr, pos 1.0) -- this page is ranking drop this period.",
-              "current": null,
-              "suggested": null,
-              "reason": null
-            },
-            {
-              "type": "meta-missing",
+              "type": "meta",
               "field": "metaDescription",
               "needsAi": true,
-              "message": "No meta description set.",
-              "current": null,
-              "suggested": null,
-              "reason": null
-            },
-            {
-              "type": "meta-keywords",
-              "field": "metaKeywords",
-              "needsAi": true,
-              "message": "No meta keywords set.",
-              "current": null,
+              "message": "Meta description doesn't mention the top query \"mimic minds\".",
+              "current": "Create lifelike AI avatars and digital humans for websites, apps and enterprise experiences with real-time conversation, natural voice and expression.",
               "suggested": null,
               "reason": null
             },
@@ -7160,7 +7130,12 @@
               "field": "focusKeywords",
               "needsAi": false,
               "message": "Focus keyword doesn't include the top GSC query \"mimic minds\".",
-              "current": [],
+              "current": [
+                {
+                  "term": "AI avatars",
+                  "isMain": true
+                }
+              ],
               "suggested": [
                 {
                   "term": "mimic minds",
@@ -7176,15 +7151,6 @@
                 }
               ],
               "reason": "\"mimic minds\" is this page's #1 query by clicks in GSC but isn't set as a focus keyword -- Wix's own SEO tooling (and the page's internal search relevance) works off this field."
-            },
-            {
-              "type": "schema-missing",
-              "field": null,
-              "needsAi": false,
-              "message": "No structured data (schema.org JSON-LD) found on this page.",
-              "current": null,
-              "suggested": null,
-              "reason": "Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically."
             }
           ],
           "bodyExcerpt": null
@@ -9579,15 +9545,6 @@
               "current": null,
               "suggested": "ai assistant for small business",
               "reason": "Google is already showing this page for \"ai assistant for small business\" (125 impressions this period) but the term never appears in the body -- working it in naturally reinforces relevance for a query you're already getting some visibility on."
-            },
-            {
-              "type": "schema-missing",
-              "field": null,
-              "needsAi": false,
-              "message": "No structured data (schema.org JSON-LD) found on this page.",
-              "current": null,
-              "suggested": null,
-              "reason": "Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically."
             }
           ],
           "bodyExcerpt": "AI for small businesses is no longer only about trying the newest tool. In 2026, the real value comes from using AI inside repeatable workflows: answering customer questions, creating marketing content, qualifying leads, summarizing calls, organizing invoices, improving product discovery and supporting customers after hours. For small teams, this matters because time is the biggest constraint. AI can help a business respond faster, stay consistent and do more without immediately hiring a larger team. The key is to start with practical tasks, not a broad “AI transformation” project. This guide "
@@ -12877,15 +12834,6 @@
                 }
               ],
               "reason": "\"ai in fashion market\" is this page's #1 query by clicks in GSC but isn't set as a focus keyword -- Wix's own SEO tooling (and the page's internal search relevance) works off this field."
-            },
-            {
-              "type": "schema-missing",
-              "field": null,
-              "needsAi": false,
-              "message": "No structured data (schema.org JSON-LD) found on this page.",
-              "current": null,
-              "suggested": null,
-              "reason": "Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically."
             }
           ],
           "bodyExcerpt": "Artificial intelligence is no longer a futuristic concept in style — AI in fashion  is actively transforming how garments are designed, produced, sold, and experienced. From predictive trend models to virtual try-ons and generative design, AI embeds itself across the fashion value chain, bringing speed, personalization, and sustainability. In this article, we dive deep into the ways AI in fashion  is reshaping the industry, explore real-world use cases, weigh benefits and challenges, and look ahead to what lies next. For a deeper understanding of AI technologies, see our guide on Agentic AI vs"
@@ -13202,15 +13150,6 @@
               "current": null,
               "suggested": null,
               "reason": "CTR is well below what pages at this position typically earn -- the title/snippet is likely under-selling the page."
-            },
-            {
-              "type": "schema-missing",
-              "field": null,
-              "needsAi": false,
-              "message": "No structured data (schema.org JSON-LD) found on this page.",
-              "current": null,
-              "suggested": null,
-              "reason": "Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically."
             }
           ],
           "bodyExcerpt": "AI for small businesses is no longer only about trying the newest tool. In 2026, the real value comes from using AI inside repeatable workflows: answering customer questions, creating marketing content, qualifying leads, summarizing calls, organizing invoices, improving product discovery and supporting customers after hours. For small teams, this matters because time is the biggest constraint. AI can help a business respond faster, stay consistent and do more without immediately hiring a larger team. The key is to start with practical tasks, not a broad “AI transformation” project. This guide "
@@ -15059,14 +14998,19 @@
         {
           "url": "https://www.mimicminds.com/",
           "cause": "ctr-drop",
-          "itemType": null,
-          "itemId": null,
-          "matched": false,
+          "itemType": "STATIC_PAGE",
+          "itemId": "c1dmp",
+          "matched": true,
           "current": {
-            "title": null,
-            "metaDescription": null,
-            "metaKeywords": null,
-            "focusKeywords": []
+            "title": "Mimic Minds | AI Avatars, Digital Humans & AI Studio",
+            "metaDescription": "Create lifelike AI avatars and digital humans for websites, apps and enterprise experiences with real-time conversation, natural voice and expression.",
+            "metaKeywords": "Digital Avatar Solutions, Photorealistic Chatbots, Virtual Assistants, Conversational Avatar, Personalized AI Solutions, 3D Digital Influencers, AI Avatar Services, Digital Avatar Service Company",
+            "focusKeywords": [
+              {
+                "term": "AI avatars",
+                "isMain": true
+              }
+            ]
           },
           "primary": {
             "query": "mimic minds",
@@ -15114,29 +15058,11 @@
           ],
           "issues": [
             {
-              "type": "title",
-              "field": "title",
-              "needsAi": true,
-              "message": "Title doesn't contain the top query \"mimic minds\" (597 impr, pos 1.2) -- this page is ctr drop this period.",
-              "current": null,
-              "suggested": null,
-              "reason": null
-            },
-            {
-              "type": "meta-missing",
+              "type": "meta",
               "field": "metaDescription",
               "needsAi": true,
-              "message": "No meta description set.",
-              "current": null,
-              "suggested": null,
-              "reason": null
-            },
-            {
-              "type": "meta-keywords",
-              "field": "metaKeywords",
-              "needsAi": true,
-              "message": "No meta keywords set.",
-              "current": null,
+              "message": "Meta description doesn't mention the top query \"mimic minds\".",
+              "current": "Create lifelike AI avatars and digital humans for websites, apps and enterprise experiences with real-time conversation, natural voice and expression.",
               "suggested": null,
               "reason": null
             },
@@ -15154,7 +15080,12 @@
               "field": "focusKeywords",
               "needsAi": false,
               "message": "Focus keyword doesn't include the top GSC query \"mimic minds\".",
-              "current": [],
+              "current": [
+                {
+                  "term": "AI avatars",
+                  "isMain": true
+                }
+              ],
               "suggested": [
                 {
                   "term": "mimic minds",
@@ -15170,15 +15101,6 @@
                 }
               ],
               "reason": "\"mimic minds\" is this page's #1 query by clicks in GSC but isn't set as a focus keyword -- Wix's own SEO tooling (and the page's internal search relevance) works off this field."
-            },
-            {
-              "type": "schema-missing",
-              "field": null,
-              "needsAi": false,
-              "message": "No structured data (schema.org JSON-LD) found on this page.",
-              "current": null,
-              "suggested": null,
-              "reason": "Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically."
             }
           ],
           "bodyExcerpt": null
@@ -15601,15 +15523,6 @@
                 }
               ],
               "reason": "\"ai in fashion market\" is this page's #1 query by clicks in GSC but isn't set as a focus keyword -- Wix's own SEO tooling (and the page's internal search relevance) works off this field."
-            },
-            {
-              "type": "schema-missing",
-              "field": null,
-              "needsAi": false,
-              "message": "No structured data (schema.org JSON-LD) found on this page.",
-              "current": null,
-              "suggested": null,
-              "reason": "Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically."
             }
           ],
           "bodyExcerpt": "Artificial intelligence is no longer a futuristic concept in style — AI in fashion  is actively transforming how garments are designed, produced, sold, and experienced. From predictive trend models to virtual try-ons and generative design, AI embeds itself across the fashion value chain, bringing speed, personalization, and sustainability. In this article, we dive deep into the ways AI in fashion  is reshaping the industry, explore real-world use cases, weigh benefits and challenges, and look ahead to what lies next. For a deeper understanding of AI technologies, see our guide on Agentic AI vs"
@@ -17438,15 +17351,6 @@
               "current": null,
               "suggested": "affordable agentic ai systems for small and mid-sized businesses",
               "reason": "Google is already showing this page for \"affordable agentic ai systems for small and mid-sized businesses\" (433 impressions this period) but the term never appears in the body -- working it in naturally reinforces relevance for a query you're already getting some visibility on."
-            },
-            {
-              "type": "schema-missing",
-              "field": null,
-              "needsAi": false,
-              "message": "No structured data (schema.org JSON-LD) found on this page.",
-              "current": null,
-              "suggested": null,
-              "reason": "Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically."
             }
           ],
           "bodyExcerpt": "AI for small businesses is no longer only about trying the newest tool. In 2026, the real value comes from using AI inside repeatable workflows: answering customer questions, creating marketing content, qualifying leads, summarizing calls, organizing invoices, improving product discovery and supporting customers after hours. For small teams, this matters because time is the biggest constraint. AI can help a business respond faster, stay consistent and do more without immediately hiring a larger team. The key is to start with practical tasks, not a broad “AI transformation” project. This guide "
@@ -19050,15 +18954,6 @@
               "current": null,
               "suggested": "traditional vs ai-generated clothing trends",
               "reason": "Google is already showing this page for \"traditional vs ai-generated clothing trends\" (316 impressions this period) but the term never appears in the body -- working it in naturally reinforces relevance for a query you're already getting some visibility on."
-            },
-            {
-              "type": "schema-missing",
-              "field": null,
-              "needsAi": false,
-              "message": "No structured data (schema.org JSON-LD) found on this page.",
-              "current": null,
-              "suggested": null,
-              "reason": "Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically."
             }
           ],
           "bodyExcerpt": "Artificial intelligence is no longer a futuristic concept in style — AI in fashion  is actively transforming how garments are designed, produced, sold, and experienced. From predictive trend models to virtual try-ons and generative design, AI embeds itself across the fashion value chain, bringing speed, personalization, and sustainability. In this article, we dive deep into the ways AI in fashion  is reshaping the industry, explore real-world use cases, weigh benefits and challenges, and look ahead to what lies next. For a deeper understanding of AI technologies, see our guide on Agentic AI vs"
@@ -21292,14 +21187,19 @@
         {
           "url": "https://www.mimicminds.com/ai-avatar-for-influencer",
           "cause": "low-ctr",
-          "itemType": null,
-          "itemId": null,
-          "matched": false,
+          "itemType": "STATIC_PAGE",
+          "itemId": "qgrzr",
+          "matched": true,
           "current": {
-            "title": null,
-            "metaDescription": null,
-            "metaKeywords": null,
-            "focusKeywords": []
+            "title": "AI Influencer Avatars for Brands | Mimic Minds",
+            "metaDescription": "Create lifelike AI influencer avatars for branded content, live campaigns and product storytelling, with multilingual interaction and consistent messaging.",
+            "metaKeywords": "AI Influencer, Virtual Influencer, Digital Influencer, AI Avatar for Influencer, AI Influencer Marketing, Virtual Brand Ambassador, AI-Powered Content Creation, Scalable Influencer Campaigns, AI-Driven Social Media Influencer, Digital Persona for Brands",
+            "focusKeywords": [
+              {
+                "term": "AI influencer avatar",
+                "isMain": true
+              }
+            ]
           },
           "primary": {
             "query": "ai avatar influencer",
@@ -21351,25 +21251,16 @@
               "field": "title",
               "needsAi": true,
               "message": "Title doesn't contain the top query \"ai avatar influencer\" (102 impr, pos 9.6) -- this page is low ctr this period.",
-              "current": null,
+              "current": "AI Influencer Avatars for Brands | Mimic Minds",
               "suggested": null,
               "reason": null
             },
             {
-              "type": "meta-missing",
+              "type": "meta",
               "field": "metaDescription",
               "needsAi": true,
-              "message": "No meta description set.",
-              "current": null,
-              "suggested": null,
-              "reason": null
-            },
-            {
-              "type": "meta-keywords",
-              "field": "metaKeywords",
-              "needsAi": true,
-              "message": "No meta keywords set.",
-              "current": null,
+              "message": "Meta description doesn't mention the top query \"ai avatar influencer\".",
+              "current": "Create lifelike AI influencer avatars for branded content, live campaigns and product storytelling, with multilingual interaction and consistent messaging.",
               "suggested": null,
               "reason": null
             },
@@ -21387,7 +21278,12 @@
               "field": "focusKeywords",
               "needsAi": false,
               "message": "Focus keyword doesn't include the top GSC query \"ai avatar influencer\".",
-              "current": [],
+              "current": [
+                {
+                  "term": "AI influencer avatar",
+                  "isMain": true
+                }
+              ],
               "suggested": [
                 {
                   "term": "ai avatar influencer",
@@ -21403,15 +21299,6 @@
                 }
               ],
               "reason": "\"ai avatar influencer\" is this page's #1 query by clicks in GSC but isn't set as a focus keyword -- Wix's own SEO tooling (and the page's internal search relevance) works off this field."
-            },
-            {
-              "type": "schema-missing",
-              "field": null,
-              "needsAi": false,
-              "message": "No structured data (schema.org JSON-LD) found on this page.",
-              "current": null,
-              "suggested": null,
-              "reason": "Schema markup helps Google understand and richly display the page (rich results, AI Overview eligibility). Adding it requires editing the page in Wix (custom code / SEO settings) -- not something this tool can apply automatically."
             }
           ],
           "bodyExcerpt": null

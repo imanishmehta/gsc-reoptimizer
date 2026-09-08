@@ -294,12 +294,19 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 // extraction came back empty and broke its Wix-item match across an
 // entire regeneration). One retry after a short delay before giving up.
 async function fetchLiveHtml(url, attempt = 0) {
-  const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (content-audit-bot)' } });
-  if (!res.ok) {
-    if (attempt === 0) { await sleep(1000); return fetchLiveHtml(url, attempt + 1); }
-    throw new Error(`${url} -> ${res.status}`);
+  try {
+    const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (content-audit-bot)' } });
+    if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+    return await res.text();
+  } catch (err) {
+    // Retries both HTTP-level failures (non-2xx) and network-level ones
+    // (DNS, connection reset, timeout) -- a full run crawls 150-200+ pages
+    // back to back, and confirmed live: even 1 retry wasn't always enough
+    // under that load (two different pages both needed a 2nd retry to
+    // match correctly in the same run).
+    if (attempt < 2) { await sleep(1000 * (attempt + 1)); return fetchLiveHtml(url, attempt + 1); }
+    throw err;
   }
-  return res.text();
 }
 
 export async function crawlLivePage(url) {
