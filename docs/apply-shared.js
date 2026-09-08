@@ -112,6 +112,19 @@ function applySuggestionCacheKey(type, pageUrl, extra) {
   return `aiSuggestion:${type}:${pageUrl}${extra ? `:${extra}` : ''}`;
 }
 
+// Synchronous, no network, no password prompt -- lets a page re-render
+// already-generated suggestions the moment data loads (e.g. after a
+// refresh), instead of showing "click Generate" again for something that
+// was already generated in this browser. Returns null on a cache miss.
+function applyPeekCachedSuggestion(type, pageUrl, cacheSuffix) {
+  try {
+    const cached = localStorage.getItem(applySuggestionCacheKey(type, pageUrl, cacheSuffix));
+    return cached ? JSON.parse(cached) : null;
+  } catch {
+    return null;
+  }
+}
+
 async function applyGenerateSuggestion(type, pageUrl, data, { force = false, cacheSuffix = '' } = {}) {
   const cacheKey = applySuggestionCacheKey(type, pageUrl, cacheSuffix);
   if (!force) {

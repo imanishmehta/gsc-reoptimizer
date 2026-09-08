@@ -49,16 +49,24 @@ async function clGenerate(siteSlug, page, btn) {
       bodyExcerpt: page.bodyExcerpt,
     }, { cacheSuffix: `${clPeriodKey()}-page` });
 
-    clGenerated[clGenKey(page)] = (result.suggestions || []).map(s => {
-      const anchorVerified = page.applyableLive && page.bodyExcerpt && s.anchorText && page.bodyExcerpt.includes(s.anchorText);
-      return { ...s, applyable: !!anchorVerified };
-    });
+    clApplyResult(page, result);
     clRenderSite(siteSlug);
   } catch (err) {
     btn.disabled = false;
     btn.textContent = '✨ Generate link suggestions';
     alert(`Failed to generate suggestions: ${err.message}`);
   }
+}
+
+// Fills clGenerated from a generate-suggestion result -- shared by the
+// actual Generate click and by cache hydration on load, so a page refresh
+// shows already-generated suggestions immediately instead of needing
+// another click just to pull them back out of the cache.
+function clApplyResult(page, result) {
+  clGenerated[clGenKey(page)] = (result.suggestions || []).map(s => {
+    const anchorVerified = page.applyableLive && page.bodyExcerpt && s.anchorText && page.bodyExcerpt.includes(s.anchorText);
+    return { ...s, applyable: !!anchorVerified };
+  });
 }
 
 async function clApplyLink(siteSlug, page, suggestion, btn) {
@@ -135,6 +143,13 @@ function clRenderSite(siteSlug) {
   if (!pages.length) {
     document.getElementById('cl-page-list').innerHTML = '<p class="empty">No underperforming pages with link candidates found for this period.</p>';
     return;
+  }
+  // Pull in anything already generated in this browser (e.g. before a
+  // refresh) so it shows immediately, no re-click needed.
+  for (const page of pages) {
+    if (clGenerated[clGenKey(page)]) continue;
+    const cached = applyPeekCachedSuggestion('links', page.url, `${clPeriodKey()}-page`);
+    if (cached) clApplyResult(page, cached);
   }
   document.getElementById('cl-page-list').innerHTML = pages.map(p => clRenderPage(siteSlug, p)).join('');
 

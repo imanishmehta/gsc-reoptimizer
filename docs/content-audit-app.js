@@ -98,6 +98,18 @@ function caRenderIssue(siteSlug, page, issue, idx) {
   `;
 }
 
+// Fills page.issues from a generate-suggestion result -- shared by the
+// actual Generate click and by cache hydration on load, so a page refresh
+// shows an already-generated suggestion immediately instead of needing
+// another click just to pull it back out of the cache.
+function caApplyResult(page, result) {
+  for (const issue of page.issues) {
+    if (issue.type === 'title' && issue.needsAi) { issue.suggested = result.title; issue.reason = result.titleReason; }
+    if ((issue.type === 'meta' || issue.type === 'meta-missing') && issue.needsAi) { issue.suggested = result.metaDescription; issue.reason = result.metaReason; }
+    if (issue.type === 'meta-keywords' && issue.needsAi) { issue.suggested = result.metaKeywords; issue.reason = result.metaKeywordsReason; }
+  }
+}
+
 async function caGenerateSuggestions(siteSlug, page, btn) {
   btn.disabled = true;
   btn.textContent = 'Generating...';
@@ -111,11 +123,7 @@ async function caGenerateSuggestions(siteSlug, page, btn) {
       bodyExcerpt: page.bodyExcerpt,
     }, { cacheSuffix: `${caPeriodKey()}-page` });
 
-    for (const issue of page.issues) {
-      if (issue.type === 'title' && issue.needsAi) { issue.suggested = result.title; issue.reason = result.titleReason; }
-      if ((issue.type === 'meta' || issue.type === 'meta-missing') && issue.needsAi) { issue.suggested = result.metaDescription; issue.reason = result.metaReason; }
-      if (issue.type === 'meta-keywords' && issue.needsAi) { issue.suggested = result.metaKeywords; issue.reason = result.metaKeywordsReason; }
-    }
+    caApplyResult(page, result);
     caRenderSite(siteSlug);
   } catch (err) {
     btn.disabled = false;
@@ -155,6 +163,13 @@ function caRenderSite(siteSlug) {
   if (!pages.length) {
     document.getElementById('ca-page-list').innerHTML = '<p class="empty">No underperforming pages found for this period -- nothing to optimize.</p>';
     return;
+  }
+  // Pull in anything already generated in this browser (e.g. before a
+  // refresh) so it shows immediately, no re-click needed.
+  for (const page of pages) {
+    if (!page.issues.some(i => i.needsAi && i.suggested === null)) continue;
+    const cached = applyPeekCachedSuggestion('meta', page.url, `${caPeriodKey()}-page`);
+    if (cached) caApplyResult(page, cached);
   }
   document.getElementById('ca-page-list').innerHTML = pages.map(p => caRenderPage(siteSlug, p)).join('');
 

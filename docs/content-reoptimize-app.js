@@ -55,16 +55,24 @@ async function crGenerate(siteSlug, page, btn) {
       gscGaps: page.gscGaps,
     }, { cacheSuffix: `${crPeriodKey()}-page` });
 
-    crGenerated[crGenKey(page)] = {
-      lsiKeywords: result.lsiKeywords || [],
-      paragraphs: result.paragraphs || [],
-    };
+    crApplyResult(page, result);
     crRenderSite(siteSlug);
   } catch (err) {
     btn.disabled = false;
     btn.textContent = '✨ Generate content suggestions';
     alert(`Failed to generate suggestions: ${err.message}`);
   }
+}
+
+// Fills crGenerated from a generate-suggestion result -- shared by the
+// actual Generate click and by cache hydration on load, so a page refresh
+// shows already-generated suggestions immediately instead of needing
+// another click just to pull them back out of the cache.
+function crApplyResult(page, result) {
+  crGenerated[crGenKey(page)] = {
+    lsiKeywords: result.lsiKeywords || [],
+    paragraphs: result.paragraphs || [],
+  };
 }
 
 async function crApplyParagraph(siteSlug, page, para, btn) {
@@ -154,6 +162,13 @@ function crRenderSite(siteSlug) {
   if (!pages.length) {
     document.getElementById('cr-page-list').innerHTML = '<p class="empty">No underperforming blog posts found for this period -- nothing to optimize.</p>';
     return;
+  }
+  // Pull in anything already generated in this browser (e.g. before a
+  // refresh) so it shows immediately, no re-click needed.
+  for (const page of pages) {
+    if (crGenerated[crGenKey(page)]) continue;
+    const cached = applyPeekCachedSuggestion('content', page.url, `${crPeriodKey()}-page`);
+    if (cached) crApplyResult(page, cached);
   }
   document.getElementById('cr-page-list').innerHTML = pages.map(p => crRenderPage(siteSlug, p)).join('');
 
