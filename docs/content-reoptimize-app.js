@@ -94,9 +94,12 @@ function crRenderLsiKeywords(keywords) {
   `;
 }
 
-// Real before/after of the visible page, not an isolated green box: the
-// current end of the post, then the same text with the suggested paragraph
-// appended.
+// Real before/after of the visible page, not an isolated green box. Two
+// clearly separated boxes -- unchanged text vs. the new paragraph -- so
+// it's unambiguous that nothing existing is touched or replaced; the new
+// text is only ever ADDED as a new paragraph after everything currently in
+// the post (see append_paragraph in worker/src/index.js, which pushes onto
+// the very end of the node list, never splices into the middle).
 function crRenderParagraph(siteSlug, page, p) {
   if (!p?.text) return '';
   const canApply = page.itemType === 'BLOG_POST' && page.matched;
@@ -105,11 +108,12 @@ function crRenderParagraph(siteSlug, page, p) {
     <div class="cr-suggestion-block">
       <h3>Suggested new paragraph</h3>
       <div class="ca-issue-reason">Why: ${crEsc(p.reason || 'Covers a GSC query gap for this post.')}</div>
+      <p class="card-sub" style="margin-bottom:.6rem">Nothing below is changed or removed. The new paragraph is only ever added as a brand-new paragraph at the very end of the post -- after everything currently there, including any closing/contact line.</p>
       <div class="diff-preview">
-        <div class="serp-preview-label">End of post now</div>
-        <div>&hellip;${crEsc(page.bodyTailExcerpt)}</div>
-        <div class="serp-preview-label" style="margin-top:.6rem">End of post after Apply</div>
-        <div>&hellip;${crEsc(page.bodyTailExcerpt)} <span class="diff-add">${crEsc(p.text)}</span></div>
+        <div class="serp-preview-label">Existing text (last part of the post -- stays exactly as-is)</div>
+        <div style="padding:.5rem .7rem;background:var(--card);border:1px solid var(--border);border-radius:6px;margin-bottom:.6rem">&hellip;${crEsc(page.bodyTailExcerpt)}</div>
+        <div class="serp-preview-label">New paragraph (added after the above, nothing else changes)</div>
+        <div class="diff-add">${crEsc(p.text)}</div>
       </div>
       ${canApply
         ? `<button class="ca-apply-btn cr-apply-paragraph" data-page="${crEsc(page.url)}">Apply live (append to post)</button>`
