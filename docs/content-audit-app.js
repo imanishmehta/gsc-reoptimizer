@@ -41,6 +41,20 @@ async function caApply(siteSlug, page, issue, btn) {
     payload, btn, resultEl, pageUrl: page.url,
     formatBefore: prev => field === 'focusKeywords' ? caFocusKeywordsText(prev.focusKeywords) : (prev[field] || '(empty)'),
     formatAfter: cur => field === 'focusKeywords' ? caFocusKeywordsText(cur.focusKeywords) : cur[field],
+    // Undo = re-apply the full previous snapshot (title/meta/keywords/focus
+    // keywords all captured at apply time) -- correct regardless of which
+    // single field this particular issue touched.
+    buildUndoPayload: async prevData => {
+      const password = await applyGetPassword();
+      if (!password) return null;
+      return {
+        site: siteSlug, itemType: page.itemType, itemId: page.itemId, password, pageUrl: page.url,
+        title: prevData.previous.title,
+        metaDescription: prevData.previous.metaDescription,
+        metaKeywords: prevData.previous.metaKeywords,
+        focusKeywords: prevData.previous.focusKeywords,
+      };
+    },
   });
 }
 

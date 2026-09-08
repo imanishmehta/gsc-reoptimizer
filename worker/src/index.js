@@ -134,12 +134,42 @@ async function handleApplyContent(request, env) {
   if (!siteId) return json({ error: `Unknown site: ${site}` }, 400);
   if (!postId) return json({ error: 'Missing postId' }, 400);
 
-  const getRes = await wixFetch(env, siteId, `/blog/v3/draft-posts/${postId}`);
+  // restore_content (Undo): the frontend hands back the exact richContent
+  // this endpoint returned as `previousRichContent` on a prior apply --
+  // write it back verbatim, no diffing, no re-reading current state. This
+  // is the ONLY path that skips the "did we actually get real content"
+  // guard below, since the caller is explicitly supplying a known-good
+  // snapshot rather than asking us to trust a fresh GET.
+  if (operation === 'restore_content') {
+    if (!body.richContent) return json({ error: 'Missing richContent to restore' }, 400);
+    const patchRes = await wixFetch(env, siteId, `/blog/v3/draft-posts/${postId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ draftPost: { id: postId, richContent: body.richContent } }),
+    });
+    if (!patchRes.ok) return json({ error: `Wix write failed: ${patchRes.status} ${await patchRes.text()}` }, 502);
+    const publishRes = await wixFetch(env, siteId, `/blog/v3/draft-posts/${postId}/publish`, { method: 'POST' });
+    if (!publishRes.ok) return json({ error: `Wix publish failed: ${publishRes.status} ${await publishRes.text()}` }, 502);
+    return json({ ok: true, restored: true, pageUrl: pageUrl || null, appliedAt: new Date().toISOString() });
+  }
+
+  // GetDraftPost's DEFAULT response omits richContent entirely (confirmed
+  // live -- the field is simply absent, not an empty object). An earlier
+  // version of this endpoint read `draft.richContent || { nodes: [] }`,
+  // which silently treated a real, non-empty post as blank and then
+  // overwrote the live post with just the new paragraph -- a real
+  // data-loss incident. `fieldsets=RICH_CONTENT` is required to actually
+  // get the content back, and even then this code refuses to proceed if
+  // the field is still missing, rather than ever guessing it's empty.
+  const getRes = await wixFetch(env, siteId, `/blog/v3/draft-posts/${postId}?fieldsets=RICH_CONTENT`);
   if (!getRes.ok) {
     return json({ error: `Wix read failed: ${getRes.status} ${await getRes.text()}` }, 502);
   }
   const draft = (await getRes.json()).draftPost;
-  const richContent = draft.richContent || { nodes: [] };
+  if (draft.richContent === undefined || draft.richContent === null) {
+    return json({ error: 'Wix did not return this post\'s content (richContent missing from response) -- refusing to write, since that would risk overwriting real content with nothing. No changes were made.' }, 502);
+  }
+  const richContent = draft.richContent;
+  const previousRichContent = JSON.parse(JSON.stringify(richContent)); // full snapshot, for Undo -- taken before any mutation below
 
   let previous, current;
 
@@ -188,7 +218,7 @@ async function handleApplyContent(request, env) {
     return json({ error: `Wix publish failed: ${publishRes.status} ${await publishRes.text()}` }, 502);
   }
 
-  return json({ ok: true, previous, current, pageUrl: pageUrl || null, appliedAt: new Date().toISOString() });
+  return json({ ok: true, previous, current, previousRichContent, pageUrl: pageUrl || null, appliedAt: new Date().toISOString() });
 }
 
 // ---------- AI suggestion settings + generation ----------

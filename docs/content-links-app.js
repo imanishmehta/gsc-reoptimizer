@@ -75,6 +75,11 @@ async function clApplyLink(siteSlug, page, suggestion, btn) {
     payload, btn, resultEl, pageUrl: page.url,
     formatBefore: () => `"${suggestion.anchorText}" as plain text`,
     formatAfter: cur => `"${suggestion.anchorText}" linked to ${cur.targetUrl}`,
+    buildUndoPayload: async applyData => {
+      const undoPassword = await applyGetPassword();
+      if (!undoPassword) return null;
+      return { site: siteSlug, postId: page.itemId, password: undoPassword, operation: 'restore_content', richContent: applyData.previousRichContent, pageUrl: page.url };
+    },
   });
 }
 

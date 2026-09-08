@@ -74,6 +74,11 @@ async function crApplyParagraph(siteSlug, page, btn) {
     payload, btn, resultEl, pageUrl: page.url,
     formatBefore: () => '(post had no added paragraph)',
     formatAfter: cur => cur.addedParagraph,
+    buildUndoPayload: async applyData => {
+      const undoPassword = await applyGetPassword();
+      if (!undoPassword) return null;
+      return { site: siteSlug, postId: page.itemId, password: undoPassword, operation: 'restore_content', richContent: applyData.previousRichContent, pageUrl: page.url };
+    },
   });
 }
 

@@ -23,7 +23,17 @@ function applyForgetPassword() {
 // Posts to a Worker endpoint, then renders a standard before/after result
 // panel into `resultEl`. `formatValue` turns a raw previous/current field
 // into display text (e.g. joining focus-keyword objects into a string).
-async function applyRun({ endpoint, payload, btn, resultEl, pageUrl, formatBefore, formatAfter }) {
+//
+// Undo, everywhere: pass `buildUndoPayload(data)` -- given the apply
+// response, return the payload that would revert it (same shape as the
+// original `payload`, just with before/after swapped). Works the same way
+// for every apply across every tab: Meta Optimization re-POSTs
+// /apply-seo-tags with the old title/meta/keywords/focusKeywords; Content
+// Reoptimization/Internal Linking re-POST /apply-content-change with
+// operation 'restore_content' and the richContent snapshot the Worker
+// already returns as `previousRichContent`. If `buildUndoPayload` is
+// omitted, no Undo button renders (there's nothing to revert to).
+async function applyRun({ endpoint, payload, btn, resultEl, pageUrl, formatBefore, formatAfter, buildUndoPayload }) {
   btn.disabled = true;
   btn.textContent = 'Applying...';
 
@@ -43,8 +53,15 @@ async function applyRun({ endpoint, payload, btn, resultEl, pageUrl, formatBefor
       Before: ${applyEsc(formatBefore(data.previous))}<br>
       After: ${applyEsc(formatAfter(data.current))}<br>
       <a href="${applyEsc(pageUrl)}" target="_blank">View live page &rarr;</a>
+      ${buildUndoPayload ? '<br><button class="ca-apply-btn undo-btn" style="margin-top:.5rem;background:var(--red)">Undo this change</button>' : ''}
     `;
     btn.textContent = 'Applied';
+
+    if (buildUndoPayload) {
+      resultEl.querySelector('.undo-btn').addEventListener('click', async (e) => {
+        await applyUndo(endpoint, buildUndoPayload, data, pageUrl, e.target, resultEl);
+      });
+    }
     return true;
   } catch (err) {
     resultEl.hidden = false;
@@ -54,6 +71,33 @@ async function applyRun({ endpoint, payload, btn, resultEl, pageUrl, formatBefor
     btn.textContent = 'Apply live';
     if (err.message.includes('password') || err.message.includes('401')) applyForgetPassword();
     return false;
+  }
+}
+
+// Generic Undo: re-POSTs the same endpoint with whatever payload
+// `buildUndoPayload(data)` computes (async, so it can re-prompt for the
+// password if the session forgot it).
+async function applyUndo(endpoint, buildUndoPayload, applyResponseData, pageUrl, btn, resultEl) {
+  btn.disabled = true;
+  btn.textContent = 'Undoing...';
+  try {
+    const undoPayload = await buildUndoPayload(applyResponseData);
+    if (!undoPayload) { btn.disabled = false; btn.textContent = 'Undo this change'; return; } // e.g. password prompt was cancelled
+
+    const res = await fetch(`${WORKER_URL}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(undoPayload),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    resultEl.className = 'ca-result ok';
+    resultEl.innerHTML = `Restored to before this change. <a href="${applyEsc(pageUrl)}" target="_blank">View live page &rarr;</a>`;
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Undo this change';
+    alert(`Undo failed: ${err.message}`);
+    if (err.message.includes('password') || err.message.includes('401')) applyForgetPassword();
   }
 }
 
