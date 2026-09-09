@@ -454,7 +454,9 @@ All queries this post ranks for (for context): ${(d.gscQueries || []).slice(0, 8
 
 Produce:
 1. lsiKeywords: 3-5 secondary/LSI keyword phrases worth working into this post, each with a one-sentence reason grounded in the GSC data above.
-2. paragraphs: 1-3 NEW paragraphs (2-4 sentences each) to ADD to this post -- never a rewrite of anything existing, only new additions. Each one should target a different LSI keyword or query gap, and each needs an insertAfterHeading: the exact text of the existing heading (copied character-for-character from the list above) whose section this paragraph best fits at the end of, or null if it belongs at the end of the post instead. Every paragraph must match the post's existing tone/topic and contain NO sentence that duplicates or closely paraphrases the existing body text.
+2. paragraphs: NEW paragraphs (2-4 sentences each) to ADD to this post -- never a rewrite of anything existing, only new additions. Each one should target a different LSI keyword or query gap, and each needs an insertAfterHeading: the exact text of the existing heading (copied character-for-character from the list above) whose section this paragraph best fits at the end of, or null if it belongs at the end of the post instead. Every paragraph must match the post's existing tone/topic and contain NO sentence that duplicates or closely paraphrases the existing body text.
+
+paragraphs is REQUIRED and must contain AT LEAST 1 entry -- never respond with an empty array. If you're unsure exactly which heading a paragraph belongs under, use insertAfterHeading: null (end of post) rather than omitting the paragraph. There is always at least one reasonable paragraph to suggest given the LSI keywords and query gaps above.
 
 Respond with this exact JSON shape only: {"lsiKeywords": [{"term": "...", "reason": "..."}], "paragraphs": [{"text": "...", "reason": "...", "insertAfterHeading": "... or null"}]}`;
 }

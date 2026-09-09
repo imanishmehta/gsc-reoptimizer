@@ -116,7 +116,13 @@ function detectIssues({ primary, secondary, cause }, currentTitle, currentMeta, 
         type: 'content-gap', field: null, needsAi: false,
         message: `Secondary keyword "${q.query}" (${q.impressions} impr) doesn't appear in the page content.`,
         current: null, suggested: q.query,
-        reason: `Google is already showing this page for "${q.query}" (${q.impressions} impressions this period) but the term never appears in the body -- working it in naturally reinforces relevance for a query you're already getting some visibility on.`,
+        // This is a body-content change, not an SEO tag -- Meta
+        // Optimization has no field to write it to (no Apply button here
+        // by design, see caRenderIssue). Content Reoptimization is where
+        // this actually gets fixed: it generates a real new paragraph
+        // working this keyword in, with a before/after preview and a live
+        // Apply.
+        reason: `Google is already showing this page for "${q.query}" (${q.impressions} impressions this period) but the term never appears in the body -- working it in naturally reinforces relevance for a query you're already getting some visibility on. Fix this in the Content Reoptimization tab (this is body content, not a meta tag) -- it'll generate a paragraph using this term with a before/after preview.`,
       });
     }
   }

@@ -150,9 +150,14 @@ export async function getPeriodTargets(gscClient, site, days) {
 function sleepMs(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // Wix's API intermittently 499s (connection-closed edge error) on
-// otherwise-valid requests -- confirmed repeatedly in practice, not
-// specific to one endpoint. Retries twice with backoff on 499/502/503/504
-// before giving up, instead of failing the whole script run over a blip.
+// otherwise-valid requests. Confirmed live across several full-script runs
+// that a short (1-2s) backoff wasn't enough for this to clear -- the second
+// site's very first call kept failing at the same spot every time, which
+// looks like a short rate-limit window rather than a one-off blip, given
+// how many Wix calls the first site's processing already made by then.
+// Retries 3 times with longer backoff (3s/8s/15s) before giving up.
+const WIX_RETRY_DELAYS_MS = [3000, 8000, 15000];
+
 export async function wixFetch(siteId, path, options = {}, attempt = 0) {
   const res = await fetch(`https://www.wixapis.com${path}`, {
     ...options,
@@ -164,8 +169,8 @@ export async function wixFetch(siteId, path, options = {}, attempt = 0) {
     },
   });
   if (!res.ok) {
-    if ([499, 502, 503, 504].includes(res.status) && attempt < 2) {
-      await sleepMs(1000 * (attempt + 1));
+    if ([499, 502, 503, 504].includes(res.status) && attempt < WIX_RETRY_DELAYS_MS.length) {
+      await sleepMs(WIX_RETRY_DELAYS_MS[attempt]);
       return wixFetch(siteId, path, options, attempt + 1);
     }
     throw new Error(`Wix ${path} -> ${res.status}: ${await res.text()}`);
@@ -181,7 +186,22 @@ export async function listItemSeoTags(siteId, itemType) {
     // via direct testing between 50 and 75) -- 50 is confirmed reliable.
     const q = new URLSearchParams({ 'paging.limit': '50' });
     if (cursor) q.set('paging.cursor', cursor);
-    const data = await wixFetch(siteId, `/seo-metatags-server/v1/item-seo-tags/${itemType}?${q}`);
+    let data;
+    try {
+      data = await wixFetch(siteId, `/seo-metatags-server/v1/item-seo-tags/${itemType}?${q}`);
+    } catch (err) {
+      // Confirmed live: Wix can genuinely 400 on a cursor it handed us
+      // itself for this endpoint (not a transient 499/503 -- those already
+      // retry in wixFetch; this is a hard rejection, retrying does not
+      // help). Rather than crash the whole run over one site's deep
+      // pagination, use what already loaded and move on -- partial SEO-tag
+      // coverage for this item type beats losing every other page/site.
+      if (cursor) {
+        console.error(`  listItemSeoTags(${itemType}): cursor rejected after ${items.length} items, continuing with what loaded -- ${err.message.slice(0, 150)}`);
+        break;
+      }
+      throw err; // first page failing is a real problem, not a pagination edge case -- still fatal
+    }
     items.push(...(data.itemSeoTags || []));
     cursor = data.pagingMetadata?.hasNext ? data.pagingMetadata?.cursors?.next : null;
   } while (cursor);

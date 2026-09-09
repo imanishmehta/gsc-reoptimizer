@@ -41,9 +41,9 @@ function crCopyToClipboard(text, btn) {
   });
 }
 
-async function crGenerate(siteSlug, page, btn) {
+async function crGenerate(siteSlug, page, btn, force = false) {
   btn.disabled = true;
-  btn.textContent = 'Generating...';
+  btn.textContent = force ? 'Regenerating...' : 'Generating...';
   try {
     const result = await applyGenerateSuggestion('content', page.url, {
       pageUrl: page.url,
@@ -53,13 +53,13 @@ async function crGenerate(siteSlug, page, btn) {
       headings: page.headings,
       gscQueries: page.gscQueries,
       gscGaps: page.gscGaps,
-    }, { cacheSuffix: `${crPeriodKey()}-page` });
+    }, { cacheSuffix: `${crPeriodKey()}-page`, force });
 
     crApplyResult(page, result);
     crRenderSite(siteSlug);
   } catch (err) {
     btn.disabled = false;
-    btn.textContent = '✨ Generate content suggestions';
+    btn.textContent = force ? '↻ Regenerate' : '✨ Generate content suggestions';
     alert(`Failed to generate suggestions: ${err.message}`);
   }
 }
@@ -148,7 +148,9 @@ function crRenderPage(siteSlug, page) {
       </div>
       ${gen ? crRenderLsiKeywords(gen.lsiKeywords) : ''}
       ${gen ? gen.paragraphs.map((p, i) => crRenderParagraph(siteSlug, page, p, i)).join('') : ''}
-      ${gen && !gen.paragraphs.length ? '<p class="empty">No paragraph suggestions this time.</p>' : ''}
+      ${gen && !gen.paragraphs.length
+        ? `<p class="empty">No paragraph suggestions this time.</p><button class="ca-apply-btn cr-regenerate-btn" data-page="${crEsc(page.url)}">↻ Regenerate</button>`
+        : ''}
       ${!gen ? `<button class="ca-apply-btn cr-generate-btn" data-page="${crEsc(page.url)}">✨ Generate content suggestions</button>` : ''}
     </div>
   `;
@@ -176,6 +178,12 @@ function crRenderSite(siteSlug) {
     btn.addEventListener('click', () => {
       const page = pages.find(p => p.url === btn.dataset.page);
       crGenerate(siteSlug, page, btn);
+    });
+  });
+  document.querySelectorAll('.cr-regenerate-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = pages.find(p => p.url === btn.dataset.page);
+      crGenerate(siteSlug, page, btn, true);
     });
   });
   document.querySelectorAll('.cr-apply-paragraph').forEach(btn => {

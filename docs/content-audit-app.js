@@ -72,8 +72,16 @@ function caSerpBlock(label, url, title, meta) {
   `;
 }
 
+// The only fields Meta Optimization can actually write (via
+// /apply-seo-tags -- see worker/src/index.js's mergeTags). An issue with
+// any other field (e.g. content-gap's `field: null`, a body-content
+// change) can have a suggested value to *show*, but must never get an
+// Apply button -- there's nowhere for it to write to here.
+const APPLICABLE_FIELDS = new Set(['title', 'metaDescription', 'metaKeywords', 'focusKeywords']);
+
 function caRenderIssue(siteSlug, page, issue, idx) {
-  const canApply = issue.suggested !== null && issue.suggested !== undefined && page.matched;
+  const hasSuggestion = issue.suggested !== null && issue.suggested !== undefined;
+  const canApply = hasSuggestion && APPLICABLE_FIELDS.has(issue.field) && page.matched;
   const suggestedText = issue.field === 'focusKeywords' ? caFocusKeywordsText(issue.suggested) : issue.suggested;
   const isSerpField = issue.field === 'title' || issue.field === 'metaDescription';
 
@@ -91,7 +99,7 @@ function caRenderIssue(siteSlug, page, issue, idx) {
       <div class="ca-issue-msg">${caEsc(issue.message)}</div>
       ${issue.reason ? `<div class="ca-issue-reason">Why: ${caEsc(issue.reason)}</div>` : ''}
       ${awaitingAi ? '<p class="ca-unmatched-note">Click "Generate AI suggestions" below to get a rewrite for this page.</p>' : ''}
-      ${canApply && !isSerpField ? `<div class="ca-issue-suggested">Suggested: ${caEsc(suggestedText)}</div>` : ''}
+      ${hasSuggestion && !isSerpField ? `<div class="ca-issue-suggested">Suggested: ${caEsc(suggestedText)}</div>` : ''}
       ${serpPreview}
       ${canApply ? `<button class="ca-apply-btn" data-page="${caEsc(page.url)}" data-issue="${idx}">Apply live</button>` : ''}
       <div class="ca-result" hidden></div>
