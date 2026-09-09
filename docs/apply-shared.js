@@ -34,6 +34,7 @@ function applyForgetPassword() {
 // already returns as `previousRichContent`. If `buildUndoPayload` is
 // omitted, no Undo button renders (there's nothing to revert to).
 async function applyRun({ endpoint, payload, btn, resultEl, pageUrl, formatBefore, formatAfter, buildUndoPayload }) {
+  const originalLabel = btn.textContent; // restored if Undo is used later -- see applyUndo
   btn.disabled = true;
   btn.textContent = 'Applying...';
 
@@ -59,7 +60,7 @@ async function applyRun({ endpoint, payload, btn, resultEl, pageUrl, formatBefor
 
     if (buildUndoPayload) {
       resultEl.querySelector('.undo-btn').addEventListener('click', async (e) => {
-        await applyUndo(endpoint, buildUndoPayload, data, pageUrl, e.target, resultEl);
+        await applyUndo(endpoint, buildUndoPayload, data, pageUrl, e.target, resultEl, btn, originalLabel);
       });
     }
     return true;
@@ -76,8 +77,12 @@ async function applyRun({ endpoint, payload, btn, resultEl, pageUrl, formatBefor
 
 // Generic Undo: re-POSTs the same endpoint with whatever payload
 // `buildUndoPayload(data)` computes (async, so it can re-prompt for the
-// password if the session forgot it).
-async function applyUndo(endpoint, buildUndoPayload, applyResponseData, pageUrl, btn, resultEl) {
+// password if the session forgot it). On success, resets the ORIGINAL
+// Apply button back to its clickable label -- it was left disabled/
+// "Applied" after the apply succeeded, and a successful Undo means that's
+// no longer true: the page is back to its pre-apply state, so Apply should
+// be usable again.
+async function applyUndo(endpoint, buildUndoPayload, applyResponseData, pageUrl, btn, resultEl, applyBtn, applyOriginalLabel) {
   btn.disabled = true;
   btn.textContent = 'Undoing...';
   try {
@@ -93,6 +98,10 @@ async function applyUndo(endpoint, buildUndoPayload, applyResponseData, pageUrl,
     if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
     resultEl.className = 'ca-result ok';
     resultEl.innerHTML = `Restored to before this change. <a href="${applyEsc(pageUrl)}" target="_blank">View live page &rarr;</a>`;
+    if (applyBtn) {
+      applyBtn.disabled = false;
+      applyBtn.textContent = applyOriginalLabel || 'Apply live';
+    }
   } catch (err) {
     btn.disabled = false;
     btn.textContent = 'Undo this change';
